@@ -1,0 +1,13 @@
+Purposed plugins
+--------------------------------
+Android Goodies --> features vs playfab feats
+FastNoiseGenerator --> if needed
+Secure-Client UE4
+
+HTNPlanner --> for AI plans
+Database support ??
+
+Online Subsystem Facebook
+Online Subsystem Steam
+Online Subsystem Twitch
+

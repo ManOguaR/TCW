@@ -1,0 +1,113 @@
+﻿# Game English translation.
+# Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Game\n"
+"POT-Creation-Date: 2020-04-06 00:18\n"
+"PO-Revision-Date: 2020-04-06 00:18\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Key:	9E18352F48F83237EB3C699EBC191181
+#. SourceLocation:	/Game/Blueprints/Widgets/Extras/DisplayMessageBP.DisplayMessageBP_C:WidgetTree.MessageText.Text
+#: /Game/Blueprints/Widgets/Extras/DisplayMessageBP.DisplayMessageBP_C:WidgetTree.MessageText.Text
+msgctxt ",9E18352F48F83237EB3C699EBC191181"
+msgid "Text Block"
+msgstr "Text Block"
+
+#. Key:	C3CF36B74969FF9222EBF0939ED0ED5D
+#. SourceLocation:	/Game/Blueprints/Widgets/Options/OptionsMenu.OptionsMenu_C:WidgetTree.TextBlock_59.Text
+#: /Game/Blueprints/Widgets/Options/OptionsMenu.OptionsMenu_C:WidgetTree.TextBlock_59.Text
+msgctxt ",C3CF36B74969FF9222EBF0939ED0ED5D"
+msgid "AI AM DE MENU"
+msgstr "AI AM DE MENU"
+
+#. Key:	CastFailureFormat
+#. SourceLocation:	/Game/Data/Localization/Errors_StringTable.Errors_StringTable
+#: /Game/Data/Localization/Errors_StringTable.Errors_StringTable
+msgctxt "LocalizedErrors,CastFailureFormat"
+msgid "Cast to {ClassName} failure."
+msgstr "Cast to {ClassName} failure."
+
+#. Key:	CastFailureFromFormat
+#. SourceLocation:	/Game/Data/Localization/Errors_StringTable.Errors_StringTable
+#: /Game/Data/Localization/Errors_StringTable.Errors_StringTable
+msgctxt "LocalizedErrors,CastFailureFromFormat"
+msgid "Cast to {CastClassName} from {ClassName} failure."
+msgstr "Cast to {CastClassName} from {ClassName} failure."
+
+#. Key:	Key1
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key1"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0001"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0001"
+
+#. Key:	Key10
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key10"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0010"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0010"
+
+#. Key:	Key2
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key2"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0002"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0002"
+
+#. Key:	Key3
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key3"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0003"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0003"
+
+#. Key:	Key4
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key4"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0004"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0004"
+
+#. Key:	Key5
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key5"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0005"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0005"
+
+#. Key:	Key6
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key6"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0006"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0006"
+
+#. Key:	Key7
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key7"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0007"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0007"
+
+#. Key:	Key8
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key8"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0008"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0008"
+
+#. Key:	Key9
+#. SourceLocation:	/Game/Data/Localization/Tips_StringTable.Tips_StringTable
+#: /Game/Data/Localization/Tips_StringTable.Tips_StringTable
+msgctxt "TipsStringTable,Key9"
+msgid "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0009"
+msgstr "Bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla ----  0009"
+
