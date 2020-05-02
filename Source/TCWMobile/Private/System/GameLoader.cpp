@@ -23,8 +23,6 @@ void UGameLoader::LoadBeginEvent()
 	//UMiscFunctionLibrary::Delay(this, 5.0f);
 
 	//EXE-10
-	/*//if (!GameLoader)
-	//	GameLoader = USystemFunctionLibrary::GetTCWGameInstance(this)->GetGameLoader();;*/
 	if (!AccountManagerRef)
 		AccountManagerRef = USystemFunctionLibrary::GetTCWGameInstance(this)->GetAccountManager();
 
@@ -51,23 +49,6 @@ void UGameLoader::LoadBeginEvent()
 		LoginSuccessCallback();
 	}
 
-	/*
-	//PREPARE GAME LOADING THREADS
-	//TGraphTask<LoaderThreading::FUserLoginTask>* userLoginTask = TGraphTask<LoaderThreading::FUserLoginTask>::CreateTask(NULL, ENamedThreads::GameThread).ConstructAndHold(AccountManagerRef);
-
-	//FGraphEventArray userPre = FGraphEventArray();
-	//userPre.Add(userLoginTask->GetCompletionEvent());
-
-	//TGraphTask<LoaderThreading::FCheckUserTask>* checkUserTask = TGraphTask<LoaderThreading::FCheckUserTask>::CreateTask(&userPre, ENamedThreads::GameThread).ConstructAndHold(AccountManagerRef);
-
-	//userLoginTask->GetCompletionEvent()->AddSubsequent(checkUserTask);
-	//Multithread_CompletionEvents.Add(userLoginTask->GetCompletionEvent());
-	//Multithread_CompletionEvents.Add(checkUserTask->GetCompletionEvent());
-
-	//START GAME LOADING
-	//Multithread_CompletionEvents.Add(TGraphTask<FVictoryTestTask>::CreateTask(NULL, ENamedThreads::GameThread).ConstructAndDispatchWhenReady()); //add properties inside ConstructAndDispatchWhenReady()
-	//userLoginTask->Unlock();
-	*/
 }
 
 void UGameLoader::LoginSuccessCallback()
@@ -154,68 +135,3 @@ void UGameLoader::ReportAdvance(float percent, bool absolute)
 	if (OnReportAdvance.IsBound())
 		OnReportAdvance.Broadcast(percent, !absolute);
 }
-
-/* Begin Multi Thread
-//TArray<FBaseGraphTask*> UGameLoader::TaskGraphs = TArray<FBaseGraphTask*>();
-FGraphEventArray UGameLoader::Multithread_CompletionEvents = FGraphEventArray();
-UGameLoader* UGameLoader::GameLoader = NULL;
-
-bool UGameLoader::TasksAreComplete()
-{
-	//Check all thread completion events
-	for (int32 Index = 0; Index < Multithread_CompletionEvents.Num(); Index++)
-	{
-		//If  ! IsComplete()
-		if (!Multithread_CompletionEvents[Index]->IsComplete())
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-
-LoaderThreading::FUserLoginTask::FUserLoginTask(UPlayFabManager* accountManagerRef) : FGameLoaderTask(),
-AccountManagerRef(accountManagerRef)
-{
-}
-
-LoaderThreading::FUserLoginTask::~FUserLoginTask()
-{
-}
-
-void LoaderThreading::FUserLoginTask::DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
-{
-	if (AccountManagerRef->HasStoredLogin())
-	{
-		AccountManagerRef->StoredLogin();
-	}
-	else
-	{
-
-	}
-	ReportAdvance();
-}
-
-LoaderThreading::FCheckUserTask::FCheckUserTask(UPlayFabManager* accountManagerRef) : FGameLoaderTask(),
-AccountManagerRef(accountManagerRef)
-{
-}
-
-LoaderThreading::FCheckUserTask::~FCheckUserTask()
-{
-}
-
-void LoaderThreading::FCheckUserTask::DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
-{
-	if (AccountManagerRef->IsLoggedIn())
-	{
-		UE_LOG(TCWLog, Log, TEXT("User Logged In"));
-	}
-	else
-	{
-		UE_LOG(TCWLog, Log, TEXT("User NOT Logged In"));
-	}
-	ReportAdvance();
-}
-/* End Multi Thread */

@@ -285,18 +285,18 @@ void ATCWGameMode::GameStartCountdownEvent_Implementation()
 
 void ATCWGameMode::EndGameEvent_Implementation()
 {
-	bGameActive = false;
-	EEndGameResults p1Result, p2Result;
-
 	if (HasAuthority())
 	{
+		bGameActive = false;
+
 		bool p1Active = CheckIsPlayerActiveState(1);
 		bool p2Active = CheckIsPlayerActiveState(2);
-		p1Result = (p1Active == p2Active ? EEndGameResults::GameResult_Draw : (p1Active ? EEndGameResults::GameResult_Victory : EEndGameResults::GameResult_Defeat));
-		p2Result = (p2Active == p1Active ? EEndGameResults::GameResult_Draw : (p2Active ? EEndGameResults::GameResult_Victory : EEndGameResults::GameResult_Defeat));
-	}
 
-	GameStateRef->OnNotifyEndGameState.Broadcast(p1Result, p2Result);
+		EEndGameResults	p1Result = (p1Active == p2Active ? EEndGameResults::GameResult_Draw : (p1Active ? EEndGameResults::GameResult_Victory : EEndGameResults::GameResult_Defeat));
+		EEndGameResults	p2Result = (p2Active == p1Active ? EEndGameResults::GameResult_Draw : (p2Active ? EEndGameResults::GameResult_Victory : EEndGameResults::GameResult_Defeat));
+
+		GameStateRef->OnNotifyEndGameState.Broadcast(p1Result, p2Result);
+	}
 }
 
 void ATCWGameMode::CheckPlayerStateEvent_Implementation()

@@ -21,7 +21,7 @@ UPlayFabManager::UPlayFabManager()
 
 bool UPlayFabManager::HasStoredLogin()
 {
-	// Retrieve and cast the USaveGame object to UAccountProfileData.
+	// Retrieve and cast the USaveGame object to UAccountData.
 	if ((accountData = Cast<UAccountData>(UGameplayStatics::LoadGameFromSlot(TEXT("AccountSaveSlot"), 0))))
 		AccountState = EAccountState::Account_NotLogged;
 	else
@@ -136,10 +136,10 @@ void UPlayFabManager::DeviceLogin()
 
 	if (!accountData->IsValidLowLevel())
 	{
-		accountData = Cast<UAccountProfileData>(UGameplayStatics::CreateSaveGameObject(UAccountProfileData::StaticClass()));
+		accountData = Cast<UAccountData>(UGameplayStatics::CreateSaveGameObject(UAccountData::StaticClass()));
 
 		// Set data on the savegame object.
-		accountData->UserName = FPlatformMisc::GetUniqueDeviceId();
+		accountData->UserName = FPlatformMisc::GetDeviceId();
 #if PLATFORM_ANDROID
 		accountData->AccountType = EAccountType::AccountType_Google;
 #elif PLATFORM_IOS
