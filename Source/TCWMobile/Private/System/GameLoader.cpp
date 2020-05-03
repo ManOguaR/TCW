@@ -4,6 +4,12 @@
 #include "MiscFunctionLibrary.h"
 #include "SystemFunctionLibrary.h"
 
+// Define the namespace to use with LOCTEXT
+// This is only valid within a single file, and must be undefined before the end of the file
+#define LOCTEXT_NAMESPACE "GameLoader"
+// Create text literals
+//const FText AllPlayersIn = LOCTEXT("PlayerController_", "All players are in!");
+
 UGameLoader::UGameLoader()
 {
 	//PRE - 10
@@ -76,7 +82,7 @@ void UGameLoader::LoginSuccessCallback()
 void UGameLoader::LoginFailureCallback()
 {
 	ClearCallbacks();
-	USystemFunctionLibrary::DisplayError(this, TEXT("FATAL: FAILED TO LOGIN USER"), 5.0f);
+	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalLoginUser", "FATAL: FAILED TO LOGIN USER").ToString(), 5.0f);
 
 	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
 	//UMiscFunctionLibrary::Delay(this, 5.0f);
@@ -107,7 +113,7 @@ void UGameLoader::GetPlayerStatsSuccessCallback()
 void UGameLoader::GetPlayerStatsFailureCallback()
 {
 	ClearCallbacks();
-	USystemFunctionLibrary::DisplayError(this, TEXT("FATAL: FAILED TO GET PLAYER STATS"), 5.0f);
+	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetStats", "FATAL: FAILED TO GET PLAYER STATS").ToString(), 5.0f);
 	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
 	//UMiscFunctionLibrary::Delay(this, 5.0f);
 }
@@ -125,7 +131,7 @@ void UGameLoader::GetPlayerProfileSuccessCallback()
 void UGameLoader::GetPlayerProfileFailureCallback()
 {
 	ClearCallbacks();
-	USystemFunctionLibrary::DisplayError(this, TEXT("FATAL: FAILED TO GET PLAYER PROFILE"), 5.0f);
+	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetProfile", "FATAL: FAILED TO GET PLAYER PROFILE").ToString(), 5.0f);
 	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
 	//UMiscFunctionLibrary::Delay(this, 5.0f);
 }
@@ -135,3 +141,6 @@ void UGameLoader::ReportAdvance(float percent, bool absolute)
 	if (OnReportAdvance.IsBound())
 		OnReportAdvance.Broadcast(percent, !absolute);
 }
+
+// Undefine the namespace before the end of the file
+#undef LOCTEXT_NAMESPACE

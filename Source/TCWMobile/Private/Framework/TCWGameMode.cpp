@@ -12,7 +12,7 @@
 #include "TCWSpectator.h"
 
 #include "BoardPlayer.h"
-#include "CotrollerFunctionLibrary.h"
+#include "ControllerFunctionLibrary.h"
 #include "MiscFunctionLibrary.h"
 #include "SystemFunctionLibrary.h"
 
@@ -20,6 +20,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+// Define the namespace to use with LOCTEXT
+// This is only valid within a single file, and must be undefined before the end of the file
+#define LOCTEXT_NAMESPACE "TCWGameMode"
+// Create text literals
+const FText AllPlayersIn = LOCTEXT("GameMode_AllPlayersIn", "All players are in!");
 
 ATCWGameMode::ATCWGameMode(const FObjectInitializer& ObjectInitializer) : AGameMode(ObjectInitializer)
 {
@@ -68,7 +73,7 @@ void ATCWGameMode::PostLogin(APlayerController* NewPlayer)
 
 				ATCWPlayerState* state = nullptr;
 				bool isValid = false;
-				ATCWPlayerController* controllerRef = UCotrollerFunctionLibrary::GetTCWPlayerControllerReference(playerController, state, isValid);
+				ATCWPlayerController* controllerRef = UControllerFunctionLibrary::GetTCWPlayerControllerReference(playerController, state, isValid);
 				controllerRef->OnClientPostLogin.Broadcast();
 				controllerRef->OnServerSetupDeck.Broadcast();
 			}
@@ -109,7 +114,7 @@ void ATCWGameMode::SetGamePlayerId(AController* playerController)
 {
 	ATCWPlayerState* state = nullptr;
 	bool isValid = false;
-	ATCWPlayerController* controllerRef = UCotrollerFunctionLibrary::GetTCWPlayerControllerReference(playerController, state, isValid);
+	ATCWPlayerController* controllerRef = UControllerFunctionLibrary::GetTCWPlayerControllerReference(playerController, state, isValid);
 
 	state->GamePlayerId = GameControllersArray.Num();
 	state->OwningPlayerController = controllerRef;
@@ -119,7 +124,7 @@ void ATCWGameMode::SetBoardPlayerReferences(AController* controller)
 {
 	ATCWPlayerState* state = nullptr;
 	bool isValid = false;
-	ATCWPlayerController* controllerRef = UCotrollerFunctionLibrary::GetTCWPlayerControllerReference(controller, state, isValid);
+	ATCWPlayerController* controllerRef = UControllerFunctionLibrary::GetTCWPlayerControllerReference(controller, state, isValid);
 
 	if (isValid)
 	{
@@ -130,7 +135,7 @@ void ATCWGameMode::SetBoardPlayerReferences(AController* controller)
 	else
 	{
 		AAIGamePawn* aiState = nullptr;
-		AAIPlayerController* aiControllerRef = UCotrollerFunctionLibrary::GetAiControllerReference(controller, aiState, isValid);
+		AAIPlayerController* aiControllerRef = UControllerFunctionLibrary::GetAiControllerReference(controller, aiState, isValid);
 
 		if (isValid)
 		{
@@ -171,12 +176,12 @@ int32 ATCWGameMode::CalculateManaForTurn(int32 turn)
 
 int32 ATCWGameMode::GetTurnMana(AController* controller)
 {
-	int32 controllerId = UCotrollerFunctionLibrary::GetControllerId(controller);
+	int32 controllerId = UControllerFunctionLibrary::GetControllerId(controller);
 
 	int32 health, numCardsInHand, cardsInDeck, activeCards, mana, manaMax, playerTurn;
 	TArray<FName> deck, cardsInHand;
 	AActor* playerState = nullptr;
-	UCotrollerFunctionLibrary::GetControllersStateProfile(controllerId, health, numCardsInHand, cardsInDeck, activeCards, mana, manaMax, playerTurn, deck, cardsInHand, playerState);
+	UControllerFunctionLibrary::GetControllersStateProfile(controllerId, health, numCardsInHand, cardsInDeck, activeCards, mana, manaMax, playerTurn, deck, cardsInHand, playerState);
 
 	return CalculateManaForTurn(playerTurn);
 }
@@ -211,7 +216,7 @@ bool ATCWGameMode::CheckIsPlayerActiveState(int32 controllerId)
 	int32 health, numCardsInHand, cardsInDeck, activeCards, mana, manaMax, playerTurn;
 	TArray<FName> deck, cardsInHand;
 	AActor* playerState = nullptr;
-	UCotrollerFunctionLibrary::GetControllersStateProfile(controllerId, health, numCardsInHand, cardsInDeck, activeCards, mana, manaMax, playerTurn, deck, cardsInHand, playerState);
+	UControllerFunctionLibrary::GetControllersStateProfile(controllerId, health, numCardsInHand, cardsInDeck, activeCards, mana, manaMax, playerTurn, deck, cardsInHand, playerState);
 
 	return (health <= 0 ? false : (numCardsInHand > 0 || cardsInDeck > 0 || activeCards > 0));
 }
@@ -306,3 +311,6 @@ void ATCWGameMode::CheckPlayerStateEvent_Implementation()
 		OnEndGame.Broadcast();
 	}
 }
+
+// Undefine the namespace before the end of the file
+#undef LOCTEXT_NAMESPACE

@@ -4,6 +4,12 @@
 #include "SystemFunctionLibrary.h"
 #include "ValidityFunctionLibrary.h"
 
+// Define the namespace to use with LOCTEXT
+// This is only valid within a single file, and must be undefined before the end of the file
+#define LOCTEXT_NAMESPACE "LoginDialog"
+// Create text literals
+//const FText SomethingWrong = LOCTEXT("LoginDialog_", "Something went wrong.");
+
 ULoginDialog::ULoginDialog(const FObjectInitializer& ObjectInitializer) :UPopupWindow(ObjectInitializer)
 {
 	//PRE - 14
@@ -105,7 +111,7 @@ void ULoginDialog::EmailTextChangedEvent(const FText& text)
 	}
 	else
 	{
-		RegisterErrorMessage->SetText(FText::FromString(TEXT("Invalid Email")));
+		RegisterErrorMessage->SetText(LOCTEXT("LoginDialog_EmailError", "Invalid Email"));
 		RegisterErrorMessage->SetVisibility(ESlateVisibility::Visible);
 	}
 }
@@ -117,20 +123,22 @@ void ULoginDialog::PasswordTextChangedEvent(const FText& text)
 	}
 	else
 	{
-		RegisterErrorMessage->SetText(FText::FromString(TEXT("Invalid password.")));
+		RegisterErrorMessage->SetText(LOCTEXT("LoginDialog_PasswordError", "Invalid password."));
 		RegisterErrorMessage->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
 void ULoginDialog::LoginFailureEvent()
 {
-	RegisterErrorMessage->SetText(FText::FromString(TEXT("Invalid username or password")));
+	RegisterErrorMessage->SetText(LOCTEXT("LoginDialog_LoginError", "Invalid username or password"));
 	RegisterErrorMessage->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ULoginDialog::RegisterFailureEvent()
 {
-	RegisterErrorMessage->SetText(FText::FromString(TEXT("Something went wrong...")));
+	RegisterErrorMessage->SetText(LOCTEXT("LoginDialog_RegisterError", "Something went wrong..."));
 	RegisterErrorMessage->SetVisibility(ESlateVisibility::Visible);
 }
 
+// Undefine the namespace before the end of the file
+#undef LOCTEXT_NAMESPACE

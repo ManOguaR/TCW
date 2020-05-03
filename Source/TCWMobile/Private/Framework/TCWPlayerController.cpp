@@ -14,6 +14,12 @@
 #include "Blueprint\WidgetBlueprintLibrary.h"
 #include "..\..\Public\Framework\TCWPlayerController.h"
 
+// Define the namespace to use with LOCTEXT
+// This is only valid within a single file, and must be undefined before the end of the file
+#define LOCTEXT_NAMESPACE "TCWPlayerController"
+// Create text literals
+//const FText AllPlayersIn = LOCTEXT("PlayerController_", "All players are in!");
+
 ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectInitializer) : APlayerController(ObjectInitializer)
 {	
 	//Pre-25
@@ -166,7 +172,7 @@ void ATCWPlayerController::ServerUpdatePlayerStateEvent_Implementation()
 		if (GameStateRef->IsValidLowLevel())
 		{
 			PlayerStateRef->UpdatePlayerCardsStates(CardsInHand.Num(), PlayerDeck.Num(), GameStateRef->GetBoardState(PlayerStateRef->GamePlayerId)->PlayerCards.Num());
-			OnCreateDisplayMessage.Broadcast("Deck Created!", FLinearColor(FColor::Green), false, 0.0f, true);
+			OnCreateDisplayMessage.Broadcast(LOCTEXT("PlayerController_DeckCreated", "Deck Created!").ToString(), FLinearColor(FColor::Green), false, 0.0f, true);
 		}
 	}
 }
@@ -198,8 +204,8 @@ TArray<FName> ATCWPlayerController::LoadClientDeck(FString& deckName)
 	if (isDeckValid)
 		return resultDeck;
 
-	OnCreateDisplayMessage.Broadcast(TEXT("Unable to load a valid deck"), FLinearColor(FColor::Red), true, 0.0f, true);
-	deckName = TEXT("INVALID");
+	OnCreateDisplayMessage.Broadcast(LOCTEXT("PlayerController_UnableLoad", "Unable to load a valid deck").ToString(), FLinearColor(FColor::Red), true, 0.0f, true);
+	deckName = LOCTEXT("PlayerController_Invalid", "INVALID").ToString();
 	return TArray<FName>();
 }
 
@@ -288,3 +294,6 @@ void ATCWPlayerController::SetInteractionState(EPlayerState changeToState)
 	if (changeToState != PlayerStateEnum)
 		PlayerStateEnum = changeToState;
 }
+
+// Undefine the namespace before the end of the file
+#undef LOCTEXT_NAMESPACE
