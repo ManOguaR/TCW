@@ -42,10 +42,10 @@ void AHexBoardTile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (Material->IsValidLowLevel())
-	{
-		HexagonMeshComponent->GetStaticMesh()->SetMaterial(0, Material);
-	}
+	//if (Material->IsValidLowLevel())
+	//{
+	//	HexagonMeshComponent->GetStaticMesh()->SetMaterial(0, Material);
+	//}
 
 }
 

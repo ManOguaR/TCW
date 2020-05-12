@@ -49,8 +49,10 @@ protected:
 	UFUNCTION()
 		virtual void ShowDialog(FDialogButtonsButtons buttons, FString message);
 
-	virtual void OnAcceptButtonClickedInternal();
-	virtual void OnCancelButtonClickedInternal();
+	UFUNCTION()
+		virtual void OnAcceptButtonClickedInternal();
+	UFUNCTION()
+		virtual void OnCancelButtonClickedInternal();
 
 private:
 	FScriptDelegate OnAcceptButtonClicked;

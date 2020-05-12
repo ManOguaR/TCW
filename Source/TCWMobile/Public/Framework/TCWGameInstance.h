@@ -47,6 +47,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Loading Events")
 		FTCWGameInstanceEvent OnHostGameEvent;
 
+	UPROPERTY(BlueprintReadWrite, Category = "TCW Game System")
+		EGameState CurrentGameState;
+
 	FString SelectedCardSet;
 public:
 	UFUNCTION(BlueprintCallable, Category = "TCW Game System")
@@ -80,7 +83,6 @@ private:
 	UFUNCTION()
 		void HostGame();
 
-	EGameState CurrentGameState;
 	EPlatform Platform;
 	TArray<FString> PlatformsArray = { "Windows", "iOS", "Android", "HTML5", "Mac", "Linux" };
 

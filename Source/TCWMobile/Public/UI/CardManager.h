@@ -93,10 +93,11 @@ private:
 	bool bEditorDisplayed;
 	bool bIsInit;
 
-protected:
+public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetAnim))
 		UWidgetAnimation* CardEditorTransition;			//IN USE
 
+protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UCanvasPanel* CanvasPanel_0;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))

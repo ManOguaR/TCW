@@ -24,6 +24,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		static UTCWGameInstance* GetTCWGameInstance(UObject* callerObject);
 
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Project Version"), Category = "System Info")
+		static FString GetProjectVersion();
+
 	UFUNCTION(BlueprintCallable)
 		static void DisplayError(UObject* callerObject, FString Message, float Duration = 3.0f);
 	UFUNCTION(BlueprintCallable)

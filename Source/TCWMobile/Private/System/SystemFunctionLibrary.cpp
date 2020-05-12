@@ -22,6 +22,17 @@ UTCWGameInstance* USystemFunctionLibrary::GetTCWGameInstance(UObject* callerObje
 	return nullptr;
 }
 
+FString USystemFunctionLibrary::GetProjectVersion()
+{
+	FString projectVersion;
+	GConfig->GetString(
+		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+		TEXT("ProjectVersion"),
+		projectVersion,
+		GGameIni);
+	return projectVersion;
+}
+
 void USystemFunctionLibrary::DisplayError(UObject* callerObject, FString Message, float Duration)
 {
 	USystemFunctionLibrary::DisplaySystemMessage(callerObject, Message,

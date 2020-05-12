@@ -2,10 +2,11 @@
 
 
 #include "DialogWindow.h"
-#include "UObject\ConstructorHelpers.h"
+#include "UObject/ConstructorHelpers.h"
 #include "MiscFunctionLibrary.h"
-#include "Components\TextBlock.h"
-#include "Blueprint\WidgetTree.h"
+#include "Components/TextBlock.h"
+#include "Blueprint/WidgetTree.h"
+#include "Engine/Texture2D.h"
 #include "SlateGlobals.h"
 #include "Components/Widget.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -24,21 +25,32 @@ UDialogWindow::UDialogWindow(const FObjectInitializer& ObjectInitializer) :
 	UPopupWindow(ObjectInitializer)
 {
 	//PRE - 08
-	acceptButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
-	okButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
-	yesButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
+	ConstructorHelpers::FObjectFinder<UTexture2D> tickIcon(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'"));
+	if (tickIcon.Succeeded())
+	{
+		acceptButonIconTexture = tickIcon.Object;
+		okButonIconTexture = tickIcon.Object;
+		yesButonIconTexture = tickIcon.Object;
+	}
+	ConstructorHelpers::FObjectFinder<UTexture2D> crossIcon(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_CrossIcon.TCW_CrossIcon'"));
+	if (tickIcon.Succeeded())
+	{
+		cancelButonIconTexture = crossIcon.Object;
+		noButonIconTexture = crossIcon.Object;
+	}
 
-	cancelButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_CrossIcon.TCW_CrossIcon'")).Object;
-	noButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_CrossIcon.TCW_CrossIcon'")).Object;
+	//acceptButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
+	//okButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
+	//yesButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
 
-	OnAcceptButtonClicked.BindUFunction(this, "OnAcceptButtonClickedInternal");
-	OnCancelButtonClicked.BindUFunction(this, "OnCancelButtonClickedInternal");
+	//cancelButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_CrossIcon.TCW_CrossIcon'")).Object;
+	//noButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_CrossIcon.TCW_CrossIcon'")).Object;
 }
 
 void UDialogWindow::NativeDestruct()
 {
-	LeftButton->OnClicked.Remove(OnAcceptButtonClicked);
-	RightButton->OnClicked.Remove(OnCancelButtonClicked);
+	LeftButton->OnClicked.RemoveAll(this);
+	RightButton->OnClicked.RemoveAll(this);
 	UPopupWindow::NativeDestruct();
 }
 
@@ -62,46 +74,46 @@ void UDialogWindow::ShowDialog(FDialogButtonsButtons buttons, FString message)
 	{
 	case FDialogButtonsButtons::DialogButtons_OK:
 		RightButton->IconTexture = okButonIconTexture;
-		RightButton->OnClicked.AddUnique(OnAcceptButtonClicked);
+		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		RightButton->SetToolTipText(TextOk);
 		LeftButton->SetVisibility(ESlateVisibility::Collapsed);
 		break;
 	case FDialogButtonsButtons::DialogButtons_OKCancel:
 		LeftButton->IconTexture = okButonIconTexture;
-		LeftButton->OnClicked.AddUnique(OnAcceptButtonClicked);
+		LeftButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		LeftButton->SetToolTipText(TextOk);
 		RightButton->IconTexture = cancelButonIconTexture;
-		RightButton->OnClicked.AddUnique(OnCancelButtonClicked);
+		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextCancel);
 		LeftButton->SetVisibility(ESlateVisibility::Visible);
 		break;
 	case FDialogButtonsButtons::DialogButtons_Accept:
 		RightButton->IconTexture = acceptButonIconTexture;
-		RightButton->OnClicked.AddUnique(OnAcceptButtonClicked);
+		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		RightButton->SetToolTipText(TextAccept);
 		LeftButton->SetVisibility(ESlateVisibility::Collapsed);
 		break;
 	case FDialogButtonsButtons::DialogButtons_AcceptCancel:
 		LeftButton->IconTexture = acceptButonIconTexture;
-		LeftButton->OnClicked.AddUnique(OnAcceptButtonClicked);
+		LeftButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		LeftButton->SetToolTipText(TextAccept);
 		RightButton->IconTexture = cancelButonIconTexture;
-		RightButton->OnClicked.AddUnique(OnCancelButtonClicked);
+		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextCancel);
 		LeftButton->SetVisibility(ESlateVisibility::Visible);
 		break;
 	case FDialogButtonsButtons::DialogButtons_YesNo:
 		LeftButton->IconTexture = yesButonIconTexture;
-		LeftButton->OnClicked.AddUnique(OnAcceptButtonClicked);
+		LeftButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		LeftButton->SetToolTipText(TextYes);
 		RightButton->IconTexture = noButonIconTexture;
-		RightButton->OnClicked.AddUnique(OnCancelButtonClicked);
+		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextNo);
 		LeftButton->SetVisibility(ESlateVisibility::Visible);
 		break;
 	case FDialogButtonsButtons::DialogButtons_Cancel:
 		RightButton->IconTexture = cancelButonIconTexture;
-		RightButton->OnClicked.AddUnique(OnCancelButtonClicked);
+		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextCancel);
 		LeftButton->SetVisibility(ESlateVisibility::Collapsed);
 		break;
