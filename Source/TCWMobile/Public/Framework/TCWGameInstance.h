@@ -16,7 +16,7 @@
 
 #include "TCWGameInstance.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWGameInstanceSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWGameInstanceEvent);
 
 /**
  *
@@ -30,19 +30,22 @@ public:
 	UTCWGameInstance(const FObjectInitializer& ObjectInitializer);
 
 	UPROPERTY(BlueprintCallable, Category = "Startup Events")
-		FTCWGameInstanceSignature OnStartup;
+		FTCWGameInstanceEvent OnStartup;
 	UPROPERTY(BlueprintAssignable, Category = "Startup Events")
-		FTCWGameInstanceSignature OnStartupSplashCompleted;
+		FTCWGameInstanceEvent OnStartupSplashCompleted;
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Menu Events")
-		FTCWGameInstanceSignature OnShowMainMenu;
+		FTCWGameInstanceEvent OnShowMainMenu;
 	UPROPERTY(BlueprintAssignable, Category = "Menu Events")
-		FTCWGameInstanceSignature OnMainMenuSplashCompleted;
+		FTCWGameInstanceEvent OnMainMenuSplashCompleted;
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Loading Events")
-		FTCWGameInstanceSignature OnShowLoadingScreen;
+		FTCWGameInstanceEvent OnShowLoadingScreen;
 	UPROPERTY(BlueprintAssignable, Category = "Loading Events")
-		FTCWGameInstanceSignature OnLoadingScreenSplashCompleted;
+		FTCWGameInstanceEvent OnLoadingScreenSplashCompleted;
+
+	UPROPERTY(BlueprintAssignable, Category = "Loading Events")
+		FTCWGameInstanceEvent OnHostGameEvent;
 
 	FString SelectedCardSet;
 public:
@@ -69,11 +72,13 @@ public:
 
 private:
 	UFUNCTION()
-		void StartupEvent();
+		void Startup();
 	UFUNCTION()
-		void ShowMainMenuEvent();
+		void ShowMainMenu();
 	UFUNCTION()
-		void ShowLoadingScreenEvent();
+		void ShowLoadingScreen();
+	UFUNCTION()
+		void HostGame();
 
 	EGameState CurrentGameState;
 	EPlatform Platform;

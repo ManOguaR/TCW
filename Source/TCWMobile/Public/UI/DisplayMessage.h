@@ -7,7 +7,7 @@
 #include "Components/TextBlock.h"
 #include "DisplayMessage.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FDisplayMessageSignature, FString, Message, FLinearColor, SpecifiedColor, float, Duration);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FDisplayMessageEvent, FString, Message, FLinearColor, SpecifiedColor, float, Duration);
 
 /**
  *
@@ -22,15 +22,15 @@ public:
 
 private:
 	UFUNCTION()
-	void DisplayMessageEvent(FString Message, FLinearColor SpecifiedColor, float Duration);
+	void DisplayMessage(FString Message, FLinearColor SpecifiedColor, float Duration);
 
 public:
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
-	FDisplayMessageSignature OnDisplayMessage;
+	FDisplayMessageEvent OnDisplayMessage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* MessageText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidgetAnim))
-	UWidgetAnimation* OnDisplaySelf;
+	UWidgetAnimation* DisplaySelf;
 };

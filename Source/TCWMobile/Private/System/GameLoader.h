@@ -10,8 +10,8 @@
 
 #include "GameLoader.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameLoaderSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FReportAdvanceSignature, float, Percent, bool, IsProgress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameLoaderEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FReportAdvanceEvent, float, Percent, bool, IsProgress);
 
 class FGameLoaderWorker;
 
@@ -27,16 +27,16 @@ public:
 	UGameLoader();
 
 	UPROPERTY(BlueprintCallable, Category = "Game Loader Events")
-		FGameLoaderSignature OnLoadBegin;
+		FGameLoaderEvent OnLoadBegin;
 
 	UPROPERTY(BlueprintAssignable, Category = "Game Loader Events")
-		FReportAdvanceSignature OnReportAdvance;
+		FReportAdvanceEvent OnReportAdvance;
 
 private:
 	UPlayFabManager* AccountManagerRef = nullptr;
 
 	UPROPERTY(BlueprintAssignable, Category = "Game Loader Events")
-		FGameLoaderSignature OnLoadCompleted;
+		FGameLoaderEvent OnLoadCompleted;
 
 	// Begin UObject interface
 	UWorld* GetWorld() const override;
@@ -44,7 +44,7 @@ private:
 
 private:
 	UFUNCTION()
-		void LoadBeginEvent();
+		void LoadBegin();
 
 	UFUNCTION()
 		void LoginSuccessCallback();

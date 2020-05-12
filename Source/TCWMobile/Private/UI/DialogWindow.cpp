@@ -53,7 +53,7 @@ FDialogWindowResponse UDialogWindow::GetResponse()
 	return responseEnum;
 }
 
-void UDialogWindow::ShowDialogEvent(FDialogButtonsButtons buttons, FString message)
+void UDialogWindow::ShowDialog(FDialogButtonsButtons buttons, FString message)
 {
 	buttonsEnum = buttons;
 	responseEnum = FDialogWindowResponse::DialogWindow_Unknown;
@@ -112,7 +112,7 @@ void UDialogWindow::ShowDialogEvent(FDialogButtonsButtons buttons, FString messa
 	UTextBlock* content = WidgetTree->ConstructWidget<UTextBlock>();// CreateWidget<UTextBlock>(this);
 	content->SetText(FText::FromString(message));
 
-	UPopupWindow::DisplaySelfEvent(content);
+	Super::DisplayPopupWindow(content);
 }
 
 void UDialogWindow::OnCloseButtonClickedInternal()

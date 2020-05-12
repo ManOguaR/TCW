@@ -14,7 +14,7 @@
 
 #include "PlayFabManager.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayFabManagerSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayFabManagerEvent);
 
 UCLASS()
 class TCWMOBILE_API UPlayFabManager : public UObject
@@ -23,9 +23,9 @@ class TCWMOBILE_API UPlayFabManager : public UObject
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "TCW Account Callback")
-		FPlayFabManagerSignature OnOperationSuccess;
+		FPlayFabManagerEvent OnOperationSuccess;
 	UPROPERTY(BlueprintAssignable, Category = "TCW Account Callback")
-		FPlayFabManagerSignature OnOperationFailure;
+		FPlayFabManagerEvent OnOperationFailure;
 
 public:
 	UPlayFabManager();

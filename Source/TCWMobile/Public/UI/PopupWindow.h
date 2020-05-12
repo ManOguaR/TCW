@@ -9,7 +9,7 @@
 
 #include "PopupWindow.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPopupWindowSignature, UWidget*, contentWidget);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPopupWindowEvent, UWidget*, contentWidget);
 
 /**
  *
@@ -25,7 +25,7 @@ protected:
 	void NativeDestruct() override;
 
 	UFUNCTION()
-		virtual void DisplaySelfEvent(UWidget* contentWidget);
+		virtual void DisplayPopupWindow(UWidget* contentWidget);
 	UFUNCTION()
 		virtual void OnCloseButtonClickedInternal();
 
@@ -34,7 +34,7 @@ private:
 
 public:
 	UPROPERTY(BlueprintCallable, Category = "Events")
-		FPopupWindowSignature OnDisplaySelf;
+		FPopupWindowEvent OnDisplayPopupWindow;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UHexUIButton* CloseWindowButton;

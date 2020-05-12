@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Slate/WidgetTransform.h"
+
 #include "MiscFunctionLibrary.generated.h"
 
 /**
@@ -18,4 +20,8 @@ public:
 	//static void Delay(UObject* callerObject, float time);
 	static UWorld* GetWorldReference();
 	static bool CanExecuteCosmeticEvents(UObject* callerObject);
+
+	static FWidgetTransform InterpToGoalLocation2D(FWidgetTransform currentTransform, FWidgetTransform goalTransform, float deltaTime, float interpSpeed, bool& arrived);
+
+	static float ModifyDPIScaling(UObject* callerObject, float value, bool invertDPIScaling);
 };

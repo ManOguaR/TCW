@@ -12,7 +12,7 @@
 
 #include "LoginDialog.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLoginDialogSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLoginDialogEvent);
 
 /**
  * 
@@ -28,16 +28,16 @@ public:
 protected:
 	void NativeConstruct() override;
 	void NativeDestruct() override;
-	void DisplaySelfEvent(UWidget* contentWidget) override;
+	void DisplayPopupWindow(UWidget* contentWidget) override;
 
 	UFUNCTION()
-		virtual void DisplayLoginEvent();
+		virtual void DisplayLogin();
 	UFUNCTION()
-		virtual void DisplayRegisterEvent();
+		virtual void DisplayRegister();
 	UFUNCTION()
-		void EmailTextChangedEvent(const FText& text);
+		void EmailTextChanged(const FText& text);
 	UFUNCTION()
-		void PasswordTextChangedEvent(const FText& text);
+		void PasswordTextChanged(const FText& text);
 
 	virtual void OnAcceptButtonClickedInternal();
 
@@ -49,14 +49,14 @@ private:
 	void UserLoginInternal();
 	void UserRegistrationInternal();
 
-	void LoginFailureEvent();
-	void RegisterFailureEvent();
+	void LoginFailure();
+	void RegisterFailure();
 
 public:
 	UPROPERTY(BlueprintCallable, Category = "Events")
-		FLoginDialogSignature OnDisplayLogin;
+		FLoginDialogEvent OnDisplayLogin;
 	UPROPERTY(BlueprintCallable, Category = "Events")
-		FLoginDialogSignature OnDisplayRegister;
+		FLoginDialogEvent OnDisplayRegister;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UHexUIButton* AcceptDialogButton;

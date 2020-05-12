@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "FriendsWindow.generated.h"
+#include "FriendsListWindow.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TCWMOBILE_API UFriendsWindow : public UUserWidget
+class TCWMOBILE_API UFriendsListWindow : public UUserWidget
 {
 	GENERATED_BODY()
 	

@@ -10,7 +10,7 @@
 class ATCWGameState;
 class ABoardPlayer;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWGameModeSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWGameModeEvent);
 
 /**
  *
@@ -69,27 +69,27 @@ private:
 
 public:
 	UPROPERTY(BlueprintCallable, Category = "Game Mode Events")
-		FTCWGameModeSignature OnCheckGamePreconditions;
+		FTCWGameModeEvent OnCheckGamePreconditions;
 	UPROPERTY(BlueprintCallable, Category = "Game Mode Events")
-		FTCWGameModeSignature OnForceSpawnAIOpponent;
+		FTCWGameModeEvent OnForceSpawnAIOpponent;
 	UPROPERTY()
 		FTimerDynamicDelegate OnGameStartCountdown;
 	UPROPERTY(BlueprintCallable, Category = "Game Mode Events")
-		FTCWGameModeSignature OnEndGame;
+		FTCWGameModeEvent OnEndGame;
 	UPROPERTY(BlueprintCallable, Category = "Game Mode Events")
-		FTCWGameModeSignature OnCheckPlayerState;
+		FTCWGameModeEvent OnCheckPlayerState;
 
 private:
 	UFUNCTION(Server, Reliable)
-		void CheckGamePreconditionsEvent();
+		void CheckGamePreconditions();
 	UFUNCTION(Server, Unreliable)
-		void ForceSpawnAIOpponentEvent();
+		void ForceSpawnAIOpponent();
 	UFUNCTION(Server, Unreliable)
-		void GameStartCountdownEvent();
+		void GameStartCountdown();
 	UFUNCTION(Server, Reliable)
-		void EndGameEvent();
+		void EndGame();
 	UFUNCTION(Server, Reliable)
-		void CheckPlayerStateEvent();
+		void CheckPlayerState();
 
 	void CreateandAddAIOpponent();
 	bool CheckIsPlayerActiveState(int32 controllerId);

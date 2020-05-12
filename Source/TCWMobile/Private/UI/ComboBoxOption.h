@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "ComboBoxOption.generated.h"
 
 /**
@@ -14,4 +16,7 @@ class UComboBoxOption : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UTextBlock* TextBlock;
 };

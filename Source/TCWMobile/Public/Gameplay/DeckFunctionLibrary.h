@@ -22,15 +22,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 		static TArray<FName> GetChosenDeckArray(int32 index, UDataTable* target);
 	UFUNCTION(BlueprintCallable)
-		static FCardData GetCardData(FName cardName); //ECardSet cardset);
+		static FCardData GetCardData(FName cardName, ECardSet cardset);
 	UFUNCTION(BlueprintCallable)
-		static int32 GetRandomCardFromDeck(AController* controller, FName& cardName); //ECardSet& cardset);
+		static int32 GetRandomCardFromDeck(AController* controller, FName& cardName, ECardSet& cardset);
 	UFUNCTION(BlueprintCallable)
 		static FName GetCardFromDeck(TArray<FName> deck, int32 index, bool lastIndex);
 	UFUNCTION(BlueprintCallable)
 		static int32 FindCardInArray(FName cardName, TArray<FName> cardArray, TArray<int32> indexesArray);
 	UFUNCTION(BlueprintCallable)
-		static TArray<FName> GetAllCardsInActiveSet(); //ECardSet cardset);
+		static TArray<FName> GetAllCardsInActiveSet(ECardSet cardset);
 	UFUNCTION(BlueprintCallable)
 		static void RemoveCardFromDeck(bool removeAll, int32 index, TArray<FName> deck);
 	UFUNCTION(BlueprintCallable)

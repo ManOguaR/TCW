@@ -16,12 +16,13 @@
 
 #include "TCWPlayerController.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWPlayerControllerSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateGameUISignature, bool, forceCleanUpdate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCountdownTimerSignature, int32, time);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FReturnPlayerDeckSignature, const FString&, deckName, const TArray<FName>&, playerDeck);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FCreateCardSignature, FName, cardName, UDragDropOperation*, operation, int32, cardHandIndex); //ECardSet cardSet
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FControllerMessageSignature, const FString&, message, FLinearColor, color, bool, toScreen, float, duration, bool, toLog);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWPlayerControllerEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTCWPlayerControllerBoolEvent, bool, value);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCardEvent, FName, card);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCountdownTimerEvent, int32, time);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FReturnPlayerDeckEvent, const FString&, deckName, const TArray<FName>&, playerDeck);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FCreateCardEvent, FName, cardName, UDragDropOperation*, operation, int32, cardHandIndex, ECardSet, cardSet);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FControllerMessageEvent, const FString&, message, FLinearColor, color, bool, toScreen, float, duration, bool, toLog);
 
 /**
  *
@@ -40,28 +41,40 @@ public:
 
 public:
 	UPROPERTY(BlueprintCallable, Category = "Client Events")
-		FTCWPlayerControllerSignature OnClientPostLogin;
+		FTCWPlayerControllerEvent OnClientPostLogin;
 	UPROPERTY(BlueprintCallable)
-		FCreateCardSignature OnCallCreateCard;
+		FCreateCardEvent OnCallCreateCard;
 	UPROPERTY(BlueprintCallable, Category = "Client Events")
-		FTCWPlayerControllerSignature OnGetPlayerDeck;
+		FTCWPlayerControllerEvent OnGetPlayerDeck;
 
 	UPROPERTY(BlueprintCallable, Category = "Client Events")
-		FUpdateGameUISignature OnUpdateGameUI;
+		FTCWPlayerControllerEvent OnDragCancelled;
+
 	UPROPERTY(BlueprintCallable, Category = "Client Events")
-		FCountdownTimerSignature OnSetCountdownTimer;
+		FTCWPlayerControllerBoolEvent OnUpdateGameUI;
 	UPROPERTY(BlueprintCallable, Category = "Client Events")
-		FControllerMessageSignature OnCreateDisplayMessage;
+		FCountdownTimerEvent OnSetCountdownTimer;
+	UPROPERTY(BlueprintCallable, Category = "Client Events")
+		FControllerMessageEvent OnCreateDisplayMessage;
 
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
-		FTCWPlayerControllerSignature OnServerSetupDeck;
+		FTCWPlayerControllerEvent OnServerSetupDeck;
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
-		FReturnPlayerDeckSignature OnServerReturnPlayerDeck;
+		FReturnPlayerDeckEvent OnServerReturnPlayerDeck;
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
-		FTCWPlayerControllerSignature OnServerUpdateHealth;
+		FTCWPlayerControllerEvent OnServerUpdateHealth;
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
-		FTCWPlayerControllerSignature OnServerUpdatePlayerState;
+		FTCWPlayerControllerEvent OnServerUpdatePlayerState;
 
+	UPROPERTY(BlueprintCallable, Category = "Server Events")
+		FTCWPlayerControllerBoolEvent OnSetSkipManaCheck;
+	UPROPERTY(BlueprintCallable, Category = "Server Events")
+		FTCWPlayerControllerEvent OnReshuffleDeck;
+	UPROPERTY(BlueprintCallable, Category = "Server Events")
+		FTCWPlayerControllerEvent OnClearCardsInHand;
+	
+	UPROPERTY(BlueprintCallable, Category = "Server Events")
+		FCardEvent OnDeveloper_AddCardToHand;
 public:
 	UPROPERTY(EditAnywhere, Category = "Game Deck")
 		bool bShuffleDeck;
@@ -75,22 +88,29 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Game Deck")
 		int32 CardsToDrawPerTurn;
 
-	UPROPERTY(EditAnywhere, Category = "Player")
+	UPROPERTY(BlueprintReadWrite, Category = "Player")
 		ABoardPlayer* BoardPlayerRef;
 
+	//Player related variables
+	UGameUI* PlayerGameUIRef;
+	bool bTurnActive;
+
 private:
+	UCountdownTimer* CountdownTimerWidgetRef;
+
 	//Game Deck related variables
 	TArray<FName> TempDeck;
 	TArray<FName> PlayerDeck;
 	int32 weightedFilterIndex;
-	UCountdownTimer* CountdownTimerWidgetRef;
 
 	//Card Manager related variables
 	//TODO: Replication
 	TArray<FName> CardsInHand;
+	FName CardToAdd;
+
 	//Temp related variables
 	FName Temp_CreateCardName;
-	//ECardSet Temp_ChosenCardSet;
+	ECardSet Temp_ChosenCardSet;
 	int32 Temp_HandIndex;
 
 	//System related variables
@@ -100,12 +120,13 @@ private:
 
 	//Player related variables
 	EPlayerState PlayerStateEnum;
-	bool bTurnActive;
-	UGameUI* PlayerGameUIRef;
 	UOpponentUI* OpponentUIRef;
 
 	//Player related variables
 	UDragDropOperation* dragDropOperationRef;
+
+	//Developer
+	bool bSkipManaCheck;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Game Setup")
@@ -115,33 +136,44 @@ public:
 
 private:
 	UFUNCTION(Client, Reliable)
-		void ClientPostLoginEvent();
+		void ClientPostLogin();
 	UFUNCTION()
-		void CallCreateCardEvent(FName cardName, UDragDropOperation* operation, int32 cardHandIndex); //ECardSet cardSet
+		void CallCreateCard(FName cardName, UDragDropOperation* operation, int32 cardHandIndex, ECardSet cardSet);
 	UFUNCTION(Client, Reliable)
-		void GetPlayerDeckEvent();
+		void GetPlayerDeck();
+
+	UFUNCTION()
+		void DragCancelled();
 
 	UFUNCTION(Client, Reliable)
-		void UpdateGameUIEvent(bool forceCleanUpdate);
+		void UpdateGameUI(bool value);
 	UFUNCTION(Client, Reliable)
-		void SetCountdownTimerEvent(int32 time);
+		void SetCountdownTimer(int32 time);
 	UFUNCTION(Client, Unreliable)
-		void CreateDisplayMessageEvent(const FString& message, FLinearColor color, bool toScreen, float duration, bool toLog);
+		void CreateDisplayMessage(const FString& message, FLinearColor color, bool toScreen, float duration, bool toLog);
 
 	UFUNCTION(Server, Unreliable)
-		void ServerSetupDeckEvent();
+		void ServerSetupDeck();
 	UFUNCTION(Server, Reliable)
-		void ServerReturnPlayerDeckEvent(const FString& deckName, const TArray<FName>& playerDeck);
+		void ServerReturnPlayerDeck(const FString& deckName, const TArray<FName>& playerDeck);
 	UFUNCTION(Server, Reliable)
-		void ServerUpdateHealthEvent();
+		void ServerUpdateHealth();
 	UFUNCTION(Server, Reliable)
-		void ServerUpdatePlayerStateEvent();
+		void ServerUpdatePlayerState();
+	UFUNCTION(Server, Unreliable)
+		void SetSkipManaCheck(bool value);
+	UFUNCTION(Server, Unreliable)
+		void ReshuffleDeck();
+	UFUNCTION(Server, Unreliable)
+		void ClearCardsInHand();
+	UFUNCTION(Server, Unreliable)
+		void Developer_AddCardToHand(FName cardToAdd);
 
 private:
-	void CreateDisplayMessage(FString message, FLinearColor color, bool toScreen, float duration, bool toLog);
+	void CreateDisplayMessageInternal(FString message, FLinearColor color, bool toScreen, float duration, bool toLog);
 	//game functions
 	//card functions
-	ATCWPawn* CreatePlaceableCard_Client(FName cardName, FVector location); //ECardSet cardSet
+	ATCWPawn* CreatePlaceableCard_Client(FName cardName, FVector location, ECardSet cardSet); //ECardSet cardSet
 	ATCWPawn* CreatePlaceableCard_Server(FTransform SpawnTransform);
 	//card interaction functions
 	//game setup functions
@@ -151,4 +183,6 @@ private:
 	void ShufflePlayerDeck(TArray<FName>& playerDeck);
 
 	void SetInteractionState(EPlayerState changeToState);
+
+	void AddCardToHandInternal();
 };

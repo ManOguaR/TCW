@@ -18,13 +18,13 @@ struct FCardVisuals_Struct
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Frame")
-        UTexture* FrameTexture;
+        UTexture2D* FrameTexture;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Image")
-        UTexture* ImageTexture;
+        UTexture2D* ImageTexture;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Backside")
-        UTexture* BackTexture;
+        UTexture2D* BackTexture;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Frame")
         UMaterialInstance* FrameMaterial;
@@ -146,13 +146,34 @@ public:
     //    EPlayers Owner;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
-        int ManaCost;
+        int Cost;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visuals")
         UParticleSystem* DeployParticle;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
         USoundCue* DeploySoundCue;
+};
+
+/**
+ *
+ */
+USTRUCT(BlueprintType, Atomic, Category = "Card Data")
+struct FCardSettings_Struct
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
+        bool Unlocked;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
+        bool AddToPlayerDeck;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
+        int MaxNumInDeck;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
+        int Weight;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
+        FVector2D ScreenSize;
 };
 
 /**
@@ -167,11 +188,8 @@ public:
     UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
 		FText Name;
 
-	//UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
-	//	ECardClass Class;
-
-	//UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
-	//	ECardType Type;
+	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+		ECardType Type;
 
 	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
 		ECardRarity Rarity;
@@ -197,8 +215,8 @@ public:
 	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
 		FCardPlacement_Struct PlacementSettings;
 
-	//UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
-	//	FCardSettings_Struct DeckSettings;
+	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+		FCardSettings_Struct DeckSettings;
 
 	//UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
 	//	FCardSystemData_Struct CardSystemData;

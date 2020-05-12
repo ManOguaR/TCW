@@ -10,7 +10,15 @@ UCLASS()
 class TCWMOBILE_API ABoardUnit : public AActor
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Unit Data")
+		FString Description;
+	UPROPERTY(EditAnywhere, Category = "Unit Data")
+		int32 Attack;
+	UPROPERTY(EditAnywhere, Category = "Unit Data")
+		int32 Health;
+
 public:	
 	// Sets default values for this actor's properties
 	ABoardUnit();

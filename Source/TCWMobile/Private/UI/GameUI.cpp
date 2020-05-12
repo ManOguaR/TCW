@@ -3,6 +3,11 @@
 
 #include "GameUI.h"
 
+UCardManager* UGameUI::GetCardManager()
+{
+	return CardManager;
+}
+
 void UGameUI::UpdateUIPlayerStats_Implementation(bool forceCleanVisualUpdate)
 {
 
@@ -18,4 +23,8 @@ void UGameUI::UpdateUIGameTurnTime_Implementation()
 void UGameUI::UpdatePlayerStateUI_Implementation(int32 p1, int32 p2, int32 p3, int32 p4)
 {
 
+}
+
+void UGameUI::ToggleGameUI()
+{
 }

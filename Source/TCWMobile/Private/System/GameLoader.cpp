@@ -14,7 +14,7 @@ UGameLoader::UGameLoader()
 {
 	//PRE - 10
 	//EXE-12
-	OnLoadBegin.AddDynamic(this, &UGameLoader::LoadBeginEvent);
+	OnLoadBegin.AddDynamic(this, &UGameLoader::LoadBegin);
 }
 
 UWorld* UGameLoader::GetWorld() const
@@ -22,7 +22,7 @@ UWorld* UGameLoader::GetWorld() const
 	return UMiscFunctionLibrary::GetWorldReference();
 }
 
-void UGameLoader::LoadBeginEvent()
+void UGameLoader::LoadBegin()
 {
 	ReportAdvance(0.0f, true);
 	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
@@ -74,7 +74,7 @@ void UGameLoader::LoginSuccessCallback()
 	}
 	else
 	{
-		LoadBeginEvent();
+		LoadBegin();
 	}
 
 }
@@ -86,7 +86,7 @@ void UGameLoader::LoginFailureCallback()
 
 	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
 	//UMiscFunctionLibrary::Delay(this, 5.0f);
-	LoadBeginEvent();
+	LoadBegin();
 }
 
 void UGameLoader::GetPlayerStatsSuccessCallback()
@@ -106,7 +106,7 @@ void UGameLoader::GetPlayerStatsSuccessCallback()
 	}
 	else
 	{
-		LoadBeginEvent();
+		LoadBegin();
 	}
 }
 

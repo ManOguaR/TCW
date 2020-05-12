@@ -3,6 +3,7 @@
 
 #include "TCWGameInstance.h"
 #include "../TCWMobile.h"
+#include "CreateSessionCallbackProxy.h"
 #include "MiscFunctionLibrary.h"
 
 #include "Kismet/GameplayStatics.h"
@@ -11,10 +12,13 @@ UTCWGameInstance::UTCWGameInstance(const FObjectInitializer& ObjectInitializer) 
 {	
 	//Pre-20
 	//EXE-1
-	OnStartup.AddDynamic(this, &UTCWGameInstance::StartupEvent);
+	OnStartup.AddDynamic(this, &UTCWGameInstance::Startup);
 
-	OnShowMainMenu.AddDynamic(this, &UTCWGameInstance::ShowMainMenuEvent);
-	OnShowLoadingScreen.AddDynamic(this, &UTCWGameInstance::ShowLoadingScreenEvent);
+	OnShowMainMenu.AddDynamic(this, &UTCWGameInstance::ShowMainMenu);
+	OnShowLoadingScreen.AddDynamic(this, &UTCWGameInstance::ShowLoadingScreen);
+
+	OnHostGameEvent.AddDynamic(this, &UTCWGameInstance::HostGame);
+
 }
 
 EPlatform UTCWGameInstance::GetCurrentPlatform(bool& isMobile)
@@ -45,7 +49,7 @@ void UTCWGameInstance::Init()
 	//Other global initializations here...
 }
 
-void UTCWGameInstance::StartupEvent()
+void UTCWGameInstance::Startup()
 {
 	//ENSURE STATE MACHINE
 	if (MoveToGameState(EGameState::GameState_Startup))
@@ -80,7 +84,7 @@ void UTCWGameInstance::StartupEvent()
 		OnStartupSplashCompleted.Broadcast();
 }
 
-void UTCWGameInstance::ShowMainMenuEvent()
+void UTCWGameInstance::ShowMainMenu()
 {
 	if (CurrentGameState == EGameState::GameState_Playing)
 		//../Game/Maps/MainMenu
@@ -113,7 +117,7 @@ void UTCWGameInstance::ShowMainMenuEvent()
 		OnMainMenuSplashCompleted.Broadcast();
 }
 
-void UTCWGameInstance::ShowLoadingScreenEvent()
+void UTCWGameInstance::ShowLoadingScreen()
 {
 	MoveToGameState(EGameState::GameState_LoadingScreen);
 
@@ -134,6 +138,18 @@ void UTCWGameInstance::ShowLoadingScreenEvent()
 	//SIGNAL STEP COMPLETED
 	if (OnLoadingScreenSplashCompleted.IsBound())
 		OnLoadingScreenSplashCompleted.Broadcast();
+}
+
+void UTCWGameInstance::HostGame()
+{
+	if (OnShowLoadingScreen.IsBound())
+		OnShowLoadingScreen.Broadcast();
+
+	UKismetSystemLibrary::Delay(this, 2.0, FLatentActionInfo());
+
+	//UCreateSessionCallbackProxy* sessionProxy = UCreateSessionCallbackProxy::CreateSession(this, UGameplayStatics::GetPlayerController(this, 0), 3, true);
+
+	//if(sessionProxy->OnSuccess)
 }
 
 bool UTCWGameInstance::MoveToGameState(EGameState inState)
@@ -184,3 +200,4 @@ bool UTCWGameInstance::MoveToGameState(EGameState inState)
 	//Unchanged state
 	return false;
 }
+

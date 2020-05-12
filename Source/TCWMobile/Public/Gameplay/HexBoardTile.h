@@ -25,6 +25,8 @@ public:
 		UStaticMesh* LowGroundMesh;
 	UPROPERTY(EditAnywhere, Category = "Cosmetics")
 		UStaticMesh* HighGroundMesh;
+	UPROPERTY(EditAnywhere, Category = "Cosmetics")
+		UMaterial* Material;
 
 	UPROPERTY(EditAnywhere, Category = "Gameplay")
 		bool bIsHighGround;

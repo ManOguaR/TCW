@@ -5,19 +5,6 @@
 #include "CoreMinimal.h"
 
 UENUM(BlueprintType)
-enum class EArenaList : uint8
-{
-	Arena_Empty				UMETA(DisplayName = "Empty"),
-	Arena_Classic			UMETA(DisplayName = "Arena_Classic"),
-	Arena_Doubles			UMETA(DisplayName = "Arena_Doubles"),
-	Arena_EaglesNest		UMETA(DisplayName = "Arena_EaglesNest"),
-	Arena_FlatGrounds		UMETA(DisplayName = "Arena_FlatGrounds"),
-	Arena_GreatWall			UMETA(DisplayName = "Arena_GreatWall"),
-	Arena_RainyDay			UMETA(DisplayName = "Arena_RainyDay"),
-	Arena_StoneGarden		UMETA(DisplayName = "Arena_StoneGarden")
-};
-
-UENUM(BlueprintType)
 enum class ELibraryCardSelectableState : uint8
 {
 	CardSelectState_None				UMETA(DisplayName = "None"),

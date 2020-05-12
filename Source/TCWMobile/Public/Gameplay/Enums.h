@@ -5,6 +5,17 @@
 #include "CoreMinimal.h"
 
 UENUM(BlueprintType)
+enum class EArenaList : uint8
+{
+	Arena_Empty				UMETA(DisplayName = "Empty"),
+	Arena_Debug				UMETA(DisplayName = "Debug Arena"),
+	Arena_UrbanTheater		UMETA(DisplayName = "Urban Theater"),
+	Arena_MountainRange		UMETA(DisplayName = "Mountain Range"),
+	Arena_Woodlands			UMETA(DisplayName = "Woodlands"),
+	Arena_DesertFront		UMETA(DisplayName = "Desert Front")
+};
+
+UENUM(BlueprintType)
 enum class EGameState : uint8
 {
 	GameState_Startup			UMETA(DisplayName = "Startup"),
@@ -55,6 +66,15 @@ enum class ECardRarity : uint8
 };
 
 UENUM(BlueprintType)
+enum class ECardSet : uint8
+{
+	CardSet_Empty		UMETA(DisplayName = "Empty"),
+	CardSet_Basic		UMETA(DisplayName = "Basic Set"),
+	CardSet_Debug		UMETA(DisplayName = "Debug Card Set"),
+	CardSet_EmtySet		UMETA(DisplayName = "Empty Set"),
+};
+
+UENUM(BlueprintType)
 enum class ECardType : uint8
 {
 	CardType_None		UMETA(DisplayName = "None"),
@@ -63,6 +83,15 @@ enum class ECardType : uint8
 	CardType_Supply		UMETA(DisplayName = "Supply"),
 	CardType_Order		UMETA(DisplayName = "Order"),
 	CardType_Unit		UMETA(DisplayName = "Unit")
+};
+
+UENUM(BlueprintType)
+enum class ECardWidgetMovementState : uint8
+{
+	CardMovementState_Pending		UMETA(DisplayName = "Pending"),
+	CardMovementState_Hand			UMETA(DisplayName = "Move To Hand Destination"),
+	CardMovementState_Preview		UMETA(DisplayName = "Move To Preview Destination"),
+	CardMovementState_Return		UMETA(DisplayName = "Return From Preview Destination")
 };
 
 //UENUM(BlueprintType)
@@ -127,29 +156,11 @@ enum class ECardType : uint8
 //};
 //
 //UENUM(BlueprintType)
-//enum class ECardSet : uint8
-//{
-//	CardSet_Empty		UMETA(DisplayName = "Empty"),
-//	CardSet_Basic		UMETA(DisplayName = "Basic Set"),
-//	CardSet_Debug		UMETA(DisplayName = "Debug Card Set"),
-//	CardSet_EmtySet		UMETA(DisplayName = "Empty Set"),
-//};
-//
-//UENUM(BlueprintType)
 //enum class ECardUseState : uint8
 //{
 //	CardUseState_InPlay			UMETA(DisplayName = "Remain In Play"),
 //	CardUseState_SingleBefore	UMETA(DisplayName = "Single Use - Send to Graveyard Before Ability"),
 //	CardUseState_SingleAfter	UMETA(DisplayName = "Single Use - Send to Graveyard After Ability")
-//};
-//
-//UENUM(BlueprintType)
-//enum class ECardWidgetMovementState : uint8
-//{
-//	CardWidgetMovementState_Pending		UMETA(DisplayName = "Pending"),
-//	CardWidgetMovementState_Hand		UMETA(DisplayName = "Move To Hand Destination"),
-//	CardWidgetMovementState_Preview		UMETA(DisplayName = "Move To Preview Destination"),
-//	CardWidgetMovementState_Return		UMETA(DisplayName = "Return From Preview Destination")
 //};
 //
 //UENUM(BlueprintType)

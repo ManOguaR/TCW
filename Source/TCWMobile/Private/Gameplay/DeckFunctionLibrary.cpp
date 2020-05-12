@@ -2,6 +2,9 @@
 
 
 #include "DeckFunctionLibrary.h"
+#include "..\TCWMobile.h"
+
+#include "Engine\DataTable.h"
 
 TArray<FName> UDeckFunctionLibrary::GetChosenDeckArray(int32 index, UDataTable* target)
 {
@@ -9,13 +12,55 @@ TArray<FName> UDeckFunctionLibrary::GetChosenDeckArray(int32 index, UDataTable* 
 	return TArray<FName>();
 }
 
-FCardData UDeckFunctionLibrary::GetCardData(FName cardName)
+FCardData UDeckFunctionLibrary::GetCardData(FName cardName, ECardSet cardset)
 {
-	//TODO: UDeckFunctionLibrary::GetCardData
+	ECardSet tempCardSet;
+	UDataTable* dataTable = nullptr;
+
+	switch (cardset)
+	{
+	case ECardSet::CardSet_Empty:
+	case ECardSet::CardSet_Basic:
+	{
+		tempCardSet = ECardSet::CardSet_Basic;
+		ConstructorHelpers::FObjectFinder<UDataTable> Table_BP(TEXT("DataTable'/Game/Data/Gameplay/DebugSet_DataTable.DebugSet_DataTable'"));
+		if (Table_BP.Succeeded())
+			dataTable = Table_BP.Object;
+		break;
+	}
+	case ECardSet::CardSet_Debug:
+	{
+		tempCardSet = ECardSet::CardSet_Debug;
+		ConstructorHelpers::FObjectFinder<UDataTable> Table_BP(TEXT("DataTable'/Game/Data/Gameplay/BasicSet_DataTable.BasicSet_DataTable'"));
+		if (Table_BP.Succeeded())
+			dataTable = Table_BP.Object;
+		break;
+	}
+	case ECardSet::CardSet_EmtySet:
+	default:
+	{
+		tempCardSet = ECardSet::CardSet_Empty;
+		break;
+	}
+	}
+
+	if (!dataTable) {
+		UE_LOG(TCWLogErrors, Fatal, TEXT("Failed to get DataTable"));
+	}
+
+	FCardData* result = dataTable->FindRow<FCardData>(cardName, TEXT("LookUp Operation"));
+
+	if (result) {
+		return FCardData(*result);
+	}
+	else {
+		UE_LOG(TCWLogErrors, Error, TEXT("Failed to get \"%s\" Row"));// , cardName.ToString());
+		UE_LOG(TCWLogErrors, Error, TEXT("Note: Prebuilt Decks may not have been generated. Open the Main Menu to generate the decks."));
+	}
 	return FCardData();
 }
 
-int32 UDeckFunctionLibrary::GetRandomCardFromDeck(AController* controller, FName& cardName)
+int32 UDeckFunctionLibrary::GetRandomCardFromDeck(AController* controller, FName& cardName, ECardSet& cardset)
 {
 	//TODO: UDeckFunctionLibrary::GetRandomCardFromDeck
 	return int32();
@@ -33,7 +78,7 @@ int32 UDeckFunctionLibrary::FindCardInArray(FName cardName, TArray<FName> cardAr
 	return int32();
 }
 
-TArray<FName> UDeckFunctionLibrary::GetAllCardsInActiveSet()
+TArray<FName> UDeckFunctionLibrary::GetAllCardsInActiveSet(ECardSet cardset)
 {
 	//TODO: UDeckFunctionLibrary::GetAllCardsInActiveSet
 	return TArray<FName>();

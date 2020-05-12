@@ -13,16 +13,16 @@
 ULoginDialog::ULoginDialog(const FObjectInitializer& ObjectInitializer) :UPopupWindow(ObjectInitializer)
 {
 	//PRE - 14
-	OnDisplayLogin.AddDynamic(this, &ULoginDialog::DisplayLoginEvent);
-	OnDisplayRegister.AddDynamic(this, &ULoginDialog::DisplayRegisterEvent);
+	OnDisplayLogin.AddDynamic(this, &ULoginDialog::DisplayLogin);
+	OnDisplayRegister.AddDynamic(this, &ULoginDialog::DisplayRegister);
 
 	OnAcceptButtonClicked.BindUFunction(this, "OnAcceptButtonClickedInternal");
 }
 
 void ULoginDialog::NativeConstruct()
 {
-	Register_Email->OnTextChanged.AddDynamic(this, &ULoginDialog::EmailTextChangedEvent);
-	Register_Password->OnTextChanged.AddDynamic(this, &ULoginDialog::PasswordTextChangedEvent);
+	Register_Email->OnTextChanged.AddDynamic(this, &ULoginDialog::EmailTextChanged);
+	Register_Password->OnTextChanged.AddDynamic(this, &ULoginDialog::PasswordTextChanged);
 }
 
 void ULoginDialog::NativeDestruct()
@@ -36,12 +36,12 @@ void ULoginDialog::NativeDestruct()
 	UPopupWindow::NativeDestruct();
 }
 
-void ULoginDialog::DisplaySelfEvent(UWidget* contentWidget)
+void ULoginDialog::DisplayPopupWindow(UWidget* contentWidget)
 {
 
 }
 
-void ULoginDialog::DisplayLoginEvent()
+void ULoginDialog::DisplayLogin()
 {
 	bIsRegistering = false;
 	LoginRegister_Switcher->ActiveWidgetIndex = 0;
@@ -56,10 +56,10 @@ void ULoginDialog::DisplayLoginEvent()
 
 	PlayerController->bShowMouseCursor = true;
 
-	UPopupWindow::DisplaySelfEvent(nullptr);
+	UPopupWindow::DisplayPopupWindow(nullptr);
 }
 
-void ULoginDialog::DisplayRegisterEvent()
+void ULoginDialog::DisplayRegister()
 {
 	bIsRegistering = true;
 	LoginRegister_Switcher->ActiveWidgetIndex = 1;
@@ -76,7 +76,7 @@ void ULoginDialog::DisplayRegisterEvent()
 
 	AcceptDialogButton->OnClicked.AddUnique(OnAcceptButtonClicked);
 
-	UPopupWindow::DisplaySelfEvent(nullptr);
+	UPopupWindow::DisplayPopupWindow(nullptr);
 }
 
 void ULoginDialog::OnAcceptButtonClickedInternal()
@@ -91,7 +91,7 @@ void ULoginDialog::UserLoginInternal()
 {
 	UPlayFabManager* accountManager = USystemFunctionLibrary::GetTCWGameInstance(this)->GetAccountManager();
 	accountManager->OnOperationSuccess.AddUniqueDynamic(this, &ULoginDialog::OnCloseButtonClickedInternal);
-	accountManager->OnOperationFailure.AddUniqueDynamic(this, &ULoginDialog::LoginFailureEvent);
+	accountManager->OnOperationFailure.AddUniqueDynamic(this, &ULoginDialog::LoginFailure);
 	accountManager->UsernameLogin(Login_Username->GetText().ToString(), Login_Password->GetText().ToString());
 }
 
@@ -99,11 +99,11 @@ void ULoginDialog::UserRegistrationInternal()
 {
 	UPlayFabManager* accountManager = USystemFunctionLibrary::GetTCWGameInstance(this)->GetAccountManager();
 	accountManager->OnOperationSuccess.AddUniqueDynamic(this, &ULoginDialog::OnCloseButtonClickedInternal);
-	accountManager->OnOperationFailure.AddUniqueDynamic(this, &ULoginDialog::RegisterFailureEvent);
+	accountManager->OnOperationFailure.AddUniqueDynamic(this, &ULoginDialog::RegisterFailure);
 	accountManager->CreateAccount(Register_Username->GetText().ToString(), Register_Email->GetText().ToString(), Register_Password->GetText().ToString());
 }
 
-void ULoginDialog::EmailTextChangedEvent(const FText& text)
+void ULoginDialog::EmailTextChanged(const FText& text)
 {
 	if (UValidityFunctionLibrary::IsEmailValid(text.ToString()))
 	{
@@ -115,7 +115,7 @@ void ULoginDialog::EmailTextChangedEvent(const FText& text)
 		RegisterErrorMessage->SetVisibility(ESlateVisibility::Visible);
 	}
 }
-void ULoginDialog::PasswordTextChangedEvent(const FText& text)
+void ULoginDialog::PasswordTextChanged(const FText& text)
 {
 	if (UValidityFunctionLibrary::IsPasswordValid(text.ToString(), FPasswordValidationRules(8, 16, true, false, true, true)))
 	{
@@ -128,13 +128,13 @@ void ULoginDialog::PasswordTextChangedEvent(const FText& text)
 	}
 }
 
-void ULoginDialog::LoginFailureEvent()
+void ULoginDialog::LoginFailure()
 {
 	RegisterErrorMessage->SetText(LOCTEXT("LoginDialog_LoginError", "Invalid username or password"));
 	RegisterErrorMessage->SetVisibility(ESlateVisibility::Visible);
 }
 
-void ULoginDialog::RegisterFailureEvent()
+void ULoginDialog::RegisterFailure()
 {
 	RegisterErrorMessage->SetText(LOCTEXT("LoginDialog_RegisterError", "Something went wrong..."));
 	RegisterErrorMessage->SetVisibility(ESlateVisibility::Visible);

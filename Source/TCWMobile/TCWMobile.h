@@ -18,3 +18,6 @@ DECLARE_LOG_CATEGORY_EXTERN(TCWLogInit, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(TCWLogAI, Log, All);
 //Logging for Critical Errors that must always be addressed
 DECLARE_LOG_CATEGORY_EXTERN(TCWLogErrors, Error, All);
+
+#define GETENUMSTRING(etype, evalue) ((FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true) != nullptr) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true)->GetNameStringByIndex((int32)evalue) : FString("Invalid - are you sure enum uses UENUM() macro?"))
+#define GETENUMTEXT(etype, evalue) (FText::FromString(GETENUMSTRING(etype, evalue)))

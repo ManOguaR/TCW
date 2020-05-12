@@ -12,8 +12,8 @@
 
 class ATCWGameMode;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWGameStateSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FNotifyEndGameSignature, EEndGameResults, player1, EEndGameResults, player2);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWGameStateEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FNotifyEndGameEvent, EEndGameResults, player1, EEndGameResults, player2);
 
 /**
  * 
@@ -41,15 +41,15 @@ private:
 	FTimerHandle gameTimerRef;
 public:
 	UPROPERTY(BlueprintCallable, Category = "Game Mode Events")
-		FTCWGameStateSignature OnGameStart;
+		FTCWGameStateEvent OnGameStart;
 	UPROPERTY(BlueprintCallable, Category = "Game Mode Events")
-		FNotifyEndGameSignature OnNotifyEndGameState;
+		FNotifyEndGameEvent OnNotifyEndGameState;
 
 	UBoardState* GetBoardState(int32 playerID);
 
 private:
 	UFUNCTION(Server, Unreliable)
-		void GameStartEvent();
+		void GameStart();
 	UFUNCTION(Server, Reliable)
-		void NotifyEndGameStateEvent(EEndGameResults player1, EEndGameResults player2);
+		void NotifyEndGameState(EEndGameResults player1, EEndGameResults player2);
 };

@@ -2,6 +2,8 @@
 
 #include "HexBoardTile.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Materials/Material.h"
+#include "Engine/StaticMesh.h"
 
 // Sets default values
 AHexBoardTile::AHexBoardTile()
@@ -18,19 +20,19 @@ AHexBoardTile::AHexBoardTile()
 	HexagonMeshComponent->SetupAttachment(RootComponent);
 
 	//..Game/Meshes/Board/HexagonTile.uasset 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> LowGroundMeshAsset(TEXT("StaticMesh'/Game/Meshes/Board/HexagonTile.HexagonTile'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> LowGroundMeshAsset(TEXT("StaticMesh'/Game/Meshes/Board/HexagonTile.HexagonTile'"));
 	LowGroundMesh = LowGroundMeshAsset.Object;
 
 	Width = FMath::RoundToFloat(LowGroundMesh->GetBounds().GetBox().GetSize().X);
 
 	//..Game/Meshes/Board/HexagonTile_High.uasset
-	ConstructorHelpers::FObjectFinder<UStaticMesh> HighGroundMeshAsset(TEXT("StaticMesh'/Game/Meshes/Board/HexagonTile_High.HexagonTile_High'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> HighGroundMeshAsset(TEXT("StaticMesh'/Game/Meshes/Board/HexagonTile_High.HexagonTile_High'"));
 	HighGroundMesh = HighGroundMeshAsset.Object;
 
 	//Create and set ObstacleMeshComponent
 	ObstacleMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ObstacleMeshComponent"));
 	//..Game/Meshes/Board/HexagonTile_High.uasset
-	ConstructorHelpers::FObjectFinder<UStaticMesh> ObstacleMeshAsset(TEXT("StaticMesh'/Game/Meshes/Board/HexagonObstacle.HexagonObstacle'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> ObstacleMeshAsset(TEXT("StaticMesh'/Game/Meshes/Board/HexagonObstacle.HexagonObstacle'"));
 	ObstacleMeshComponent->SetStaticMesh(ObstacleMeshAsset.Object);
 	ObstacleMeshComponent->SetupAttachment(HexagonMeshComponent);
 }
@@ -39,6 +41,12 @@ AHexBoardTile::AHexBoardTile()
 void AHexBoardTile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (Material->IsValidLowLevel())
+	{
+		HexagonMeshComponent->GetStaticMesh()->SetMaterial(0, Material);
+	}
+
 }
 
 void AHexBoardTile::OnConstruction(const FTransform& Transform)
@@ -48,4 +56,10 @@ void AHexBoardTile::OnConstruction(const FTransform& Transform)
 
 	ObstacleMeshComponent->SetVisibility(bIsObstacle);
 	ObstacleMeshComponent->SetRelativeLocation(FVector(0.0f, 0.0f, bIsHighGround ? 50.0f : 0.0f));
+
+	//if (Material->IsValidLowLevel())
+	//{
+	//	HexagonMeshComponent->GetStaticMesh()->SetMaterial(0, Material);
+	//}
+
 }

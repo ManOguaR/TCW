@@ -15,9 +15,9 @@ ABoardPlayer::ABoardPlayer()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	OnBoardPlayerEffect.AddDynamic(this, &ABoardPlayer::BoardPlayerEffectEvent);
-	OnUpdateHealth.AddDynamic(this, &ABoardPlayer::UpdateHealthEvent);
-	OnUpdatePlayerStats.AddDynamic(this, &ABoardPlayer::UpdatePlayerStatsEvent);
+	OnBoardPlayerEffect.AddDynamic(this, &ABoardPlayer::BoardPlayerEffect);
+	OnUpdateHealth.AddDynamic(this, &ABoardPlayer::UpdateHealth);
+	OnUpdatePlayerStats.AddDynamic(this, &ABoardPlayer::UpdatePlayerStats);
 }
 
 // Called when the game starts or when spawned
@@ -42,12 +42,12 @@ void ABoardPlayer::Tick(float DeltaTime)
 
 }
 
-void ABoardPlayer::BoardPlayerEffectEvent_Implementation(EBoardPlayerEffects effect)
+void ABoardPlayer::BoardPlayerEffect_Implementation(EBoardPlayerEffects effect)
 {
 
 }
 
-void ABoardPlayer::UpdatePlayerStatsEvent()
+void ABoardPlayer::UpdatePlayerStats()
 {
 	if (UMiscFunctionLibrary::CanExecuteCosmeticEvents(this))
 	{
@@ -55,7 +55,7 @@ void ABoardPlayer::UpdatePlayerStatsEvent()
 	}
 }
 
-void ABoardPlayer::UpdateHealthEvent_Implementation(int32 health)
+void ABoardPlayer::UpdateHealth_Implementation(int32 health)
 {
 	if (health > PlayerHealth) //INCREASE
 	{

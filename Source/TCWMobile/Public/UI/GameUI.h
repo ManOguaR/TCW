@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 
-#include "PlayerUIInterface.h"
 #include "Enums.h"
+#include "PlayerUIInterface.h"
 
 #include "GameUI.generated.h"
+
+class UCardManager;
 
 /**
  * 
@@ -17,6 +19,15 @@ UCLASS()
 class TCWMOBILE_API UGameUI : public UUserWidget, public IPlayerUIInterface
 {
 	GENERATED_BODY()
+
+public:
+	UCardManager* GetCardManager();
+
+	void ToggleGameUI();
+
+protected:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UCardManager* CardManager;
 
 public:
 	//classes using this interface must implement UpdateUIPlayerStats

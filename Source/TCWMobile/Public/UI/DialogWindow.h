@@ -28,7 +28,7 @@ enum class FDialogButtonsButtons : uint8
 	DialogButtons_Cancel
 };
 
-DECLARE_DELEGATE_TwoParams(FDialogWindowSignature, FDialogButtonsButtons, FString);
+DECLARE_DELEGATE_TwoParams(FDialogWindowEvent, FDialogButtonsButtons, FString);
 
 /**
  *
@@ -47,7 +47,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		FDialogWindowResponse GetResponse();
 	UFUNCTION()
-		virtual void ShowDialogEvent(FDialogButtonsButtons buttons, FString message);
+		virtual void ShowDialog(FDialogButtonsButtons buttons, FString message);
 
 	virtual void OnAcceptButtonClickedInternal();
 	virtual void OnCancelButtonClickedInternal();

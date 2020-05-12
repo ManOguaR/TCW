@@ -37,10 +37,10 @@ ATCWGameMode::ATCWGameMode(const FObjectInitializer& ObjectInitializer) : AGameM
 	PlayerStateClass = ATCWPlayerState::StaticClass();
 	SpectatorClass = ATCWSpectator::StaticClass();
 
-	OnCheckGamePreconditions.AddDynamic(this, &ATCWGameMode::CheckGamePreconditionsEvent);
-	OnForceSpawnAIOpponent.AddDynamic(this, &ATCWGameMode::ForceSpawnAIOpponentEvent);
+	OnCheckGamePreconditions.AddDynamic(this, &ATCWGameMode::CheckGamePreconditions);
+	OnForceSpawnAIOpponent.AddDynamic(this, &ATCWGameMode::ForceSpawnAIOpponent);
 	OnGameStartCountdown.BindUFunction(this, FName("GameStartCountdownEvent"));
-	OnEndGame.AddDynamic(this, &ATCWGameMode::EndGameEvent);
+	OnEndGame.AddDynamic(this, &ATCWGameMode::EndGame);
 }
 
 void ATCWGameMode::BeginPlay()
@@ -221,7 +221,7 @@ bool ATCWGameMode::CheckIsPlayerActiveState(int32 controllerId)
 	return (health <= 0 ? false : (numCardsInHand > 0 || cardsInDeck > 0 || activeCards > 0));
 }
 
-void ATCWGameMode::CheckGamePreconditionsEvent_Implementation()
+void ATCWGameMode::CheckGamePreconditions_Implementation()
 {
 	if (HasAuthority())
 	{
@@ -252,7 +252,7 @@ void ATCWGameMode::CheckGamePreconditionsEvent_Implementation()
 	}
 }
 
-void ATCWGameMode::ForceSpawnAIOpponentEvent_Implementation()
+void ATCWGameMode::ForceSpawnAIOpponent_Implementation()
 {
 	CreateCardGameAIOpponent();
 	UE_LOG(TCWLog, Log, TEXT("All players are in!"));
@@ -269,7 +269,7 @@ void ATCWGameMode::ForceSpawnAIOpponentEvent_Implementation()
 	}
 }
 
-void ATCWGameMode::GameStartCountdownEvent_Implementation()
+void ATCWGameMode::GameStartCountdown_Implementation()
 {
 	countdownTimer = countdownTimer - 1;
 	for (AController* cont : GameControllersArray)
@@ -288,7 +288,7 @@ void ATCWGameMode::GameStartCountdownEvent_Implementation()
 	}
 }
 
-void ATCWGameMode::EndGameEvent_Implementation()
+void ATCWGameMode::EndGame_Implementation()
 {
 	if (HasAuthority())
 	{
@@ -304,7 +304,7 @@ void ATCWGameMode::EndGameEvent_Implementation()
 	}
 }
 
-void ATCWGameMode::CheckPlayerStateEvent_Implementation()
+void ATCWGameMode::CheckPlayerState_Implementation()
 {
 	if (!(CheckIsPlayerActiveState(1) && CheckIsPlayerActiveState(2)))
 	{

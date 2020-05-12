@@ -24,17 +24,24 @@ ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectIniti
 {	
 	//Pre-25
 	//EXE-7
-	OnClientPostLogin.AddDynamic(this, &ATCWPlayerController::ClientPostLoginEvent);
-	OnGetPlayerDeck.AddDynamic(this, &ATCWPlayerController::GetPlayerDeckEvent);
+	OnClientPostLogin.AddDynamic(this, &ATCWPlayerController::ClientPostLogin);
+	OnGetPlayerDeck.AddDynamic(this, &ATCWPlayerController::GetPlayerDeck);
 
-	OnUpdateGameUI.AddDynamic(this, &ATCWPlayerController::UpdateGameUIEvent);
-	OnCreateDisplayMessage.AddDynamic(this, &ATCWPlayerController::CreateDisplayMessageEvent);
+	OnDragCancelled.AddDynamic(this, &ATCWPlayerController::DragCancelled);
+	
+	OnUpdateGameUI.AddDynamic(this, &ATCWPlayerController::UpdateGameUI);
+	OnCreateDisplayMessage.AddDynamic(this, &ATCWPlayerController::CreateDisplayMessage);
 
-	OnServerSetupDeck.AddDynamic(this, &ATCWPlayerController::ServerSetupDeckEvent);
-	OnServerReturnPlayerDeck.AddDynamic(this, &ATCWPlayerController::ServerReturnPlayerDeckEvent);
-	OnServerUpdateHealth.AddDynamic(this, &ATCWPlayerController::ServerUpdateHealthEvent);
-	OnServerUpdatePlayerState.AddDynamic(this, &ATCWPlayerController::ServerUpdatePlayerStateEvent);
+	OnServerSetupDeck.AddDynamic(this, &ATCWPlayerController::ServerSetupDeck);
+	OnServerReturnPlayerDeck.AddDynamic(this, &ATCWPlayerController::ServerReturnPlayerDeck);
+	OnServerUpdateHealth.AddDynamic(this, &ATCWPlayerController::ServerUpdateHealth);
+	OnServerUpdatePlayerState.AddDynamic(this, &ATCWPlayerController::ServerUpdatePlayerState);
 
+	OnSetSkipManaCheck.AddDynamic(this, &ATCWPlayerController::SetSkipManaCheck);
+	OnReshuffleDeck.AddDynamic(this, &ATCWPlayerController::ReshuffleDeck);
+	OnClearCardsInHand.AddDynamic(this, &ATCWPlayerController::ClearCardsInHand);
+	
+	OnDeveloper_AddCardToHand.AddDynamic(this, &ATCWPlayerController::Developer_AddCardToHand);
 }
 
 void ATCWPlayerController::BeginPlay()
@@ -92,7 +99,7 @@ void ATCWPlayerController::SetTimer(int32 time)
 
 }
 
-void ATCWPlayerController::ClientPostLoginEvent_Implementation()
+void ATCWPlayerController::ClientPostLogin_Implementation()
 {
 	UKismetSystemLibrary::Delay(this, 1.0f, FLatentActionInfo());
 	//UMiscFunctionLibrary::Delay(this, 1.0f);
@@ -107,25 +114,32 @@ void ATCWPlayerController::ClientPostLoginEvent_Implementation()
 	}
 }
 
-void ATCWPlayerController::CallCreateCardEvent(FName cardName, UDragDropOperation* operation, int32 cardHandIndex) //ECardSet cardSet
+void ATCWPlayerController::CallCreateCard(FName cardName, UDragDropOperation* operation, int32 cardHandIndex, ECardSet cardSet)
 {
 	if (bTurnActive)
 	{
 		dragDropOperationRef = operation;
 		Temp_CreateCardName = cardName;
-		//Temp_ChosenCardSet = cardSet;
+		Temp_ChosenCardSet = cardSet;
 		Temp_HandIndex = cardHandIndex;
 		SetInteractionState(EPlayerState::PlayerState_Placing);
 	}
 }
 
-void ATCWPlayerController::GetPlayerDeckEvent_Implementation()
+void ATCWPlayerController::DragCancelled()
 {
-	FString deckName;
-	TArray<FName> deck = LoadClientDeck(deckName);
+	//TODO: ATCWPlayerController::DragCancelled()
 }
 
-void ATCWPlayerController::UpdateGameUIEvent_Implementation(bool forceCleanUpdate)
+void ATCWPlayerController::GetPlayerDeck_Implementation()
+{
+	FString deckName;
+	TArray<FName> deckArray = LoadClientDeck(deckName);
+
+	OnServerReturnPlayerDeck.Broadcast(deckName, deckArray);
+}
+
+void ATCWPlayerController::UpdateGameUI_Implementation(bool forceCleanUpdate)
 {
 	if (PlayerGameUIRef->IsValidLowLevel())
 	{
@@ -136,28 +150,28 @@ void ATCWPlayerController::UpdateGameUIEvent_Implementation(bool forceCleanUpdat
 	}
 }
 
-void ATCWPlayerController::SetCountdownTimerEvent_Implementation(int32 time)
+void ATCWPlayerController::SetCountdownTimer_Implementation(int32 time)
 {
 	SetTimer(time);
 }
 
-void ATCWPlayerController::CreateDisplayMessageEvent_Implementation(const FString& message, FLinearColor color, bool toScreen, float duration, bool toLog)
+void ATCWPlayerController::CreateDisplayMessage_Implementation(const FString& message, FLinearColor color, bool toScreen, float duration, bool toLog)
 {
 	CreateDisplayMessage(message, color, toScreen, duration, toLog);
 }
 
-void ATCWPlayerController::ServerSetupDeckEvent_Implementation()
+void ATCWPlayerController::ServerSetupDeck_Implementation()
 {
 	OnGetPlayerDeck.Broadcast();
 }
 
-void ATCWPlayerController::ServerReturnPlayerDeckEvent_Implementation(const FString& deckName, const TArray<FName>& playerDeck)
+void ATCWPlayerController::ServerReturnPlayerDeck_Implementation(const FString& deckName, const TArray<FName>& playerDeck)
 {
 	SetupDeck(deckName, playerDeck);
 	OnServerUpdatePlayerState.Broadcast();
 }
 
-void ATCWPlayerController::ServerUpdateHealthEvent_Implementation()
+void ATCWPlayerController::ServerUpdateHealth_Implementation()
 {
 	if (HasAuthority())
 	{
@@ -165,7 +179,7 @@ void ATCWPlayerController::ServerUpdateHealthEvent_Implementation()
 	}
 }
 
-void ATCWPlayerController::ServerUpdatePlayerStateEvent_Implementation()
+void ATCWPlayerController::ServerUpdatePlayerState_Implementation()
 {
 	if (HasAuthority())
 	{
@@ -177,7 +191,28 @@ void ATCWPlayerController::ServerUpdatePlayerStateEvent_Implementation()
 	}
 }
 
-void ATCWPlayerController::CreateDisplayMessage(FString message, FLinearColor color, bool toScreen, float duration, bool toLog)
+void ATCWPlayerController::SetSkipManaCheck_Implementation(bool value)
+{
+	bSkipManaCheck = value;
+}
+
+void ATCWPlayerController::ReshuffleDeck_Implementation()
+{
+	OnGetPlayerDeck.Broadcast();
+}
+
+void ATCWPlayerController::ClearCardsInHand_Implementation()
+{
+	CardsInHand.Empty();
+	OnServerUpdatePlayerState.Broadcast();
+}
+
+void ATCWPlayerController::Developer_AddCardToHand_Implementation(FName cardToAdd)
+{
+	CardToAdd = cardToAdd;
+}
+
+void ATCWPlayerController::CreateDisplayMessageInternal(FString message, FLinearColor color, bool toScreen, float duration, bool toLog)
 {
 	USystemFunctionLibrary::DisplaySystemMessage(this, message, color, duration, toScreen, toLog);
 }
@@ -209,7 +244,7 @@ TArray<FName> ATCWPlayerController::LoadClientDeck(FString& deckName)
 	return TArray<FName>();
 }
 
-ATCWPawn* ATCWPlayerController::CreatePlaceableCard_Client(FName cardName, FVector location)
+ATCWPawn* ATCWPlayerController::CreatePlaceableCard_Client(FName cardName, FVector location, ECardSet cardSet)
 {
 	//TODO: ATCWPlayerController::CreatePlaceableCard_Client
 	// bool cameraValid;
@@ -293,6 +328,10 @@ void ATCWPlayerController::SetInteractionState(EPlayerState changeToState)
 {
 	if (changeToState != PlayerStateEnum)
 		PlayerStateEnum = changeToState;
+}
+
+void ATCWPlayerController::AddCardToHandInternal()
+{
 }
 
 // Undefine the namespace before the end of the file

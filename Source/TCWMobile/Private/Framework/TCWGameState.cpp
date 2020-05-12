@@ -13,8 +13,8 @@ ATCWGameState::ATCWGameState(const FObjectInitializer& ObjectInitializer) : AGam
 {
 	//Pre-22
 	//EXE-6
-	OnGameStart.AddDynamic(this, &ATCWGameState::GameStartEvent);
-	OnNotifyEndGameState.AddDynamic(this, &ATCWGameState::NotifyEndGameStateEvent);
+	OnGameStart.AddDynamic(this, &ATCWGameState::GameStart);
+	OnNotifyEndGameState.AddDynamic(this, &ATCWGameState::NotifyEndGameState);
 }
 
 void ATCWGameState::BeginPlay()
@@ -35,7 +35,7 @@ UBoardState* ATCWGameState::GetBoardState(int32 playerID)
 	return nullptr;
 }
 
-void ATCWGameState::GameStartEvent_Implementation()
+void ATCWGameState::GameStart_Implementation()
 {
 	if (HasAuthority())
 	{
@@ -44,7 +44,7 @@ void ATCWGameState::GameStartEvent_Implementation()
 	}
 }
 
-void ATCWGameState::NotifyEndGameStateEvent_Implementation(EEndGameResults player1, EEndGameResults player2)
+void ATCWGameState::NotifyEndGameState_Implementation(EEndGameResults player1, EEndGameResults player2)
 {
 	if (HasAuthority())
 	{

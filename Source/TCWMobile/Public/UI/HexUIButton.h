@@ -9,7 +9,7 @@
 
 #include "HexUIButton.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHexUIButtonSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHexUIButtonEvent);
 
 /**
  *
@@ -38,7 +38,7 @@ public:
 	UImage* HexUIIcon;
 
 	UPROPERTY(BlueprintAssignable, Category = "Button|Event")
-	FHexUIButtonSignature OnClicked;
+	FHexUIButtonEvent OnClicked;
 
 private:
 	FScriptDelegate OnHexUIButtonClicked;

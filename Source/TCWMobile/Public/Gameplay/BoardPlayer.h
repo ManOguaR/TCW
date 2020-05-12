@@ -10,9 +10,9 @@
 
 #include "BoardPlayer.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBoardPlayerSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerEffectSignature, EBoardPlayerEffects, effect);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthSignature, int32, health);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBoardPlayerEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerEffectEvent, EBoardPlayerEffects, effect);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthEvent, int32, health);
 
 UCLASS()
 class TCWMOBILE_API ABoardPlayer : public AActor
@@ -25,13 +25,13 @@ public:
 
 public:
 	UPROPERTY(BlueprintCallable, Category = "Multicast Events")
-		FPlayerEffectSignature OnBoardPlayerEffect;
+		FPlayerEffectEvent OnBoardPlayerEffect;
 
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
-		FUpdateHealthSignature OnUpdateHealth;
+		FUpdateHealthEvent OnUpdateHealth;
 
 	UPROPERTY(BlueprintCallable, Category = "Events")
-		FBoardPlayerSignature OnUpdatePlayerStats;
+		FBoardPlayerEvent OnUpdatePlayerStats;
 
 	//TODO: REPLICATION
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player")
@@ -54,11 +54,11 @@ private:
 
 private:
 	UFUNCTION(NetMulticast, Unreliable)
-		void BoardPlayerEffectEvent(EBoardPlayerEffects effect);
+		void BoardPlayerEffect(EBoardPlayerEffects effect);
 	UFUNCTION(Server, Reliable)
-		void UpdateHealthEvent(int32 health);
+		void UpdateHealth(int32 health);
 	UFUNCTION(BlueprintCallable, Category = "Game Setup")
-		void UpdatePlayerStatsEvent();
+		void UpdatePlayerStats();
 
 	UFUNCTION()
 		void OnRep_PlayerHealth();

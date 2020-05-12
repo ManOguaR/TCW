@@ -7,7 +7,7 @@
 UPopupWindow::UPopupWindow(const FObjectInitializer& ObjectInitializer) : UUserWidget(ObjectInitializer)
 {
 	//PRE - 07
-	OnDisplaySelf.AddDynamic(this, &UPopupWindow::DisplaySelfEvent);
+	OnDisplayPopupWindow.AddDynamic(this, &UPopupWindow::DisplayPopupWindow);
 	OnCloseWindowClicked.BindUFunction(this, "OnCloseButtonClickedInternal");
 }
 
@@ -17,7 +17,7 @@ void UPopupWindow::NativeDestruct()
 	CloseWindowButton->OnClicked.Remove(OnCloseWindowClicked);
 }
 
-void UPopupWindow::DisplaySelfEvent(UWidget* contentWidget)
+void UPopupWindow::DisplayPopupWindow(UWidget* contentWidget)
 {
 	CloseWindowButton->OnClicked.AddUnique(OnCloseWindowClicked);
 
