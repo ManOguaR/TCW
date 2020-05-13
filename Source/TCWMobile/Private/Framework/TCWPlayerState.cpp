@@ -117,9 +117,9 @@ void ATCWPlayerState::UpdatePlayerCardsStates(int32 cardInHand, int32 cardInDeck
 		CardsInHand = cardInHand;
 		//OnRep_CardsInHand();
 		CardsInDeck = cardInDeck;
-		OnRep_CardsInDeck();
+		//OnRep_CardsInDeck();
 		ActiveCards = activeCards;
-		OnRep_ActiveCards();
+		//OnRep_ActiveCards();
 	}
 }
 

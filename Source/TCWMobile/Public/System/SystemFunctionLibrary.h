@@ -24,6 +24,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 		static UTCWGameInstance* GetTCWGameInstance(UObject* callerObject);
 
+	//UFUNCTION(BlueprintPure, meta = (DisplayName = "Is Debug?"), Category = "System Info")
+	//	static bool IsDebug();
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Is Play In Editor?"), Category = "System Info")
+		static bool IsPIE();
+
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Project Version"), Category = "System Info")
 		static FString GetProjectVersion();
 

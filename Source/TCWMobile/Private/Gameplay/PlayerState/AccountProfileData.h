@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 
+#include "Account\SocialStructs.h"
 #include "CardStructs.h"
 
 #include "AccountProfileData.generated.h"
@@ -20,17 +21,17 @@ class UAccountProfileData : public UObject
 public:
 	UAccountProfileData(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(BlueprintReadOnly, BlueprintGetter = GetCredits, Category = "Player Currency")
+	UPROPERTY(BlueprintGetter = GetCredits, Category = "Player Currency")
 		int32 Credits;
-	UPROPERTY(BlueprintReadOnly, BlueprintGetter = GetShares, Category = "Player Currency")
+	UPROPERTY(BlueprintGetter = GetShares, Category = "Player Currency")
 		int32 Shares;
 
-	UPROPERTY(BlueprintReadOnly, BlueprintGetter = GetNumEventTickets, Category = "Player Inventory")
+	UPROPERTY(BlueprintGetter = GetNumEventTickets, Category = "Player Inventory")
 		int32 NumEventTickets;
-	UPROPERTY(BlueprintReadOnly, BlueprintGetter = GetNumCardPacks, Category = "Player Inventory")
+	UPROPERTY(BlueprintGetter = GetNumCardPacks, Category = "Player Inventory")
 		int32 NumCardPacks;
 
-	UPROPERTY(BlueprintReadOnly, BlueprintGetter = GetCollection, Category = "Player Inventory")
+	UPROPERTY(BlueprintGetter = GetCollection, Category = "Player Inventory")
 		TMap<FName, int32> Collection;
 
 private:
@@ -51,6 +52,8 @@ private:
 	int32 playerShares;
 	int32 playerEventTickets;
 
-	TMap<FName, int32> playerCardPacks;
+	TMap<ECardSet, int32> playerCardPacks;
 	TMap<FName, int32> playerCardCollection;
+
+	TArray<FPlayerFriend> playerFriends;
 };

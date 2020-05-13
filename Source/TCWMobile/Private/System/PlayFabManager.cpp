@@ -349,6 +349,41 @@ void UPlayFabManager::OnGetPlayerProfileError(const PlayFab::FPlayFabCppError& E
 }
 #pragma endregion
 
+#pragma region Friends
+void UPlayFabManager::GetPlayerFriendsList()
+{
+	PlayFab::ClientModels::FGetFriendsListRequest request;
+	//request.IncludeFacebookFriends = true;
+	//request.IncludeSteamFriends = true;
+
+	clientAPI->GetFriendsList(request,
+		PlayFab::UPlayFabClientAPI::FGetFriendsListDelegate::CreateUObject(this, &UPlayFabManager::OnGetPlayerFriendsListSuccess),
+		PlayFab::FPlayFabErrorDelegate::CreateUObject(this, &UPlayFabManager::OnGetPlayerProfileError)
+	);
+}
+
+void UPlayFabManager::OnGetPlayerFriendsListSuccess(const PlayFab::ClientModels::FGetFriendsListResult& Result)
+{
+	for (PlayFab::ClientModels::FFriendInfo each : Result.Friends)
+	{
+		each.FacebookInfo;
+		each.FriendPlayFabId;
+		each.GameCenterInfo;
+		each.Profile;
+		each.PSNInfo;
+		each.SteamInfo;
+		each.TitleDisplayName;
+		each.Username;
+		each.XboxInfo;
+	}
+}
+
+void UPlayFabManager::OnGetPlayerFriendsListError(const PlayFab::FPlayFabCppError& ErrorResult)
+{
+
+}
+#pragma endregion
+
 UWorld* UPlayFabManager::GetWorld() const
 {
 	return UMiscFunctionLibrary::GetWorldReference();

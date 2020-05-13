@@ -2,7 +2,9 @@
 
 #include "SystemFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "Engine/Engine.h"
+#include "Engine.h"
+//#include "Editor/EditorEngine.h"
+//#include "Editor.h"
 
 #include "../TCWMobile.h"
 #include "DisplayMessage.h"
@@ -17,9 +19,14 @@ UTCWGameInstance* USystemFunctionLibrary::GetTCWGameInstance(UObject* callerObje
 	//EXE-11
 	if (UTCWGameInstance* result = Cast<UTCWGameInstance>(UGameplayStatics::GetGameInstance(callerObject)))
 		return result;
-	
+
 	UE_LOG(TCWLogErrors, Fatal, TEXT("Cast to UTCWGameInstance from UGameInstance."));
 	return nullptr;
+}
+
+bool USystemFunctionLibrary::IsPIE()
+{
+	return GIsEditor;		//&& GWorld->HasBegunPlay();
 }
 
 FString USystemFunctionLibrary::GetProjectVersion()

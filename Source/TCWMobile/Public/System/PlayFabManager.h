@@ -9,7 +9,7 @@
 #include "Core/PlayFabError.h"
 #include "Core/PlayFabClientDataModels.h"
 
-#include "AccountData.h"
+#include "Account/AccountData.h"
 #include "SystemEnums.h"
 
 #include "PlayFabManager.generated.h"
@@ -107,6 +107,19 @@ public:
 private:
 	void OnGetPlayerProfileSuccess(const PlayFab::ClientModels::FGetPlayerProfileResult& Result);
 	void OnGetPlayerProfileError(const PlayFab::FPlayFabCppError& ErrorResult);
+
+#pragma endregion
+
+#pragma region Friends
+public:
+	/*
+	*   Read current user data.
+	*/
+	void GetPlayerFriendsList();
+
+private:
+	void OnGetPlayerFriendsListSuccess(const PlayFab::ClientModels::FGetFriendsListResult& Result);
+	void OnGetPlayerFriendsListError(const PlayFab::FPlayFabCppError& ErrorResult);
 
 #pragma endregion
 
