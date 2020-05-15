@@ -25,24 +25,31 @@ public:
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "System")
-	UTexture2D* ButtonTexture;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "System")
-	UTexture2D* IconTexture;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	UButton* HexUIButton;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	UImage* HexUIIcon;
-
 	UPROPERTY(BlueprintAssignable, Category = "Button|Event")
-	FHexUIButtonEvent OnClicked;
+		FHexUIButtonEvent OnClicked;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "System")
+		UTexture2D* ButtonTexture;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "System")
+		UTexture2D* IconTexture;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* HexUIButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UImage* HexUIIcon;
+
+public:
+	void SetButtonIcon(UTexture2D* IconTexture);
+
+protected:
+	virtual void UpdateLayout();
 
 private:
 	FScriptDelegate OnHexUIButtonClicked;
 
 	UFUNCTION()
-	void OnClickedInternal() { if (OnClicked.IsBound()) { OnClicked.Broadcast(); } };
+		void OnClickedInternal() { if (OnClicked.IsBound()) { OnClicked.Broadcast(); } };
 };

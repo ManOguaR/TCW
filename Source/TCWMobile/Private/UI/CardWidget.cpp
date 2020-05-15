@@ -69,7 +69,7 @@ void UCardWidget::CloseGate()
 
 void UCardWidget::NativeConstruct()
 {
-	//UUserWidget::NativeConstruct();
+	Super::NativeConstruct();
 	OwningPlayerRef = Cast<ATCWPlayerController>(GetOwningPlayer());
 
 	CardManagerRef = OwningPlayerRef->PlayerGameUIRef->GetCardManager();
@@ -87,7 +87,7 @@ void UCardWidget::NativeConstruct()
 
 void UCardWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-	//UUserWidget::NativeTick(MyGeometry, InDeltaTime);
+	Super::NativeTick(MyGeometry, InDeltaTime);
 	DeltaTime = InDeltaTime;
 
 	if (bIsMoving)
@@ -106,7 +106,7 @@ void UCardWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 void UCardWidget::NativeOnFocusLost(const FFocusEvent& InFocusEvent)
 {
-	//UUserWidget::NativeOnFocusLost(InFocusEvent);
+	Super::NativeOnFocusLost(InFocusEvent);
 	ViewCardFocusLost();
 }
 
@@ -144,7 +144,7 @@ FReply UCardWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FPointe
 
 void UCardWidget::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	//UUserWidget::NativeOnMouseEnter(InGeometry, InMouseEvent);
+	Super::NativeOnMouseEnter(InGeometry, InMouseEvent);
 	bIsMouseOver = true;
 	if (!bPlatformMobile)
 	{
@@ -156,7 +156,7 @@ void UCardWidget::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointer
 
 void UCardWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 {
-	//UUserWidget::NativeOnMouseLeave(InMouseEvent);
+	Super::NativeOnMouseLeave(InMouseEvent);
 	bIsMouseOver = false;
 	ForceMouseLeave();
 }
@@ -207,7 +207,7 @@ void UCardWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPoint
 
 void UCardWidget::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-	//UUserWidget::NativeOnDragCancelled(InDragDropEvent, InOperation);
+	Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
 	OwningPlayerRef->OnDragCancelled.Broadcast();
 }
 

@@ -28,7 +28,8 @@ enum class FDialogButtonsButtons : uint8
 	DialogButtons_Cancel
 };
 
-DECLARE_DELEGATE_TwoParams(FDialogWindowEvent, FDialogButtonsButtons, FString);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FDialogWindowEvent, FDialogButtonsButtons, buttons, FText, message);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FDialogWindowResponseEvent, FDialogWindowResponse, response);
 
 /**
  *
@@ -44,10 +45,10 @@ protected:
 	void NativeDestruct() override;
 	virtual void OnCloseButtonClickedInternal() override;
 
-	UFUNCTION(BlueprintCallable)
-		FDialogWindowResponse GetResponse();
+	//UFUNCTION(BlueprintCallable)
+	//	FDialogWindowResponse GetResponse();
 	UFUNCTION()
-		virtual void ShowDialog(FDialogButtonsButtons buttons, FString message);
+		virtual void ShowDialog(FDialogButtonsButtons buttons, FText message);
 
 	UFUNCTION()
 		virtual void OnAcceptButtonClickedInternal();
@@ -60,8 +61,11 @@ private:
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Events")
-		FDialogWindowResponse OnShowDialog;
+		FDialogWindowEvent OnShowDialog;
+	UPROPERTY(EditAnywhere, Category = "Events")
+		FDialogWindowResponseEvent OnDialogCompleted;
 
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UHexUIButton* LeftButton;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))

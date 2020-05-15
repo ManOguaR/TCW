@@ -21,6 +21,7 @@ ULoginDialog::ULoginDialog(const FObjectInitializer& ObjectInitializer) :UPopupW
 
 void ULoginDialog::NativeConstruct()
 {
+	Super::NativeConstruct();
 	Register_Email->OnTextChanged.AddDynamic(this, &ULoginDialog::EmailTextChanged);
 	Register_Password->OnTextChanged.AddDynamic(this, &ULoginDialog::PasswordTextChanged);
 }
@@ -33,7 +34,7 @@ void ULoginDialog::NativeDestruct()
 	accountManager->OnOperationSuccess.Remove(this, "LoginSuccessEvent");
 	accountManager->OnOperationFailure.Remove(this, "LoginFailureEvent");
 
-	UPopupWindow::NativeDestruct();
+	Super::NativeDestruct();
 }
 
 void ULoginDialog::DisplayPopupWindow(UWidget* contentWidget)

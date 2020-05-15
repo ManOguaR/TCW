@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
+#include "DialogWindow.h"
 #include "SystemEnums.h"
 #include "TCWGameInstance.h"
 
@@ -32,6 +33,12 @@ public:
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Project Version"), Category = "System Info")
 		static FString GetProjectVersion();
+
+	UFUNCTION(BlueprintCallable)
+		static void ToggleFriendsWindow();
+
+	UFUNCTION(BlueprintCallable)
+		static void ShowEndGameDialog(UObject* callerObject, FDialogWindowResponseEvent responseDelegate);
 
 	UFUNCTION(BlueprintCallable)
 		static void DisplayError(UObject* callerObject, FString Message, float Duration = 3.0f);

@@ -39,12 +39,7 @@ UDialogWindow::UDialogWindow(const FObjectInitializer& ObjectInitializer) :
 		noButonIconTexture = crossIcon.Object;
 	}
 
-	//acceptButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
-	//okButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
-	//yesButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_TickIcon.TCW_TickIcon'")).Object;
-
-	//cancelButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_CrossIcon.TCW_CrossIcon'")).Object;
-	//noButonIconTexture = ConstructorHelpers::FObjectFinder<UTexture2D>(TEXT("Texture2D'/Game/Textures/UserInterface/TCW_CrossIcon.TCW_CrossIcon'")).Object;
+	OnShowDialog.BindDynamic(this, &UDialogWindow::ShowDialog);
 }
 
 void UDialogWindow::NativeDestruct()
@@ -54,18 +49,7 @@ void UDialogWindow::NativeDestruct()
 	UPopupWindow::NativeDestruct();
 }
 
-FDialogWindowResponse UDialogWindow::GetResponse()
-{
-	if (responseEnum != FDialogWindowResponse::DialogWindow_Unknown)
-	{
-		const FDialogWindowResponse dialogResponse = responseEnum;
-		this->Destruct();
-		return dialogResponse;
-	}
-	return responseEnum;
-}
-
-void UDialogWindow::ShowDialog(FDialogButtonsButtons buttons, FString message)
+void UDialogWindow::ShowDialog(FDialogButtonsButtons buttons, FText message)
 {
 	buttonsEnum = buttons;
 	responseEnum = FDialogWindowResponse::DialogWindow_Unknown;
@@ -73,56 +57,70 @@ void UDialogWindow::ShowDialog(FDialogButtonsButtons buttons, FString message)
 	switch (buttonsEnum)
 	{
 	case FDialogButtonsButtons::DialogButtons_OK:
-		RightButton->IconTexture = okButonIconTexture;
+	{
+		RightButton->SetButtonIcon(okButonIconTexture);
 		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		RightButton->SetToolTipText(TextOk);
 		LeftButton->SetVisibility(ESlateVisibility::Collapsed);
 		break;
+	}
 	case FDialogButtonsButtons::DialogButtons_OKCancel:
-		LeftButton->IconTexture = okButonIconTexture;
+	{
+		LeftButton->SetButtonIcon(okButonIconTexture);
 		LeftButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		LeftButton->SetToolTipText(TextOk);
-		RightButton->IconTexture = cancelButonIconTexture;
+		RightButton->SetButtonIcon(cancelButonIconTexture);
 		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextCancel);
 		LeftButton->SetVisibility(ESlateVisibility::Visible);
 		break;
+	}
 	case FDialogButtonsButtons::DialogButtons_Accept:
-		RightButton->IconTexture = acceptButonIconTexture;
+	{
+		RightButton->SetButtonIcon(acceptButonIconTexture);
 		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		RightButton->SetToolTipText(TextAccept);
 		LeftButton->SetVisibility(ESlateVisibility::Collapsed);
 		break;
+	}
 	case FDialogButtonsButtons::DialogButtons_AcceptCancel:
-		LeftButton->IconTexture = acceptButonIconTexture;
+	{
+		LeftButton->SetButtonIcon(acceptButonIconTexture);
 		LeftButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		LeftButton->SetToolTipText(TextAccept);
-		RightButton->IconTexture = cancelButonIconTexture;
+		RightButton->SetButtonIcon(cancelButonIconTexture);
 		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextCancel);
 		LeftButton->SetVisibility(ESlateVisibility::Visible);
 		break;
+	}
 	case FDialogButtonsButtons::DialogButtons_YesNo:
-		LeftButton->IconTexture = yesButonIconTexture;
+	{
+		LeftButton->SetButtonIcon(yesButonIconTexture);
 		LeftButton->OnClicked.AddDynamic(this, &UDialogWindow::OnAcceptButtonClickedInternal);
 		LeftButton->SetToolTipText(TextYes);
-		RightButton->IconTexture = noButonIconTexture;
+		RightButton->SetButtonIcon(noButonIconTexture);
 		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextNo);
 		LeftButton->SetVisibility(ESlateVisibility::Visible);
 		break;
+	}
 	case FDialogButtonsButtons::DialogButtons_Cancel:
-		RightButton->IconTexture = cancelButonIconTexture;
+	{
+		RightButton->SetButtonIcon(cancelButonIconTexture);
 		RightButton->OnClicked.AddDynamic(this, &UDialogWindow::OnCancelButtonClickedInternal);
 		RightButton->SetToolTipText(TextCancel);
 		LeftButton->SetVisibility(ESlateVisibility::Collapsed);
 		break;
+	}
 	default:
+	{
 		break;
 	}
+	}
 
-	UTextBlock* content = WidgetTree->ConstructWidget<UTextBlock>();// CreateWidget<UTextBlock>(this);
-	content->SetText(FText::FromString(message));
+	UTextBlock* content = WidgetTree->ConstructWidget<UTextBlock>();
+	content->SetText(message);
 
 	Super::DisplayPopupWindow(content);
 }
@@ -130,14 +128,14 @@ void UDialogWindow::ShowDialog(FDialogButtonsButtons buttons, FString message)
 void UDialogWindow::OnCloseButtonClickedInternal()
 {
 	UKismetSystemLibrary::Delay(this, 0.3f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 0.3f);
 
 	PlayAnimation(DisplaySelf, 0.0f, 1, EUMGSequencePlayMode::Reverse, 1.0f, false);
 
 	UKismetSystemLibrary::Delay(this, 0.3f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 0.3f);
 
 	RemoveFromParent();
+
+	OnDialogCompleted.ExecuteIfBound(responseEnum);
 }
 
 void UDialogWindow::OnAcceptButtonClickedInternal()

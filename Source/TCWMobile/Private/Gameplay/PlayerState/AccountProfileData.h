@@ -34,6 +34,12 @@ public:
 	UPROPERTY(BlueprintGetter = GetCollection, Category = "Player Inventory")
 		TMap<FName, int32> Collection;
 
+public:
+	UFUNCTION(BlueprintPure)
+		TArray<FPlayerFriend> GetPlayerFriends();
+
+	void AddPlayerFriend(FString playFabId, FString userName, int32 userIndex);
+
 private:
 	UFUNCTION(BlueprintPure)
 		const int32 GetCredits() { return playerCredits; };

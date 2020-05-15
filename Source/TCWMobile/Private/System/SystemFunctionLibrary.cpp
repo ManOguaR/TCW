@@ -40,6 +40,27 @@ FString USystemFunctionLibrary::GetProjectVersion()
 	return projectVersion;
 }
 
+void USystemFunctionLibrary::ToggleFriendsWindow()
+{
+
+}
+
+void USystemFunctionLibrary::ShowEndGameDialog(UObject* callerObject, FDialogWindowResponseEvent responseDelegate)
+{
+	//../Game/Blueprints/Widgets/Extras/DisplayMessageBP.uasset
+	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/DialogWindowBP.DialogWindowBP_C"));
+	if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UDialogWindow>())
+	{
+		UDialogWindow* dialogWindow = CreateWidget<UDialogWindow>(UGameplayStatics::GetPlayerController(callerObject, 0), widgetClass);
+
+		dialogWindow->OnDialogCompleted = responseDelegate;
+		dialogWindow->AddToViewport(1000);
+		dialogWindow->OnShowDialog.ExecuteIfBound(FDialogButtonsButtons::DialogButtons_YesNo, NSLOCTEXT("SystemStrings", "EndGameDialog_Message", "Are you sure?"));
+		//popupMessage->OnDisplayMessage.Broadcast(Message, SpecifiedColor, Duration);
+	}
+}
+
+#pragma region Display System Message
 void USystemFunctionLibrary::DisplayError(UObject* callerObject, FString Message, float Duration)
 {
 	USystemFunctionLibrary::DisplaySystemMessage(callerObject, Message,
@@ -65,6 +86,7 @@ void USystemFunctionLibrary::DisplaySystemMessage(UObject* callerObject, FString
 		if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UDisplayMessage>())
 		{
 			UDisplayMessage* popupMessage = CreateWidget<UDisplayMessage>(UGameplayStatics::GetPlayerController(callerObject, 0), widgetClass);
+			popupMessage->AddToViewport(1000);
 			popupMessage->OnDisplayMessage.Broadcast(Message, SpecifiedColor, Duration);
 		}
 	}
@@ -85,3 +107,4 @@ void USystemFunctionLibrary::DisplaySystemMessage(UObject* callerObject, FString
 	}
 
 }
+#pragma endregion

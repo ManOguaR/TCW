@@ -70,6 +70,8 @@ EViewState UCardManager::SetCardViewState(EViewState viewState, bool force)
 // OVERRIDES
 void UCardManager::NativePreConstruct()
 {
+	Super::NativePreConstruct();
+
 	//Bind Events On created Elements
 	PositioningFeatures_Button->OnClicked.AddDynamic(this, &UCardManager::PositioningFeaturesButtonClicked);
 	CardsAndDeck_Button->OnClicked.AddDynamic(this, &UCardManager::CardsAndDeckButtonClicked);
@@ -144,6 +146,8 @@ void UCardManager::NativePreConstruct()
 
 void UCardManager::NativeConstruct()
 {
+	Super::NativeConstruct();
+
 	ScreenRes = UWidgetLayoutLibrary::GetViewportSize(this);
 	ViewportScale = UWidgetLayoutLibrary::GetViewportScale(this);
 
@@ -529,7 +533,7 @@ void UCardManager::LeftToRightCheckBoxOnCheckedStateChanged(bool bIsChecked)
 
 UWidget* UCardManager::PositioningProfile_ComboBox_OnGenerateWidget(FString item)
 {
-	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP_C.ComboBoxOptionBP_C"));
+	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP.ComboBoxOptionBP_C"));
 	if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UComboBoxOption>())
 	{
 		UComboBoxOption* result = CreateWidget<UComboBoxOption>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
@@ -555,7 +559,7 @@ void UCardManager::PositioningProfile_ComboBox_OnSelectionChanged(FString select
 
 UWidget* UCardManager::LayoutProfile_ComboBox_OnGenerateWidget(FString item)
 {
-	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP_C.ComboBoxOptionBP_C"));
+	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP.ComboBoxOptionBP_C"));
 	if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UComboBoxOption>())
 	{
 		UComboBoxOption* result = CreateWidget<UComboBoxOption>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
@@ -619,7 +623,7 @@ void UCardManager::AddCard_ButtonClicked()
 
 UWidget* UCardManager::CardList_ComboBox_OnGenerateWidget(FString item)
 {
-	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP_C.ComboBoxOptionBP_C"));
+	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP.ComboBoxOptionBP_C"));
 	if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UComboBoxOption>())
 	{
 		UComboBoxOption* result = CreateWidget<UComboBoxOption>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
@@ -635,7 +639,7 @@ void UCardManager::CardList_ComboBox_OnSelectionChanged(FString selectedItem, ES
 
 UWidget* UCardManager::CardSet_ComboBox_OnGenerateWidget(FString item)
 {
-	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP_C.ComboBoxOptionBP_C"));
+	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/ComboBoxOptionBP.ComboBoxOptionBP_C"));
 	if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UComboBoxOption>())
 	{
 		UComboBoxOption* result = CreateWidget<UComboBoxOption>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);

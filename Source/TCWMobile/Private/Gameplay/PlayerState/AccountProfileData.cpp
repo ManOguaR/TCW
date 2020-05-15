@@ -5,6 +5,16 @@
 UAccountProfileData::UAccountProfileData(const FObjectInitializer& ObjectInitializer)
 {
 	//PRE - 02
+
+}
+
+TArray<FPlayerFriend> UAccountProfileData::GetPlayerFriends()
+{
+	return playerFriends;
+}
+
+void UAccountProfileData::AddPlayerFriend(FString playFabId, FString userName, int32 userIndex)
+{
 }
 
 int32 UAccountProfileData::GetNumCardPacks()

@@ -22,8 +22,11 @@ void UPopupWindow::DisplayPopupWindow(UWidget* contentWidget)
 	CloseWindowButton->OnClicked.AddUnique(OnCloseWindowClicked);
 
 	if (contentWidget->IsValidLowLevel())
+	{
+		//contentWidget->Register();
 		ContentBorder->AddChild(contentWidget);
-
+		this->UpdateRenderTransform();
+	}
 	PlayAnimation(DisplaySelf);
 }
 

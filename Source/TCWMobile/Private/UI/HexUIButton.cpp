@@ -15,14 +15,27 @@ UHexUIButton::UHexUIButton(const FObjectInitializer& ObjectInitializer) : UUserW
 void UHexUIButton::NativePreConstruct()
 {
 	Super::NativePreConstruct();
+	this->UpdateLayout();
+}
 
-	if (HexUIButton->IsValidLowLevelFast())
+void UHexUIButton::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
+
+void UHexUIButton::SetButtonIcon(UTexture2D* iconTexture)
+{
+	IconTexture = iconTexture;
+	this->UpdateLayout();
+}
+
+void UHexUIButton::UpdateLayout()
+{
+	if (ButtonTexture->IsValidLowLevelFast())
 	{
 		FButtonStyle newStyle = FButtonStyle();
 
-		//FSlateDynamicImageBrush baseBrush = FSlateDynamicImageBrush(ButtonTexture, FVector2D(138, 120), ButtonTexture->GetFName());
-
-		FSlateImageBrush baseBrush = FSlateImageBrush(ButtonTexture, FVector2D(138, 120));// , ButtonTexture->GetFName());
+		FSlateImageBrush baseBrush = FSlateImageBrush(ButtonTexture, FVector2D(138, 120));
 
 		newStyle.Normal = FSlateImageBrush(baseBrush);
 		newStyle.Normal.DrawAs = ESlateBrushDrawType::Box;
@@ -47,13 +60,8 @@ void UHexUIButton::NativePreConstruct()
 		HexUIButton->OnClicked.Clear();
 		HexUIButton->OnClicked.AddUnique(OnHexUIButtonClicked);
 	}
-	if (HexUIIcon->IsValidLowLevelFast())
+	if (IconTexture->IsValidLowLevelFast())
 	{
 		HexUIIcon->SetBrushFromTexture(IconTexture, true);
 	}
-}
-
-void UHexUIButton::NativeConstruct()
-{
-	Super::NativeConstruct();
 }

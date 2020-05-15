@@ -9,7 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 
 UTCWGameInstance::UTCWGameInstance(const FObjectInitializer& ObjectInitializer) : UGameInstance(ObjectInitializer)
-{	
+{
 	//Pre-20
 	//EXE-1
 	OnStartup.AddDynamic(this, &UTCWGameInstance::Startup);
@@ -33,20 +33,6 @@ EGameState UTCWGameInstance::GetGameState(EGameState inState, bool& sameSTate)
 	sameSTate = inState == CurrentGameState;
 
 	return CurrentGameState;
-}
-
-void UTCWGameInstance::Init()
-{
-	//EXE-2
-	Platform = (EPlatform)(uint8)PlatformsArray.Find(UGameplayStatics::GetPlatformName());
-
-	//Singleton-like initialization of system objects.
-	if (PlayFabManager == nullptr)
-		PlayFabManager = NewObject<UPlayFabManager>();
-	if (SessionManager == nullptr)
-		SessionManager = NewObject<USessionManager>();
-
-	//Other global initializations here...
 }
 
 void UTCWGameInstance::Startup()
@@ -201,3 +187,186 @@ bool UTCWGameInstance::MoveToGameState(EGameState inState)
 	return false;
 }
 
+//OVERRIDES - FINAL
+bool UTCWGameInstance::HandleOpenCommand(const TCHAR* Cmd, FOutputDevice& Ar, UWorld* InWorld)
+{
+	return Super::HandleOpenCommand(Cmd, Ar, InWorld);
+}
+bool UTCWGameInstance::HandleDisconnectCommand(const TCHAR* Cmd, FOutputDevice& Ar, UWorld* InWorld)
+{
+	return Super::HandleOpenCommand(Cmd, Ar, InWorld);
+}
+bool UTCWGameInstance::HandleReconnectCommand(const TCHAR* Cmd, FOutputDevice& Ar, UWorld* InWorld)
+{
+	return Super::HandleOpenCommand(Cmd, Ar, InWorld);
+}
+bool UTCWGameInstance::HandleTravelCommand(const TCHAR* Cmd, FOutputDevice& Ar, UWorld* InWorld)
+{
+	return Super::HandleOpenCommand(Cmd, Ar, InWorld);
+}
+
+bool UTCWGameInstance::Exec(UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Out)
+{
+	return Super::Exec(InWorld, Cmd, Out);
+}
+
+void UTCWGameInstance::FinishDestroy()
+{
+	Super::FinishDestroy();
+}
+
+void UTCWGameInstance::Init()
+{
+	//EXE-2
+	Super::Init();
+
+	Platform = (EPlatform)(uint8)PlatformsArray.Find(UGameplayStatics::GetPlatformName());
+
+	//Singleton-like initialization of system objects.
+	if (PlayFabManager == nullptr)
+		PlayFabManager = NewObject<UPlayFabManager>();
+	if (SessionManager == nullptr)
+		SessionManager = NewObject<USessionManager>();
+
+	//Other global initializations here...
+}
+
+void UTCWGameInstance::Shutdown()
+{
+	Super::Shutdown();
+}
+
+#if WITH_EDITOR
+FGameInstancePIEResult UTCWGameInstance::InitializeForPlayInEditor(int32 PIEInstanceIndex, const FGameInstancePIEParameters& Params)
+{
+	return Super::InitializeForPlayInEditor(PIEInstanceIndex, Params);
+}
+FGameInstancePIEResult UTCWGameInstance::StartPlayInEditorGameInstance(ULocalPlayer* LocalPlayer, const FGameInstancePIEParameters& Params)
+{
+	return Super::StartPlayInEditorGameInstance(LocalPlayer, Params);
+}
+FGameInstancePIEResult UTCWGameInstance::PostCreateGameModeForPIE(const FGameInstancePIEParameters& Params, AGameModeBase* GameMode)
+{
+	return Super::PostCreateGameModeForPIE(Params, GameMode);
+}
+#endif
+
+void UTCWGameInstance::StartGameInstance()
+{
+	Super::StartGameInstance();
+}
+
+bool UTCWGameInstance::JoinSession(ULocalPlayer* LocalPlayer, int32 SessionIndexInSearchResults)
+{
+	return Super::JoinSession(LocalPlayer, SessionIndexInSearchResults);
+}
+
+bool UTCWGameInstance::JoinSession(ULocalPlayer* LocalPlayer, const FOnlineSessionSearchResult& SearchResult)
+{
+	return Super::JoinSession(LocalPlayer, SearchResult);
+}
+
+void UTCWGameInstance::DebugCreatePlayer(int32 ControllerId)
+{
+	return Super::DebugCreatePlayer(ControllerId);
+}
+
+void UTCWGameInstance::DebugRemovePlayer(int32 ControllerId)
+{
+	return Super::DebugRemovePlayer(ControllerId);
+}
+
+ULocalPlayer* UTCWGameInstance::CreateInitialPlayer(FString& OutError)
+{
+	return Super::CreateInitialPlayer(OutError);
+}
+
+int32 UTCWGameInstance::AddLocalPlayer(ULocalPlayer* NewPlayer, int32 ControllerId)
+{
+	return Super::AddLocalPlayer(NewPlayer, ControllerId);
+}
+
+bool UTCWGameInstance::RemoveLocalPlayer(ULocalPlayer* ExistingPlayer)
+{
+	return Super::RemoveLocalPlayer(ExistingPlayer);
+}
+
+void UTCWGameInstance::StartRecordingReplay(const FString& InName, const FString& FriendlyName, const TArray<FString>& AdditionalOptions)
+{
+	Super::StartRecordingReplay(InName, FriendlyName, AdditionalOptions);
+}
+
+void UTCWGameInstance::StopRecordingReplay()
+{
+	Super::StopRecordingReplay();
+}
+
+bool UTCWGameInstance::PlayReplay(const FString& InName, UWorld* WorldOverride, const TArray<FString>& AdditionalOptions)
+{
+	return Super::PlayReplay(InName, WorldOverride, AdditionalOptions);
+}
+
+void UTCWGameInstance::AddUserToReplay(const FString& UserString)
+{
+	Super::AddUserToReplay(UserString);
+}
+
+void UTCWGameInstance::ReceivedNetworkEncryptionToken(const FString& EncryptionToken, const FOnEncryptionKeyResponse& Delegate)
+{
+	Super::ReceivedNetworkEncryptionToken(EncryptionToken, Delegate);
+}
+
+void UTCWGameInstance::ReceivedNetworkEncryptionAck(const FOnEncryptionKeyResponse& Delegate)
+{
+	Super::ReceivedNetworkEncryptionAck(Delegate);
+}
+
+void UTCWGameInstance::PreloadContentForURL(FURL InURL)
+{
+	Super::PreloadContentForURL(InURL);
+}
+
+AGameModeBase* UTCWGameInstance::CreateGameModeForURL(FURL InURL)
+{
+	return Super::CreateGameModeForURL(InURL);
+}
+
+TSubclassOf<AGameModeBase> UTCWGameInstance::OverrideGameModeClass(TSubclassOf<AGameModeBase> GameModeClass, const FString& MapName, const FString& Options, const FString& Portal) const
+{
+	return Super::OverrideGameModeClass(GameModeClass, MapName, Options, Portal);
+}
+
+TSubclassOf<UOnlineSession> UTCWGameInstance::GetOnlineSessionClass()
+{
+	return Super::GetOnlineSessionClass();
+}
+
+FName UTCWGameInstance::GetOnlinePlatformName() const
+{
+	return Super::GetOnlinePlatformName();
+}
+
+bool UTCWGameInstance::ClientTravelToSession(int32 ControllerId, FName InSessionName)
+{
+	return Super::ClientTravelToSession(ControllerId, InSessionName);
+}
+
+void UTCWGameInstance::ReturnToMainMenu()
+{
+	Super::ReturnToMainMenu();
+}
+
+void UTCWGameInstance::RegisterReferencedObject(UObject* ObjectToReference)
+{
+	Super::RegisterReferencedObject(ObjectToReference);
+}
+
+void UTCWGameInstance::UnregisterReferencedObject(UObject* ObjectToReference)
+{
+	Super::UnregisterReferencedObject(ObjectToReference);
+}
+
+void UTCWGameInstance::OnStart()
+{
+	Super::OnStart();
+}
