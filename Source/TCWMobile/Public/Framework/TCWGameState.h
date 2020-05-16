@@ -27,6 +27,7 @@ public:
 	ATCWGameState(const FObjectInitializer& ObjectInitializer);
 
 	void BeginPlay() override;
+	void BeginPlay_Delayed();
 
 public:
 	//TODO: Replicated
@@ -52,4 +53,6 @@ private:
 		void GameStart();
 	UFUNCTION(Server, Reliable)
 		void NotifyEndGameState(EEndGameResults player1, EEndGameResults player2);
+
+	void NotifyEndGameState_Continue();
 };

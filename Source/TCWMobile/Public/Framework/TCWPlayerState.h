@@ -84,4 +84,6 @@ private:
 	void UpdateUI();
 
 	void InitializeAccountProfile();
+
+	void BeginPlay_Delayed();
 };

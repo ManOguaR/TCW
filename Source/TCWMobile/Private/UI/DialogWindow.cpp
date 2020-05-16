@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetTree.h"
 #include "Engine/Texture2D.h"
+#include "Engine/World.h"
 #include "SlateGlobals.h"
 #include "Components/Widget.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -127,12 +128,18 @@ void UDialogWindow::ShowDialog(FDialogButtonsButtons buttons, FText message)
 
 void UDialogWindow::OnCloseButtonClickedInternal()
 {
-	UKismetSystemLibrary::Delay(this, 0.3f, FLatentActionInfo());
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UDialogWindow::OnCloseButtonClicked_Delayed, 0.3f);
+}
+void UDialogWindow::OnCloseButtonClicked_Delayed()
+{
 	PlayAnimation(DisplaySelf, 0.0f, 1, EUMGSequencePlayMode::Reverse, 1.0f, false);
 
-	UKismetSystemLibrary::Delay(this, 0.3f, FLatentActionInfo());
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UDialogWindow::OnCloseButtonClicked_Callback, 0.3f);
+}
+void UDialogWindow::OnCloseButtonClicked_Callback()
+{
 	RemoveFromParent();
 
 	OnDialogCompleted.ExecuteIfBound(responseEnum);

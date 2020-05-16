@@ -16,8 +16,6 @@ class TCWMOBILE_API UMiscFunctionLibrary : public UObject
 	GENERATED_BODY()
 
 public:
-	//static void Delay(AActor* callerActor, float time);
-	//static void Delay(UObject* callerObject, float time);
 	static UWorld* GetWorldReference();
 	static bool CanExecuteCosmeticEvents(UObject* callerObject);
 

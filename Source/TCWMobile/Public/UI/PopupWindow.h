@@ -44,4 +44,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UBorder* ContentBorder;
+
+private:
+	void OnCloseButtonClicked_Delayed();
+	void OnCloseButtonClicked_Callback();
+
 };

@@ -18,13 +18,17 @@ void UDisplayMessage::DisplayMessage(FString Message, FLinearColor SpecifiedColo
 
 	PlayAnimation(DisplaySelf, 0.0f, 1, EUMGSequencePlayMode::Forward, 1.0f, false);
 
-	UKismetSystemLibrary::Delay(this, Duration, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, Duration);
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UDisplayMessage::DisplayMessage_Delayed, 0.3f);
+}
+void UDisplayMessage::DisplayMessage_Delayed()
+{
 	PlayAnimation(DisplaySelf, 0.0f, 1, EUMGSequencePlayMode::Reverse, 1.0f, false);
 
-	UKismetSystemLibrary::Delay(this, 0.3f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 0.3f);
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UDisplayMessage::DisplayMessage_Callback, 0.3f);
+}
+void UDisplayMessage::DisplayMessage_Callback()
+{
 	RemoveFromParent();
 }

@@ -45,19 +45,31 @@ private:
 private:
 	UFUNCTION()
 		void LoadBegin();
+	void LoadBegin_Delayed();
 
 	UFUNCTION()
 		void LoginSuccessCallback();
+	void LoginSuccessCallback_Delayed();
+
 	UFUNCTION()
 		void LoginFailureCallback();
+	void LoginFailureCallback_Delayed();
+
 	UFUNCTION()
 		void GetPlayerStatsSuccessCallback();
+	void GetPlayerStatsSuccessCallback_Delayed();
+
 	UFUNCTION()
 		void GetPlayerStatsFailureCallback();
+	void GetPlayerStatsFailureCallback_Delayed();
+
 	UFUNCTION()
 		void GetPlayerProfileSuccessCallback();
+	void GetPlayerProfileSuccessCallback_Delayed();
+
 	UFUNCTION()
 		void GetPlayerProfileFailureCallback();
+	void GetPlayerProfileFailureCallback_Delayed();
 
 	void ClearCallbacks()
 	{

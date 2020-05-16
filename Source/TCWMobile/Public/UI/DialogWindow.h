@@ -80,4 +80,7 @@ private:
 
 	FDialogButtonsButtons buttonsEnum;
 	FDialogWindowResponse responseEnum;
+
+	void OnCloseButtonClicked_Delayed();
+	void OnCloseButtonClicked_Callback();
 };

@@ -148,10 +148,14 @@ void UCardWidget::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointer
 	bIsMouseOver = true;
 	if (!bPlatformMobile)
 	{
-		UKismetSystemLibrary::Delay(this, 0.2f, FLatentActionInfo());
-		if (ValidateMouseOverPreview())
-			EnableInHandPreview();
+		FTimerHandle unusedHandle;
+		GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UCardWidget::NativeOnMouseEnter_Delayed, 0.2f);
 	}
+}
+void UCardWidget::NativeOnMouseEnter_Delayed()
+{
+	if (ValidateMouseOverPreview())
+		EnableInHandPreview();
 }
 
 void UCardWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)

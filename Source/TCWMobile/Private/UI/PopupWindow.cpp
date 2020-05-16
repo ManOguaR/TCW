@@ -32,14 +32,18 @@ void UPopupWindow::DisplayPopupWindow(UWidget* contentWidget)
 
 void UPopupWindow::OnCloseButtonClickedInternal()
 {
-	UKismetSystemLibrary::Delay(this, 0.3f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 0.3f);
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UPopupWindow::OnCloseButtonClicked_Delayed, 0.3f);
+}
+void UPopupWindow::OnCloseButtonClicked_Delayed()
+{
 	PlayAnimation(DisplaySelf, 0.0f, 1, EUMGSequencePlayMode::Reverse, 1.0f, false);
 
-	UKismetSystemLibrary::Delay(this, 0.3f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 0.3f);
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UPopupWindow::OnCloseButtonClicked_Callback, 0.3f);
+}
+void UPopupWindow::OnCloseButtonClicked_Callback()
+{
 	RemoveFromParent();
 
 	this->Destruct();

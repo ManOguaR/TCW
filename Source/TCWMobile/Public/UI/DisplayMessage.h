@@ -33,4 +33,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidgetAnim))
 	UWidgetAnimation* DisplaySelf;
+
+private:
+	void DisplayMessage_Delayed();
+	void DisplayMessage_Callback();
+
 };

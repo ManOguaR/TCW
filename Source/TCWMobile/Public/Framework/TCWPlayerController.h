@@ -35,7 +35,7 @@ class TCWMOBILE_API ATCWPlayerController : public APlayerController
 public:
 	ATCWPlayerController(const FObjectInitializer& ObjectInitializer);
 
-	void BeginPlay() override;
+	//void BeginPlay() final;
 	//InputTouch();
 	//LeftMouseButton();
 
@@ -72,7 +72,7 @@ public:
 		FTCWPlayerControllerEvent OnReshuffleDeck;
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
 		FTCWPlayerControllerEvent OnClearCardsInHand;
-	
+
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
 		FCardEvent OnDeveloper_AddCardToHand;
 public:
@@ -137,6 +137,7 @@ public:
 private:
 	UFUNCTION(Client, Reliable)
 		void ClientPostLogin();
+
 	UFUNCTION()
 		void CallCreateCard(FName cardName, UDragDropOperation* operation, int32 cardHandIndex, ECardSet cardSet);
 	UFUNCTION(Client, Reliable)
@@ -185,4 +186,11 @@ private:
 	void SetInteractionState(EPlayerState changeToState);
 
 	void AddCardToHandInternal();
+
+protected:
+	void BeginPlay() final;
+
+private:
+	void BeginPlay_Delayed();
+	void ClientPostLogin_Continue();
 };

@@ -25,9 +25,12 @@ UWorld* UGameLoader::GetWorld() const
 void UGameLoader::LoadBegin()
 {
 	ReportAdvance(0.0f, true);
-	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 5.0f);
 
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoadBegin_Delayed, 5.0f);
+}
+void UGameLoader::LoadBegin_Delayed()
+{
 	//EXE-10
 	if (!AccountManagerRef)
 		AccountManagerRef = USystemFunctionLibrary::GetTCWGameInstance(this)->GetAccountManager();
@@ -54,15 +57,18 @@ void UGameLoader::LoadBegin()
 	{
 		LoginSuccessCallback();
 	}
-
 }
 
 void UGameLoader::LoginSuccessCallback()
 {
 	ClearCallbacks();
 	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 5.0f);
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoginSuccessCallback_Delayed, 5.0f);
 
+}
+void UGameLoader::LoginSuccessCallback_Delayed()
+{
 	if (AccountManagerRef->IsLoggedIn())
 	{
 		AccountManagerRef->OnOperationSuccess.AddUniqueDynamic(this, &UGameLoader::GetPlayerStatsSuccessCallback);
@@ -76,7 +82,6 @@ void UGameLoader::LoginSuccessCallback()
 	{
 		LoadBegin();
 	}
-
 }
 
 void UGameLoader::LoginFailureCallback()
@@ -84,17 +89,23 @@ void UGameLoader::LoginFailureCallback()
 	ClearCallbacks();
 	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalLoginUser", "FATAL: FAILED TO LOGIN USER").ToString(), 5.0f);
 
-	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 5.0f);
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoginFailureCallback_Delayed, 5.0f);
+}
+void UGameLoader::LoginFailureCallback_Delayed()
+{
 	LoadBegin();
 }
 
 void UGameLoader::GetPlayerStatsSuccessCallback()
 {
 	ClearCallbacks();
-	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 5.0f);
 
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerStatsSuccessCallback_Delayed, 5.0f);
+}
+void UGameLoader::GetPlayerStatsSuccessCallback_Delayed()
+{
 	if (AccountManagerRef->IsLoggedIn())
 	{
 		AccountManagerRef->OnOperationSuccess.AddUniqueDynamic(this, &UGameLoader::GetPlayerProfileSuccessCallback);
@@ -114,15 +125,24 @@ void UGameLoader::GetPlayerStatsFailureCallback()
 {
 	ClearCallbacks();
 	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetStats", "FATAL: FAILED TO GET PLAYER STATS").ToString(), 5.0f);
-	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 5.0f);
+
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerStatsFailureCallback_Delayed, 5.0f);
+}
+void UGameLoader::GetPlayerStatsFailureCallback_Delayed()
+{
+	//TODO: NOTHING? <-- if true NOT DELAY
 }
 
 void UGameLoader::GetPlayerProfileSuccessCallback()
 {
 	ClearCallbacks();
-	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 5.0f);
+
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerProfileSuccessCallback_Delayed, 5.0f);
+}
+void UGameLoader::GetPlayerProfileSuccessCallback_Delayed()
+{
 	ReportAdvance(1.0f, true);
 	if (OnLoadCompleted.IsBound())
 		OnLoadCompleted.Broadcast();
@@ -132,9 +152,16 @@ void UGameLoader::GetPlayerProfileFailureCallback()
 {
 	ClearCallbacks();
 	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetProfile", "FATAL: FAILED TO GET PLAYER PROFILE").ToString(), 5.0f);
-	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 5.0f);
+
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerProfileFailureCallback_Delayed, 5.0f);
+
 }
+void UGameLoader::GetPlayerProfileFailureCallback_Delayed()
+{
+	//TODO: NOTHING? <-- if true NOT DELAY
+}
+
 
 void UGameLoader::ReportAdvance(float percent, bool absolute)
 {

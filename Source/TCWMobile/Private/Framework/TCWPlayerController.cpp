@@ -21,14 +21,14 @@
 //const FText AllPlayersIn = LOCTEXT("PlayerController_", "All players are in!");
 
 ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectInitializer) : APlayerController(ObjectInitializer)
-{	
+{
 	//Pre-25
 	//EXE-7
 	OnClientPostLogin.AddDynamic(this, &ATCWPlayerController::ClientPostLogin);
 	OnGetPlayerDeck.AddDynamic(this, &ATCWPlayerController::GetPlayerDeck);
 
 	OnDragCancelled.AddDynamic(this, &ATCWPlayerController::DragCancelled);
-	
+
 	OnUpdateGameUI.AddDynamic(this, &ATCWPlayerController::UpdateGameUI);
 	OnCreateDisplayMessage.AddDynamic(this, &ATCWPlayerController::CreateDisplayMessage);
 
@@ -40,21 +40,8 @@ ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectIniti
 	OnSetSkipManaCheck.AddDynamic(this, &ATCWPlayerController::SetSkipManaCheck);
 	OnReshuffleDeck.AddDynamic(this, &ATCWPlayerController::ReshuffleDeck);
 	OnClearCardsInHand.AddDynamic(this, &ATCWPlayerController::ClearCardsInHand);
-	
+
 	OnDeveloper_AddCardToHand.AddDynamic(this, &ATCWPlayerController::Developer_AddCardToHand);
-}
-
-void ATCWPlayerController::BeginPlay()
-{
-	//EXE-4
-	UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(this, nullptr, EMouseLockMode::DoNotLock, false);
-
-	UKismetSystemLibrary::Delay(this, 2.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 2.0f);
-
-	GameStateRef = Cast<ATCWGameState>(UGameplayStatics::GetGameState(this));
-
-	PlayerStateRef = Cast<ATCWPlayerState>(PlayerState);
 }
 
 void ATCWPlayerController::SetupGameUI()
@@ -101,9 +88,11 @@ void ATCWPlayerController::SetTimer(int32 time)
 
 void ATCWPlayerController::ClientPostLogin_Implementation()
 {
-	UKismetSystemLibrary::Delay(this, 1.0f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 1.0f);
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWPlayerController::ClientPostLogin_Continue, 1.0f);
+}
+void ATCWPlayerController::ClientPostLogin_Continue()
+{
 	bool isSameState = false;
 	USystemFunctionLibrary::GetTCWGameInstance(this)->GetGameState(EGameState::GameState_Playing, isSameState);
 
@@ -332,6 +321,23 @@ void ATCWPlayerController::SetInteractionState(EPlayerState changeToState)
 
 void ATCWPlayerController::AddCardToHandInternal()
 {
+}
+
+void ATCWPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//EXE-4
+	UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(this, nullptr, EMouseLockMode::DoNotLock, false);
+
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWPlayerController::BeginPlay_Delayed, 0.5f);
+}
+void ATCWPlayerController::BeginPlay_Delayed()
+{
+	GameStateRef = Cast<ATCWGameState>(UGameplayStatics::GetGameState(this));
+
+	PlayerStateRef = Cast<ATCWPlayerState>(PlayerState);
 }
 
 // Undefine the namespace before the end of the file

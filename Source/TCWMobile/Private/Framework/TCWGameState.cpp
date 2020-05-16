@@ -22,12 +22,13 @@ void ATCWGameState::BeginPlay()
 	//EXE-3
 	if (HasAuthority())
 	{
-		UKismetSystemLibrary::Delay(this, 0.5f, FLatentActionInfo());
-		//UMiscFunctionLibrary::Delay(this, 0.5f);
-
-		GameModeRef = Cast<ATCWGameMode>(UGameplayStatics::GetGameMode(this));
-
+		FTimerHandle unusedHandle;
+		GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWGameState::BeginPlay_Delayed, 0.5f);
 	}
+}
+void ATCWGameState::BeginPlay_Delayed()
+{
+	GameModeRef = Cast<ATCWGameMode>(UGameplayStatics::GetGameMode(this));
 }
 
 UBoardState* ATCWGameState::GetBoardState(int32 playerID)
@@ -58,8 +59,13 @@ void ATCWGameState::NotifyEndGameState_Implementation(EEndGameResults player1, E
 			//TODO. GAME STATEINTERFACE MATCH END
 			//controllers[a]->MatchEnd(a == 0 ? player1 : player2);
 		}
-		UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
-		//UMiscFunctionLibrary::Delay(this, 5.0f);
-		USystemFunctionLibrary::GetTCWGameInstance(this)->OnShowMainMenu.Broadcast();
+
+		FTimerHandle unusedHandle;
+		GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWGameState::NotifyEndGameState_Continue, 0.5f);
 	}
+}
+
+void ATCWGameState::NotifyEndGameState_Continue()
+{
+	USystemFunctionLibrary::GetTCWGameInstance(this)->OnShowMainMenu.Broadcast();
 }

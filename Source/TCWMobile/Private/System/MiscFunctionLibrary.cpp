@@ -6,18 +6,6 @@
 #include "Engine.h"
 #include "Kismet/KismetMathLibrary.h"
 
-//void UMiscFunctionLibrary::Delay(AActor* callerActor, float time)
-//{
-//	//EXE-10
-//	FTimerHandle unusedHandle;
-//	callerActor->GetWorldTimerManager().SetTimer(unusedHandle, time, false);
-//}
-//void UMiscFunctionLibrary::Delay(UObject* callerObject, float time)
-//{
-//	FTimerHandle unusedHandle;
-//	callerObject->GetWorld()->GetTimerManager().SetTimer(unusedHandle, time, false);
-//}
-
 UWorld* UMiscFunctionLibrary::GetWorldReference()
 {
 	UWorld* PIE = nullptr;

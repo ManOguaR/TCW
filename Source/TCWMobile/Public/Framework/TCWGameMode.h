@@ -24,10 +24,7 @@ public:
 	ATCWGameMode(const FObjectInitializer& ObjectInitializer);
 
 	void BeginPlay() override;
-	void BeginPlayDelayed();
-
-	void PostLogin(APlayerController* NewPlayer) override;
-	void Logout(AController* Exiting) override;
+	void BeginPlay_Delayed();
 
 	UFUNCTION(BlueprintCallable, Category = "System")
 		void GetPlayerControllers(AController* player1, AController* player2);
@@ -94,6 +91,9 @@ private:
 	void CreateandAddAIOpponent();
 	bool CheckIsPlayerActiveState(int32 controllerId);
 
+	void DelayTimer_Callback();
+	//void CheckGamePreconditions_Continue_Alt();
+
 public:
 	UPROPERTY(EditAnywhere, Category = "Game Mode Settings")
 		int32 Mana_Min;
@@ -109,4 +109,8 @@ public:
 private:
 	UPROPERTY(EditAnywhere, Category = "Game Mode Settings")
 		bool bSpectator;
+
+	void PostLogin(APlayerController* NewPlayer) final;
+	void Logout(AController* Exiting) final;
+
 };

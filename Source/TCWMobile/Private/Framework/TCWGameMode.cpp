@@ -45,51 +45,13 @@ ATCWGameMode::ATCWGameMode(const FObjectInitializer& ObjectInitializer) : AGameM
 
 void ATCWGameMode::BeginPlay()
 {
-	//EXE-2-2
-	UKismetSystemLibrary::Delay(this, 0.2f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 0.2f);
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWGameMode::BeginPlay_Delayed, 10.2f);
+}
 
+void ATCWGameMode::BeginPlay_Delayed()
+{
 	GameStateRef = Cast<ATCWGameState>(UGameplayStatics::GetGameState(this));
-}
-
-void ATCWGameMode::BeginPlayDelayed()
-{
-
-}
-
-void ATCWGameMode::PostLogin(APlayerController* NewPlayer)
-{
-	//EXE-2-1
-	if (HasAuthority())
-	{
-		if (UGameplayStatics::GetCurrentLevelName(this) != "MainMenu")
-		{
-			if ((GameControllersArray.Num() < MaxNumOfPlayers) && (!bSpectator))
-			{
-				AController* playerController = AddPlayerToArray(NewPlayer->PlayerState, NewPlayer);
-				SetGamePlayerId(playerController);
-				SetBoardPlayerReference();
-				SetBoardPlayerReferences(playerController);
-
-				ATCWPlayerState* state = nullptr;
-				bool isValid = false;
-				ATCWPlayerController* controllerRef = UControllerFunctionLibrary::GetTCWPlayerControllerReference(playerController, state, isValid);
-				controllerRef->OnClientPostLogin.Broadcast();
-				controllerRef->OnServerSetupDeck.Broadcast();
-			}
-			else
-			{
-				SetBoardPlayerReference();
-			}
-
-			OnCheckGamePreconditions.Broadcast();
-		}
-	}
-}
-
-void ATCWGameMode::Logout(AController* Exiting)
-{
-	RemovePlayerFromGame(Exiting);
 }
 
 AController* ATCWGameMode::AddPlayerToArray(AActor* playerState, AController* playerController)
@@ -221,6 +183,12 @@ bool ATCWGameMode::CheckIsPlayerActiveState(int32 controllerId)
 	return (health <= 0 ? false : (numCardsInHand > 0 || cardsInDeck > 0 || activeCards > 0));
 }
 
+void ATCWGameMode::DelayTimer_Callback()
+{
+	bGameActive = true;
+	GameStateRef->OnGameStart.Broadcast();
+}
+
 void ATCWGameMode::CheckGamePreconditions_Implementation()
 {
 	if (HasAuthority())
@@ -240,10 +208,8 @@ void ATCWGameMode::CheckGamePreconditions_Implementation()
 		UE_LOG(TCWLog, Log, TEXT("All players are in!"));
 		if (bSkipStartTimer)
 		{
-			UKismetSystemLibrary::Delay(this, 3.0f, FLatentActionInfo());
-			//UMiscFunctionLibrary::Delay(this, 3.0f);
-			bGameActive = true;
-			GameStateRef->OnGameStart.Broadcast();
+			FTimerHandle unusedHandle;
+			GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWGameMode::DelayTimer_Callback, 3.0f);
 		}
 		else
 		{
@@ -258,10 +224,8 @@ void ATCWGameMode::ForceSpawnAIOpponent_Implementation()
 	UE_LOG(TCWLog, Log, TEXT("All players are in!"));
 	if (bSkipStartTimer)
 	{
-		UKismetSystemLibrary::Delay(this, 3.0f, FLatentActionInfo());
-		//UMiscFunctionLibrary::Delay(this, 3.0f);
-		bGameActive = true;
-		GameStateRef->OnGameStart.Broadcast();
+		FTimerHandle unusedHandle;
+		GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWGameMode::DelayTimer_Callback, 3.0f);
 	}
 	else
 	{
@@ -310,6 +274,40 @@ void ATCWGameMode::CheckPlayerState_Implementation()
 	{
 		OnEndGame.Broadcast();
 	}
+}
+
+void ATCWGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	//EXE-2-1
+	if (HasAuthority())
+	{
+		if (UGameplayStatics::GetCurrentLevelName(this) != "MainMenu")
+		{
+			if ((GameControllersArray.Num() < MaxNumOfPlayers) && (!bSpectator))
+			{
+				AController* playerController = AddPlayerToArray(NewPlayer->PlayerState, NewPlayer);
+				SetGamePlayerId(playerController);
+				SetBoardPlayerReference();
+				SetBoardPlayerReferences(playerController);
+
+				ATCWPlayerState* state = nullptr;
+				bool isValid = false;
+				ATCWPlayerController* controllerRef = UControllerFunctionLibrary::GetTCWPlayerControllerReference(playerController, state, isValid);
+				controllerRef->OnClientPostLogin.Broadcast();
+				controllerRef->OnServerSetupDeck.Broadcast();
+			}
+			else
+			{
+				SetBoardPlayerReference();
+			}
+
+			OnCheckGamePreconditions.Broadcast();
+		}
+	}
+}
+void ATCWGameMode::Logout(AController* Exiting)
+{
+	RemovePlayerFromGame(Exiting);
 }
 
 // Undefine the namespace before the end of the file

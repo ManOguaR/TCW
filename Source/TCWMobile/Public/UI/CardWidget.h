@@ -125,4 +125,6 @@ private:
 
 	bool ValidateCardMovementRequest(ECardWidgetMovementState requestedState);
 	bool ValidateMouseOverPreview();
+
+	void NativeOnMouseEnter_Delayed();
 };

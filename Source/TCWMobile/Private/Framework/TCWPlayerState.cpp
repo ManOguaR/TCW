@@ -18,9 +18,11 @@ ATCWPlayerState::ATCWPlayerState(const FObjectInitializer& ObjectInitializer) : 
 void ATCWPlayerState::BeginPlay()
 {
 	//EXE-5
-	UKismetSystemLibrary::Delay(this, 0.5f, FLatentActionInfo());
-	//UMiscFunctionLibrary::Delay(this, 0.5f);
-
+	FTimerHandle unusedHandle;
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &ATCWPlayerState::BeginPlay_Delayed, 0.5f);
+}
+void ATCWPlayerState::BeginPlay_Delayed()
+{
 	GameModeRef = Cast<ATCWGameMode>(UGameplayStatics::GetGameMode(this));
 
 	InitializeAttributes();
