@@ -6,8 +6,12 @@
 #include "GameFramework/PlayerController.h"
 
 #include "BoardPlayer.h"
+#include "CardsInHandInterface.h"
+#include "ControllerInterface.h"
 #include "CountdownTimer.h"
+#include "DeckInterface.h"
 #include "Enums.h"
+#include "GameStateInterface.h"
 #include "GameUI.h"
 #include "OpponentUI.h"
 #include "TCWGameState.h"
@@ -28,7 +32,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FControllerMessageEvent, const FSt
  *
  */
 UCLASS()
-class TCWMOBILE_API ATCWPlayerController : public APlayerController
+class TCWMOBILE_API ATCWPlayerController : public APlayerController, public IControllerInterface, public IDeckInterface, public IGameStateInterface, public ICardsInHandInterface
 {
 	GENERATED_BODY()
 
@@ -59,6 +63,8 @@ public:
 
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
 		FTCWPlayerControllerEvent OnServerSetupDeck;
+	UPROPERTY(BlueprintCallable, Category = "Server Events")
+		FTCWPlayerControllerEvent OnServerRequestChangeTurnState;
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
 		FReturnPlayerDeckEvent OnServerReturnPlayerDeck;
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
@@ -134,6 +140,36 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Setup")
 		void SetTimer(int32 time);
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		ABoardUnit* CreatePlayableCard(FTransform spawnTransform);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		bool AddCardToPlayersHand(FName cardName);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void BeginPlayerTurn();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void EndPlayerTurn();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void UpdateUI();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		TArray<FName> GetPlayerDeck();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		bool RemoveCardFromDeck(bool removeAll, int32 indexToRemove);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void MatchEnd(EEndGameResults endGameResult);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void MatchBegin();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void ChangeActivePlayerTurn(bool turnActive);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void RequestChangePlayerTurn();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		bool RemoveCardFromHand(FName cardName, int32 index, bool removeAll);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void DrawCard(FName cardName, bool ignoreMaxCards, int32 numberOfCardsToDraw);
+
 private:
 	UFUNCTION(Client, Reliable)
 		void ClientPostLogin();
@@ -141,7 +177,7 @@ private:
 	UFUNCTION()
 		void CallCreateCard(FName cardName, UDragDropOperation* operation, int32 cardHandIndex, ECardSet cardSet);
 	UFUNCTION(Client, Reliable)
-		void GetPlayerDeck();
+		void GetPlayerDeckEvent();
 
 	UFUNCTION()
 		void DragCancelled();
@@ -155,6 +191,8 @@ private:
 
 	UFUNCTION(Server, Unreliable)
 		void ServerSetupDeck();
+	UFUNCTION(Server, Reliable)
+		void ServerRequestChangeTurnState();
 	UFUNCTION(Server, Reliable)
 		void ServerReturnPlayerDeck(const FString& deckName, const TArray<FName>& playerDeck);
 	UFUNCTION(Server, Reliable)

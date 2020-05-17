@@ -12,7 +12,6 @@
 #include "Kismet\DataTableFunctionLibrary.h"
 
 #include "Blueprint\WidgetBlueprintLibrary.h"
-#include "..\..\Public\Framework\TCWPlayerController.h"
 
 // Define the namespace to use with LOCTEXT
 // This is only valid within a single file, and must be undefined before the end of the file
@@ -25,7 +24,7 @@ ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectIniti
 	//Pre-25
 	//EXE-7
 	OnClientPostLogin.AddDynamic(this, &ATCWPlayerController::ClientPostLogin);
-	OnGetPlayerDeck.AddDynamic(this, &ATCWPlayerController::GetPlayerDeck);
+	OnGetPlayerDeck.AddDynamic(this, &ATCWPlayerController::GetPlayerDeckEvent);
 
 	OnDragCancelled.AddDynamic(this, &ATCWPlayerController::DragCancelled);
 
@@ -86,6 +85,67 @@ void ATCWPlayerController::SetTimer(int32 time)
 
 }
 
+ABoardUnit* ATCWPlayerController::CreatePlayableCard_Implementation(FTransform spawnTransform)
+{
+	//TODO: NOT IMPLEMENTED
+	return nullptr;
+}
+bool ATCWPlayerController::AddCardToPlayersHand_Implementation(FName cardName)
+{
+	//TODO: NOT IMPLEMENTED
+	return false;
+}
+void ATCWPlayerController::BeginPlayerTurn_Implementation()
+{
+	//TODO: NOT IMPLEMENTED
+}
+void ATCWPlayerController::EndPlayerTurn_Implementation()
+{
+	//TODO: NOT IMPLEMENTED
+}
+void ATCWPlayerController::UpdateUI_Implementation()
+{
+	//TODO: NOT IMPLEMENTED
+}
+
+TArray<FName> ATCWPlayerController::GetPlayerDeck_Implementation()
+{
+	//TODO: NOT IMPLEMENTED
+	return TArray<FName>();
+}
+bool ATCWPlayerController::RemoveCardFromDeck_Implementation(bool removeAll, int32 indexToRemove)
+{
+	//TODO: NOT IMPLEMENTED
+	return false;
+}
+
+void ATCWPlayerController::MatchEnd_Implementation(EEndGameResults endGameResult)
+{
+	//TODO: NOT IMPLEMENTED
+}
+void ATCWPlayerController::MatchBegin_Implementation()
+{
+	//TODO: NOT IMPLEMENTED
+}
+void ATCWPlayerController::ChangeActivePlayerTurn_Implementation(bool turnActive)
+{
+	//TODO: NOT IMPLEMENTED
+}
+void ATCWPlayerController::RequestChangePlayerTurn_Implementation()
+{
+	//TODO: NOT IMPLEMENTED
+}
+
+bool ATCWPlayerController::RemoveCardFromHand_Implementation(FName cardName, int32 index, bool removeAll)
+{
+	//TODO: NOT IMPLEMENTED
+	return false;
+}
+void ATCWPlayerController::DrawCard_Implementation(FName cardName, bool ignoreMaxCards, int32 numberOfCardsToDraw)
+{
+	//TODO: NOT IMPLEMENTED
+}
+
 void ATCWPlayerController::ClientPostLogin_Implementation()
 {
 	FTimerHandle unusedHandle;
@@ -120,7 +180,7 @@ void ATCWPlayerController::DragCancelled()
 	//TODO: ATCWPlayerController::DragCancelled()
 }
 
-void ATCWPlayerController::GetPlayerDeck_Implementation()
+void ATCWPlayerController::GetPlayerDeckEvent_Implementation()
 {
 	FString deckName;
 	TArray<FName> deckArray = LoadClientDeck(deckName);
@@ -152,6 +212,17 @@ void ATCWPlayerController::CreateDisplayMessage_Implementation(const FString& me
 void ATCWPlayerController::ServerSetupDeck_Implementation()
 {
 	OnGetPlayerDeck.Broadcast();
+}
+
+void ATCWPlayerController::ServerRequestChangeTurnState_Implementation()
+{
+	if (ATCWGameState* gState = Cast<ATCWGameState>(UGameplayStatics::GetGameState(this)))
+	{
+		if (gState->RequestChangeTurnState(this))
+		{
+
+		}
+	}
 }
 
 void ATCWPlayerController::ServerReturnPlayerDeck_Implementation(const FString& deckName, const TArray<FName>& playerDeck)
@@ -342,3 +413,4 @@ void ATCWPlayerController::BeginPlay_Delayed()
 
 // Undefine the namespace before the end of the file
 #undef LOCTEXT_NAMESPACE
+

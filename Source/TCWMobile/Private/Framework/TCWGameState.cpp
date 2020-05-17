@@ -3,18 +3,18 @@
 
 #include "TCWGameState.h"
 #include "..\TCWMobile.h"
+#include "ControllerFunctionLibrary.h"
 #include "MiscFunctionLibrary.h"
+#include "SystemFunctionLibrary.h"
 #include "TCWGameMode.h"
 
 #include "Kismet\GameplayStatics.h"
-#include <TCWMobile\Public\System\SystemFunctionLibrary.h>
 
 ATCWGameState::ATCWGameState(const FObjectInitializer& ObjectInitializer) : AGameState(ObjectInitializer)
 {
-	//Pre-22
-	//EXE-6
 	OnGameStart.AddDynamic(this, &ATCWGameState::GameStart);
 	OnNotifyEndGameState.AddDynamic(this, &ATCWGameState::NotifyEndGameState);
+	OnServerRequestChangeTurnState.AddDynamic(this, &ATCWGameState::ServerRequestChangeTurnState);
 }
 
 void ATCWGameState::BeginPlay()
@@ -34,6 +34,11 @@ void ATCWGameState::BeginPlay_Delayed()
 UBoardState* ATCWGameState::GetBoardState(int32 playerID)
 {
 	return nullptr;
+}
+
+bool ATCWGameState::RequestChangeTurnState(AController* controller)
+{
+	return controller == PlayerTurnArray[0];
 }
 
 void ATCWGameState::GameStart_Implementation()
@@ -68,4 +73,47 @@ void ATCWGameState::NotifyEndGameState_Implementation(EEndGameResults player1, E
 void ATCWGameState::NotifyEndGameState_Continue()
 {
 	USystemFunctionLibrary::GetTCWGameInstance(this)->OnShowMainMenu.Broadcast();
+}
+
+void ATCWGameState::ServerRequestChangeTurnState_Implementation(AController* controller)
+{
+	if (RequestChangeTurnState(controller))
+	{
+		ChangeTurnState();
+	}
+}
+
+void ATCWGameState::ChangeTurnState()
+{
+	//TODO:
+	if (bGameActive)
+	{
+		RotatePlayerTurn();
+		SetPlayerTurnsActive();
+	}
+}
+
+void ATCWGameState::RotatePlayerTurn()
+{
+	PlayerTurnArray.Add(PlayerTurnArray[0]);
+	PlayerTurnArray.RemoveAt(0);
+}
+
+void ATCWGameState::SetPlayerTurnsActive()
+{
+	for (AController* controller : GameModeRef->GetGameControllersArray())
+	{
+		//controller->ChangeActivePlayerTurn(PlayerTurnArray[0] == controller);
+
+		if (PlayerTurnArray[0] == controller)
+		{
+			//BeginPlayerTurn(UControllerFunctionLibrary::GetControllerId(controller));
+		}
+		else
+		{
+			//EndPlayerTurn(UControllerFunctionLibrary::GetControllerId(controller));
+		}
+	}
+
+	//ResetTurnTimer();
 }

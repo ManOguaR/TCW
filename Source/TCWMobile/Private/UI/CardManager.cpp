@@ -669,7 +669,7 @@ void UCardManager::SkipCardCost_CheckBoxOnCheckedStateChanged(bool bIsChecked)
 
 void UCardManager::ToggleGameUIButtonClicked()
 {
-	OwnerPlayerController->PlayerGameUIRef->ToggleGameUI();
+	OwnerPlayerController->PlayerGameUIRef->OnToggleGameUI.Broadcast();
 }
 
 void UCardManager::EditorButtonClicked()
