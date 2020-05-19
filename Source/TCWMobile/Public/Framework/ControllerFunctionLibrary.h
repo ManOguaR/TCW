@@ -27,6 +27,8 @@ public:
 		static ATCWPlayerController* GetTCWPlayerControllerReference(AController* controller, ATCWPlayerState* state, bool& isValid);
 	UFUNCTION(BlueprintPure)
 		static AAIPlayerController* GetAiControllerReference(AController* controller, AAIGamePawn* state, bool& isValid);
+	UFUNCTION(BlueprintPure)
+		static AController* GetControllerReferenceFromID(int32 controllerId);
 
 	UFUNCTION(BlueprintPure)
 		static void GetControllersStateProfile(int32 controllerId, int32& health, int32& numCardsInHand, int32& cardsInDeck, int32& activeCards, int32& mana, int32& manaMax, int32& playerTurn, TArray<FName>& deck, TArray<FName>& cardsInHand, AActor* playerState);

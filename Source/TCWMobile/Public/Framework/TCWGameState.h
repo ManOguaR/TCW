@@ -33,6 +33,10 @@ public:
 public:
 	//TODO: Replicated
 	TArray<AActor*> PlayerStateArray;
+	int32 GameTimeSeconds;
+	int32 GameTimeMinutes;
+	int32 TurnTimeSeconds;
+	int32 TurnTimeMinutes;
 
 private:
 	ATCWGameMode* GameModeRef;
@@ -42,6 +46,9 @@ private:
 	TArray<AController*> PlayerTurnArray;
 
 	FTimerHandle turnTimerRef;
+	int32 turnDurationSeconds;
+	int32 turnDurationMinutes;
+
 	FTimerHandle gameTimerRef;
 public:
 	UPROPERTY(BlueprintCallable, Category = "Game Mode Events")
@@ -70,4 +77,13 @@ private:
 
 	void RotatePlayerTurn();
 	void SetPlayerTurnsActive();
+
+	void BeginPlayerTurn(int32 playerId);
+	void EndPlayerTurn(int32 playerId);
+
+	void ResetTurnTimer();
+
+	void CompilePlacementsPerPlayer();
+	void GetGraveyardReferencePerPlayer();
+
 };

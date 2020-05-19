@@ -4,18 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Button.h"
-#include "Components/CanvasPanel.h"
 
 #include "Enums.h"
-#include "MessageManager.h"
 #include "PlayerUIInterface.h"
 
 #include "GameUI.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameUIEvent);
 
+class ATCWPlayerState;
+class ATCWGameState;
 class UCardManager;
+class UMessageManager;
+class UGameProfileUI;
+
+class UButton;
+class UCanvasPanel;
+class UTextBlock;
+class UVerticalBox;
+class UWidgetAnimation;
 
 /**
  *
@@ -30,45 +37,87 @@ public:
 
 	UCardManager* GetCardManager();
 
-	UPROPERTY(BlueprintCallable, Category = "Startup Events")
+	UPROPERTY(BlueprintCallable, Category = "Events")
 		FGameUIEvent OnToggleGameUI;
+	UPROPERTY()
+		FTimerDynamicDelegate OnUpdateGameAndTurnTimers;
+	UPROPERTY()
+		FTimerDynamicDelegate OnCheckTurnBeginState;
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidgetAnim))
+		UWidgetAnimation* ChangeTurn;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidgetAnim))
+		UWidgetAnimation* SpawnAIOpponent;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UCardManager* CardManager;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UCanvasPanel* PlayerUI_Canvas;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UGameProfileUI* PlayerProfileUI;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UMessageManager* MessageManager;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UButton* SpawnAIOpponent_Button;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UButton* ToggleMessageManager_Button;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UButton* TurnButton;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UTextBlock* TurnButton_Text;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UTextBlock* GameTime;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UVerticalBox* WaitingOnPlayer_VerticalBox;
+
+private:
+	bool bIsVisible;
+	bool bIsMessageManagerVisible;
+	ATCWPlayerState* PlayerStateRef;
+	ATCWGameState* GameStateRef;
+	bool bPlayerTurnActive;
+	int32 gameSeconds;
+	int32 gameMinutes;
+	int32 turnSeconds;
+	int32 turnMinutes;
+
+	FTimerHandle updateGameTimerHandle;
+	FTimerHandle checkTurnTimerHandle;
+
+	EGameTurn currentTurnState;
 
 public:
-	//classes using this interface must implement UpdateUIPlayerStats
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void UpdateUIPlayerStats(bool forceCleanVisualUpdate);
-	//classes using this interface must implement UpdateUITurnState
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void UpdateUITurnState(bool turnActive, EGameTurn turnState);
-	//classes using this interface must implement UpdateUITurnState
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void UpdateUIGameTurnTime();
-	//classes using this interface must implement UpdateUITurnState
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void UpdatePlayerStateUI(int32 p1, int32 p2, int32 p3, int32 p4);
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	//	void UpdateUIGameTurnTime();
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	//	void UpdatePlayerStateUI(int32 p1, int32 p2, int32 p3, int32 p4);
 
 private:
 	UFUNCTION()
 		void ToggleGameUI();
 	UFUNCTION()
+		void OnSpawnAIOpponent_ButtonClicked();
+	UFUNCTION()
+		void OnToggleMessageManager_ButtonClicked();
+	UFUNCTION()
 		void OnTurnButtonClicked();
-
-	bool bIsVisible;
+	UFUNCTION()
+		void UpdateGameAndTurnTimers();
+	UFUNCTION()
+		void CheckTurnBeginState();
 
 protected:
 	//virtual void NativeOnInitialized();
-	virtual void NativePreConstruct();
-	//virtual void NativeConstruct();
+	void NativePreConstruct() override;
+	void NativeConstruct() override;
 	//virtual void NativeDestruct();
 
+private:
+	FString CombineTimer(int32 seconds, int32 minutes);
 };

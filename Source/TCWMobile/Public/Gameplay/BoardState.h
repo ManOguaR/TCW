@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+
+#include "BoardUnit.h"
 
 #include "BoardState.generated.h"
 
@@ -16,6 +17,7 @@ public:
 	UBoardState();
 
 public:
-	TArray<AActor*> PlayerCards;
+	TArray<ABoardUnit*> PlayerUnits;
+	TArray<ABoardUnit*> OpponentUnits;
 
 };

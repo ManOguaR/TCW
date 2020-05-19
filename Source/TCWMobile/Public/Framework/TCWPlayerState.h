@@ -50,6 +50,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Default")
 		int32 MaxCardsInDeck;
 
+	int32 PlayerTurn;
+
 private:
 	UAccountProfileData* AccountProfile;
 

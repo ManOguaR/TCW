@@ -9,6 +9,15 @@
 #include "SaveGameFunctionLibrary.h"
 #include "SystemFunctionLibrary.h"
 
+#include "BoardPlayer.h"
+#include "CountdownTimer.h"
+#include "GameUI.h"
+#include "OpponentUI.h"
+#include "TCWGameMode.h"
+#include "TCWGameState.h"
+#include "TCWPawn.h"
+#include "TCWPlayerState.h"
+
 #include "Kismet\DataTableFunctionLibrary.h"
 
 #include "Blueprint\WidgetBlueprintLibrary.h"
@@ -21,8 +30,6 @@
 
 ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectInitializer) : APlayerController(ObjectInitializer)
 {
-	//Pre-25
-	//EXE-7
 	OnClientPostLogin.AddDynamic(this, &ATCWPlayerController::ClientPostLogin);
 	OnGetPlayerDeck.AddDynamic(this, &ATCWPlayerController::GetPlayerDeckEvent);
 
@@ -30,6 +37,8 @@ ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectIniti
 
 	OnUpdateGameUI.AddDynamic(this, &ATCWPlayerController::UpdateGameUI);
 	OnCreateDisplayMessage.AddDynamic(this, &ATCWPlayerController::CreateDisplayMessage);
+
+	OnSpawnAIOpponent.AddDynamic(this, &ATCWPlayerController::SpawnAIOpponent);
 
 	OnServerSetupDeck.AddDynamic(this, &ATCWPlayerController::ServerSetupDeck);
 	OnServerReturnPlayerDeck.AddDynamic(this, &ATCWPlayerController::ServerReturnPlayerDeck);
@@ -85,7 +94,7 @@ void ATCWPlayerController::SetTimer(int32 time)
 
 }
 
-ABoardUnit* ATCWPlayerController::CreatePlayableCard_Implementation(FTransform spawnTransform)
+ABoardUnit* ATCWPlayerController::CreatePlayableUnit_Implementation(FTransform spawnTransform)
 {
 	//TODO: NOT IMPLEMENTED
 	return nullptr;
@@ -209,6 +218,14 @@ void ATCWPlayerController::CreateDisplayMessage_Implementation(const FString& me
 	CreateDisplayMessage(message, color, toScreen, duration, toLog);
 }
 
+void ATCWPlayerController::SpawnAIOpponent_Implementation()
+{
+	if (ATCWGameMode* gMode = Cast<ATCWGameMode>(UGameplayStatics::GetGameMode(this)))
+	{
+		gMode->OnForceSpawnAIOpponent.Broadcast();
+	}
+}
+
 void ATCWPlayerController::ServerSetupDeck_Implementation()
 {
 	OnGetPlayerDeck.Broadcast();
@@ -245,7 +262,7 @@ void ATCWPlayerController::ServerUpdatePlayerState_Implementation()
 	{
 		if (GameStateRef->IsValidLowLevel())
 		{
-			PlayerStateRef->UpdatePlayerCardsStates(CardsInHand.Num(), PlayerDeck.Num(), GameStateRef->GetBoardState(PlayerStateRef->GamePlayerId)->PlayerCards.Num());
+			PlayerStateRef->UpdatePlayerCardsStates(CardsInHand.Num(), PlayerDeck.Num(), GameStateRef->GetBoardState(PlayerStateRef->GamePlayerId)->PlayerUnits.Num());
 			OnCreateDisplayMessage.Broadcast(LOCTEXT("PlayerController_DeckCreated", "Deck Created!").ToString(), FLinearColor(FColor::Green), false, 0.0f, true);
 		}
 	}

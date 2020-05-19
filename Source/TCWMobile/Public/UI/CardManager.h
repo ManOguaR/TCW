@@ -48,31 +48,28 @@ public:
 	TArray<UCardWidget*> ActiveCardsInHand;
 	//System Enums
 	EViewState CardViewState;
+	//System
+	ATCWPlayerController* OwnerPlayerController;
 
 protected:
 	// Cards
 	int32 CardsInHand;
 	float CardScale;
 	bool bRotateToOffset;
-
 	//System Enums
 	EPositioningProfile PositioningProfile;
-
 	//System
 	float ViewportScale;
 	bool LockOnEditorChangeState;
 	FVector2D ScreenRes;
 	TArray<FWidgetTransform> GoalLocationArray;
 	ATCWPlayerState* OwnerPlayerState;
-	ATCWPlayerController* OwnerPlayerController;
 	UCardWidget* TempCardWidget;
 	bool bDarkenBackground;
-
 	//Card Editor
 	ECardSet EditorCardSet;
 	FName EditorCardName;
 	TArray<FString> EditorCardSetList;
-
 	//Card Layout Profile
 	int32 MaxCards;
 	float RadiusOffset;
@@ -225,6 +222,7 @@ protected:
 
 public:
 	EViewState SetCardViewState(EViewState viewState, bool force);
+	void HighlightPlayableCardsInHand();
 
 protected:
 	void NativePreConstruct() override;
@@ -243,7 +241,6 @@ private:
 	int32 RemoveCardWidgetFromHand(UCardWidget* cardToRemove, int32 orIndex, bool allCardsInHand);
 	bool GetNumberOfCardsInHand(int32& outCardsInHand);
 	FWidgetTransform GetCardPositionAtIndex(int32 index, UCardWidget* cardReference);
-	void HighlightPlayableCardsInHand();
 
 	/* Position Profile */
 	FWidgetTransform CalculateHorizontalProfile(int32 cardIndex, UCardWidget* cardReference, int32 cardsInHand);

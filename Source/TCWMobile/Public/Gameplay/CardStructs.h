@@ -98,14 +98,14 @@ struct FCardAbility_Struct
     GENERATED_BODY()
 
 public:
-    //UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
-    //    EAbilityType Type;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
+        EAbilityType Type;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
         int AbilityId;
 
-    //UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
-    //    EAbilityTrigger Trigger;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
+        EAbilityTrigger Trigger;
 
     //UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
     //    ECardUseState AfterUseState;

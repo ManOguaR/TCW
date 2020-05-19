@@ -1,13 +1,14 @@
 // Copyrigth (c) 2020 Softwar 19.23 NGS. All rigths reserved. 
 
-
 #include "CardManager.h"
 #include "CardLayoutFunctionLibrary.h"
 #include "CardWidget.h"
 #include "ComboBoxOption.h"
 #include "DeckFunctionLibrary.h"
 #include "MiscFunctionLibrary.h"
+#include "GameUI.h"
 #include "TCWPlayerController.h"
+#include "TCWPlayerState.h"
 #include "UIStructs.h"
 
 #include "Blueprint/WidgetLayoutLibrary.h"

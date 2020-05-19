@@ -52,13 +52,13 @@ public:
 
 public:
 	bool bSkipStartTimer;
+	TArray<AController*> GameControllersArray;
 
 private:
 	float gameSeconds;
 	int32 countdownTimer;
 	ATCWGameState* GameStateRef;
 	bool bGameActive;
-	TArray<AController*> GameControllersArray;
 	TArray<AActor*> PlayerStateArray;
 	TArray<ABoardPlayer*> BoardPlayersArray;
 

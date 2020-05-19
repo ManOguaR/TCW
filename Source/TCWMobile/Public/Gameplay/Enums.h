@@ -94,50 +94,51 @@ enum class ECardWidgetMovementState : uint8
 	CardMovementState_Return		UMETA(DisplayName = "Return From Preview Destination")
 };
 
-//UENUM(BlueprintType)
-//enum class E3DCardMovementState : uint8
-//{
-//	CardMovementState_Placing			UMETA(DisplayName = "Placing"),
-//	CardMovementState_MoveHome			UMETA(DisplayName = "Move to Home Destination"),
-//	CardMovementState_Moving			UMETA(DisplayName = "Moving to Destination"),
-//	CardMovementState_OnBoard			UMETA(DisplayName = "Placed On Board"),
-//	CardMovementState_Attacking			UMETA(DisplayName = "Attacking"),
-//	CardMovementState_Selected			UMETA(DisplayName = "Selected"),
-//	CardMovementState_Graveyard			UMETA(DisplayName = "Graveyard")
-//};
-//
-//UENUM(BlueprintType)
-//enum class EAbilityTrigger : uint8
-//{
-//	AbilityTrigger_None				UMETA(DisplayName = "None"),
-//	AbilityTrigger_OnDrop			UMETA(DisplayName = "On Drop"),
-//	AbilityTrigger_TurnStart		UMETA(DisplayName = "Start of Turn"),
-//	AbilityTrigger_TurnEnd			UMETA(DisplayName = "End Of Turn"),
-//	AbilityTrigger_DamageTaken		UMETA(DisplayName = "Takes Damage"),
-//	AbilityTrigger_Graveyard		UMETA(DisplayName = "Sent To Graveyard"),
-//	AbilityTrigger_LifeExpectancy	UMETA(DisplayName = "Death by Life Expectancy")
-//};
-//
-//UENUM(BlueprintType)
-//enum class EAbilityType : uint8
-//{
-//	AbilityType_None				UMETA(DisplayName = "None"),
-//	AbilityType_Draw				UMETA(DisplayName = "Draw Card(s)"),
-//	AbilityType_IncreaseAttack		UMETA(DisplayName = "Increase Attack"),
-//	AbilityType_Clone				UMETA(DisplayName = "Clone"),
-//	AbilityType_IncreaseHealth		UMETA(DisplayName = "Increase Player Health"),
-//	AbilityType_Retaliation			UMETA(DisplayName = "Retaliation Damage"),
-//	AbilityType_DamageAll			UMETA(DisplayName = "Damage All Cards on Board"),
-//	AbilityType_SpawnRandom			UMETA(DisplayName = "Spawn Random Card from Deck"),
-//	AbilityType_TurnPointsAll		UMETA(DisplayName = "Give Turn Points to All Active Cards"),
-//	AbilityType_TurnPoints			UMETA(DisplayName = "Increase Turn Points"),
-//	AbilityType_Discard				UMETA(DisplayName = "Discard Cards In Hand"),
-//	AbilityType_GraveyardBoard		UMETA(DisplayName = "Pickup first creature in the graveyard (To Board)"),
-//	AbilityType_GraveyardHand		UMETA(DisplayName = "Pickup first creature in the graveyard (To Hand)"),
-//	AbilityType_Possess				UMETA(DisplayName = "Possess Opponents Card"),
-//	AbilityType_Swap				UMETA(DisplayName = "Swap Cards In Hand")
-//};
-//
+/* Card Ability Enums */
+UENUM(BlueprintType)
+enum class EAbilityTrigger : uint8
+{
+	AbilityTrigger_None				UMETA(DisplayName = "None"),
+	AbilityTrigger_OnDrop			UMETA(DisplayName = "On Drop"),
+	AbilityTrigger_TurnStart		UMETA(DisplayName = "Start of Turn"),
+	AbilityTrigger_TurnEnd			UMETA(DisplayName = "End Of Turn"),
+	AbilityTrigger_DamageTaken		UMETA(DisplayName = "Takes Damage"),
+	AbilityTrigger_Graveyard		UMETA(DisplayName = "Sent To Graveyard"),
+	AbilityTrigger_LifeExpectancy	UMETA(DisplayName = "Death by Life Expectancy")
+};
+
+UENUM(BlueprintType)
+enum class EAbilityType : uint8
+{
+	AbilityType_None				UMETA(DisplayName = "None"),
+	AbilityType_Draw				UMETA(DisplayName = "Draw Card(s)"),
+	AbilityType_IncreaseAttack		UMETA(DisplayName = "Increase Attack"),
+	AbilityType_Clone				UMETA(DisplayName = "Clone"),
+	AbilityType_IncreaseHealth		UMETA(DisplayName = "Increase Player Health"),
+	AbilityType_Retaliation			UMETA(DisplayName = "Retaliation Damage"),
+	AbilityType_DamageAll			UMETA(DisplayName = "Damage All Cards on Board"),
+	AbilityType_SpawnRandom			UMETA(DisplayName = "Spawn Random Card from Deck"),
+	AbilityType_TurnPointsAll		UMETA(DisplayName = "Give Turn Points to All Active Cards"),
+	AbilityType_TurnPoints			UMETA(DisplayName = "Increase Turn Points"),
+	AbilityType_Discard				UMETA(DisplayName = "Discard Cards In Hand"),
+	AbilityType_GraveyardBoard		UMETA(DisplayName = "Pickup first creature in the graveyard (To Board)"),
+	AbilityType_GraveyardHand		UMETA(DisplayName = "Pickup first creature in the graveyard (To Hand)"),
+	AbilityType_Possess				UMETA(DisplayName = "Possess Opponents Card"),
+	AbilityType_Swap				UMETA(DisplayName = "Swap Cards In Hand")
+};
+
+UENUM(BlueprintType)
+enum class E3DCardMovementState : uint8
+{
+	CardMovementState_Placing			UMETA(DisplayName = "Placing"),
+	CardMovementState_MoveHome			UMETA(DisplayName = "Move to Home Destination"),
+	CardMovementState_Moving			UMETA(DisplayName = "Moving to Destination"),
+	CardMovementState_OnBoard			UMETA(DisplayName = "Placed On Board"),
+	CardMovementState_Attacking			UMETA(DisplayName = "Attacking"),
+	CardMovementState_Selected			UMETA(DisplayName = "Selected"),
+	CardMovementState_Graveyard			UMETA(DisplayName = "Graveyard")
+};
+
 //UENUM(BlueprintType)
 //enum class ECardPlayConditions : uint8
 //{

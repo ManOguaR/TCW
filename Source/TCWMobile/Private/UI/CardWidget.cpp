@@ -3,6 +3,7 @@
 
 #include "CardWidget.h"
 #include "CardManager.h"
+#include "GameUI.h"
 #include "MiscFunctionLibrary.h"
 #include "TCWGameInstance.h"
 

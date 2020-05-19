@@ -6,6 +6,8 @@
 #include "../TCWMobile.h"
 #include "AIGamePawn.h"
 #include "AIPlayerController.h"
+#include "TCWGameMode.h"
+#include "TCWPlayerController.h"
 
 // Define the namespace to use with LOCTEXT
 // This is only valid within a single file, and must be undefined before the end of the file
@@ -64,6 +66,16 @@ AAIPlayerController* UControllerFunctionLibrary::GetAiControllerReference(AContr
 			isValid = true;
 			return aiController;
 		}
+	}
+
+	return nullptr;
+}
+
+AController* UControllerFunctionLibrary::GetControllerReferenceFromID(int32 controllerId)
+{
+	if (ATCWGameMode* gMode = Cast<ATCWGameMode>(UGameplayStatics::GetGameMode(nullptr)))
+	{
+		return gMode->GameControllersArray[controllerId];
 	}
 
 	return nullptr;

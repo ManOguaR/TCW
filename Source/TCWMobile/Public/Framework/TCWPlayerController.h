@@ -5,20 +5,21 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 
-#include "BoardPlayer.h"
 #include "CardsInHandInterface.h"
 #include "ControllerInterface.h"
-#include "CountdownTimer.h"
 #include "DeckInterface.h"
 #include "Enums.h"
 #include "GameStateInterface.h"
-#include "GameUI.h"
-#include "OpponentUI.h"
-#include "TCWGameState.h"
-#include "TCWPawn.h"
-#include "TCWPlayerState.h"
 
 #include "TCWPlayerController.generated.h"
+
+class ABoardPlayer;
+class UCountdownTimer;
+class UGameUI;
+class UOpponentUI;
+class ATCWGameState;
+class ATCWPawn;
+class ATCWPlayerState;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWPlayerControllerEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTCWPlayerControllerBoolEvent, bool, value);
@@ -60,6 +61,9 @@ public:
 		FCountdownTimerEvent OnSetCountdownTimer;
 	UPROPERTY(BlueprintCallable, Category = "Client Events")
 		FControllerMessageEvent OnCreateDisplayMessage;
+
+	UPROPERTY(BlueprintCallable, Category = "Client Events")
+		FTCWPlayerControllerEvent OnSpawnAIOpponent;
 
 	UPROPERTY(BlueprintCallable, Category = "Server Events")
 		FTCWPlayerControllerEvent OnServerSetupDeck;
@@ -141,7 +145,7 @@ public:
 		void SetTimer(int32 time);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		ABoardUnit* CreatePlayableCard(FTransform spawnTransform);
+		ABoardUnit* CreatePlayableUnit(FTransform spawnTransform);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		bool AddCardToPlayersHand(FName cardName);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -189,6 +193,9 @@ private:
 	UFUNCTION(Client, Unreliable)
 		void CreateDisplayMessage(const FString& message, FLinearColor color, bool toScreen, float duration, bool toLog);
 
+	UFUNCTION(Server, Unreliable)
+		void SpawnAIOpponent();
+	
 	UFUNCTION(Server, Unreliable)
 		void ServerSetupDeck();
 	UFUNCTION(Server, Reliable)

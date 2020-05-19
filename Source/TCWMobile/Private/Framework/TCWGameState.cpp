@@ -29,6 +29,8 @@ void ATCWGameState::BeginPlay()
 void ATCWGameState::BeginPlay_Delayed()
 {
 	GameModeRef = Cast<ATCWGameMode>(UGameplayStatics::GetGameMode(this));
+	CompilePlacementsPerPlayer();
+	GetGraveyardReferencePerPlayer();
 }
 
 UBoardState* ATCWGameState::GetBoardState(int32 playerID)
@@ -103,17 +105,62 @@ void ATCWGameState::SetPlayerTurnsActive()
 {
 	for (AController* controller : GameModeRef->GetGameControllersArray())
 	{
-		//controller->ChangeActivePlayerTurn(PlayerTurnArray[0] == controller);
+		if (IGameStateInterface* contInterface = Cast<IGameStateInterface>(controller))
+		{
+			contInterface->ChangeActivePlayerTurn(PlayerTurnArray[0] == controller);
+		}
 
 		if (PlayerTurnArray[0] == controller)
 		{
-			//BeginPlayerTurn(UControllerFunctionLibrary::GetControllerId(controller));
+			BeginPlayerTurn(UControllerFunctionLibrary::GetControllerId(controller));
 		}
 		else
 		{
-			//EndPlayerTurn(UControllerFunctionLibrary::GetControllerId(controller));
+			EndPlayerTurn(UControllerFunctionLibrary::GetControllerId(controller));
 		}
 	}
 
-	//ResetTurnTimer();
+	ResetTurnTimer();
+}
+
+void ATCWGameState::BeginPlayerTurn(int32 playerId)
+{
+	if (HasAuthority())
+	{
+		TArray<ABoardUnit*> playerUnits = GetBoardState(playerId)->PlayerUnits;
+
+		for (ABoardUnit* each : playerUnits)
+		{
+			each->OnActivePlayerTurn();
+		}
+	}
+}
+
+void ATCWGameState::EndPlayerTurn(int32 playerId)
+{
+	if (HasAuthority())
+	{
+		TArray<ABoardUnit*> playerUnits = GetBoardState(playerId)->PlayerUnits;
+
+		for (ABoardUnit* each : playerUnits)
+		{
+			each->OnEndActivePlayerTurn();
+		}
+	}
+}
+
+void ATCWGameState::ResetTurnTimer()
+{
+	TurnTimeSeconds = turnDurationSeconds;
+	TurnTimeMinutes = turnDurationMinutes;
+}
+
+void ATCWGameState::CompilePlacementsPerPlayer()
+{
+	//TODO: ATCWGameState::CompilePlacementsPerPlayer
+}
+
+void ATCWGameState::GetGraveyardReferencePerPlayer()
+{
+
 }

@@ -24,7 +24,7 @@ class TCWMOBILE_API IControllerInterface
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		ABoardUnit* CreatePlayableCard(FTransform spawnTransform);
+		ABoardUnit* CreatePlayableUnit(FTransform spawnTransform);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		bool AddCardToPlayersHand(FName cardName);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

@@ -11,7 +11,6 @@ public class TCWMobile : ModuleRules
         PublicIncludePaths.AddRange(
             new string[] {
                 "TCWMobile/Public/AI",
-                "TCWMobile/Public/Components",
                 "TCWMobile/Public/Interfaces",
                 "TCWMobile/Public/Framework",
                 "TCWMobile/Public/Gameplay",
@@ -25,8 +24,8 @@ public class TCWMobile : ModuleRules
             new string[] {
                 "TCWMobile/Private/AI",
                 "TCWMobile/Private/Interfaces",
-                "TCWMobile/Private/Components",
                 "TCWMobile/Private/Framework",
+                "TCWMobile/Private/Gameplay",
                 "TCWMobile/Private/System",
                 "TCWMobile/Private/UI",
                 // ... add other private include paths required here ...
