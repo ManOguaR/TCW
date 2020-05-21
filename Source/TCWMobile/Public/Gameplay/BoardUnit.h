@@ -189,6 +189,9 @@ private:
 		void OpenGate();
 	UFUNCTION()
 		void CloseGate();
+	
+	UFUNCTION()
+		void ArrivedAtDestination();
 
 	void SetUnitData(FName cardName, ECardSet cardSet, FCardData dataStruct, bool setUnitDataFromStruct);
 	void SetUnitVisuals();
@@ -200,5 +203,4 @@ private:
 	FRotator InterpSelfToRotation(bool& arrived);
 	FVector InterpSelfToLocation(bool& arrived);
 
-	void ArrivedAtDestination();
 };

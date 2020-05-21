@@ -35,10 +35,10 @@ public:
 		static FString GetProjectVersion();
 
 	UFUNCTION(BlueprintCallable)
-		static void ToggleFriendsWindow();
-
-	UFUNCTION(BlueprintCallable)
 		static void ShowEndGameDialog(UObject* callerObject, FDialogWindowResponseEvent responseDelegate);
+
+	//UFUNCTION(BlueprintCallable)
+	//	static void ShowDeckSelectionWindow(UObject* callerObject, FSimpleDelegate closeDelegate);
 
 	UFUNCTION(BlueprintCallable)
 		static void DisplayError(UObject* callerObject, FString Message, float Duration = 3.0f);

@@ -49,9 +49,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	void AddToGraveyard(ABoardUnit* boardUnit, FName name);
-	void AddToGraveyardVisual();
-	void RemoveCardFromGraveyardEvent(FName card, int32 index);
+	UFUNCTION()
+		void AddToGraveyard(ABoardUnit* boardUnit, FName name);
+	UFUNCTION()
+		void AddToGraveyardVisual();
+	UFUNCTION()
+		void RemoveCardFromGraveyardEvent(FName card, int32 index);
 	void RemoveCardFromGraveyard(FName card, int32 index);
 	void HideUnseenCardsInGraveyard();
 	void RecreateTopGraveyardCardActor();

@@ -38,6 +38,7 @@ UCLASS()
 class TCWMOBILE_API UDialogWindow : public UPopupWindow
 {
 	GENERATED_BODY()
+
 public:
 	UDialogWindow(const FObjectInitializer& ObjectInitializer);
 
@@ -45,8 +46,6 @@ protected:
 	void NativeDestruct() override;
 	virtual void OnCloseButtonClickedInternal() override;
 
-	//UFUNCTION(BlueprintCallable)
-	//	FDialogWindowResponse GetResponse();
 	UFUNCTION()
 		virtual void ShowDialog(FDialogButtonsButtons buttons, FText message);
 
