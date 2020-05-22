@@ -44,7 +44,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Loading Events")
 		FTCWGameInstanceEvent OnLoadingScreenSplashCompleted;
 
-	UPROPERTY(BlueprintAssignable, Category = "Loading Events")
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Collection Manager Events")
+		FTCWGameInstanceEvent OnShowCollectionManager;
+	UPROPERTY(BlueprintAssignable, Category = "Collection Manager Events")
+		FTCWGameInstanceEvent OnShowCollectionManagerCompleted;
+
+	UPROPERTY(BlueprintAssignable, Category = "Game Events")
 		FTCWGameInstanceEvent OnHostGameEvent;
 
 	UPROPERTY(BlueprintReadWrite, Category = "TCW Game System")
@@ -78,6 +83,8 @@ private:
 		void ShowMainMenu();
 	UFUNCTION()
 		void ShowLoadingScreen();
+	UFUNCTION()
+		void ShowCollectionManager();
 	UFUNCTION()
 		void HostGame();
 

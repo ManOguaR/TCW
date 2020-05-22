@@ -2,15 +2,17 @@
 
 
 #include "DialogWindow.h"
-#include "UObject/ConstructorHelpers.h"
+#include "HexUIButton.h"
 #include "MiscFunctionLibrary.h"
-#include "Components/TextBlock.h"
+
 #include "Blueprint/WidgetTree.h"
+#include "Components/TextBlock.h"
 #include "Engine/Texture2D.h"
 #include "Engine/World.h"
-#include "SlateGlobals.h"
 #include "Components/Widget.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "UObject/ConstructorHelpers.h"
+#include "SlateGlobals.h"
 
 // Define the namespace to use with LOCTEXT
 // This is only valid within a single file, and must be undefined before the end of the file

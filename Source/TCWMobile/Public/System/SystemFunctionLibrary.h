@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
+#include "DeckSelectionWindow.h"
 #include "DialogWindow.h"
 #include "SystemEnums.h"
 #include "TCWGameInstance.h"
@@ -37,8 +38,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		static void ShowEndGameDialog(UObject* callerObject, FDialogWindowResponseEvent responseDelegate);
 
-	//UFUNCTION(BlueprintCallable)
-	//	static void ShowDeckSelectionWindow(UObject* callerObject, FSimpleDelegate closeDelegate);
+	UFUNCTION(BlueprintCallable)
+		static void ShowDeckSelectionWindow(UObject* callerObject, FDeckSelectionResponseEvent closeDelegate);
 
 	UFUNCTION(BlueprintCallable)
 		static void DisplayError(UObject* callerObject, FString Message, float Duration = 3.0f);

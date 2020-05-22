@@ -14,6 +14,7 @@ UTCWGameInstance::UTCWGameInstance(const FObjectInitializer& ObjectInitializer) 
 	OnShowMainMenu.AddDynamic(this, &UTCWGameInstance::ShowMainMenu);
 	OnShowLoadingScreen.AddDynamic(this, &UTCWGameInstance::ShowLoadingScreen);
 	OnHostGameEvent.AddDynamic(this, &UTCWGameInstance::HostGame);
+	OnShowCollectionManager.AddDynamic(this, &UTCWGameInstance::ShowCollectionManager);
 }
 
 EPlatform UTCWGameInstance::GetCurrentPlatform(bool& isMobile)
@@ -119,6 +120,29 @@ void UTCWGameInstance::ShowLoadingScreen()
 	//SIGNAL STEP COMPLETED
 	if (OnLoadingScreenSplashCompleted.IsBound())
 		OnLoadingScreenSplashCompleted.Broadcast();
+}
+
+void UTCWGameInstance::ShowCollectionManager()
+{
+	MoveToGameState(EGameState::GameState_DeckBuilding);
+
+	if (UMiscFunctionLibrary::CanExecuteCosmeticEvents(this))
+	{
+		if (!DeckBuilderWidgetRef->IsValidLowLevel())
+		{
+			FStringClassReference MyWidgetClassRef(TEXT("/Game/Blueprints/Widgets/CollectionManager/CollectionManagerWidget.CollectionManagerWidget_C"));
+			if (UClass* widgetClass = MyWidgetClassRef.TryLoadClass<UUserWidget>())
+			{
+				LoadingScreenWidgetRef = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
+			}
+		}
+
+		LoadingScreenWidgetRef->AddToViewport(5);
+	}
+
+	//SIGNAL STEP COMPLETED
+	if (OnShowCollectionManagerCompleted.IsBound())
+		OnShowCollectionManagerCompleted.Broadcast();
 }
 
 void UTCWGameInstance::HostGame()

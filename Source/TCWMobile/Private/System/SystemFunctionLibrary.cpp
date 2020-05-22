@@ -8,6 +8,7 @@
 
 #include "../TCWMobile.h"
 #include "DisplayMessage.h"
+#include "DeckSelectionWindow.h"
 
 USystemFunctionLibrary::USystemFunctionLibrary(const FObjectInitializer& ObjectInitializer) : UBlueprintFunctionLibrary(ObjectInitializer)
 {
@@ -55,20 +56,19 @@ void USystemFunctionLibrary::ShowEndGameDialog(UObject* callerObject, FDialogWin
 	}
 }
 
-//void USystemFunctionLibrary::ShowDeckSelectionWindow(UObject* callerObject, FSimpleDelegate closeDelegate)
-//{
-//	//../Game/Blueprints/Widgets/Extras/DisplayMessageBP.uasset
-//	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/DialogWindowBP.DialogWindowBP_C"));
-//	if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UDialogWindow>())
-//	{
-//		UDialogWindow* dialogWindow = CreateWidget<UDialogWindow>(UGameplayStatics::GetPlayerController(callerObject, 0), widgetClass);
-//
-//		//dialogWindow->OnDialogCompleted = responseDelegate;
-//		dialogWindow->AddToViewport(1000);
-//		dialogWindow->OnShowDialog.ExecuteIfBound(FDialogButtonsButtons::DialogButtons_YesNo, NSLOCTEXT("SystemStrings", "EndGameDialog_Message", "Are you sure?"));
-//		//popupMessage->OnDisplayMessage.Broadcast(Message, SpecifiedColor, Duration);
-//	}
-//}
+void USystemFunctionLibrary::ShowDeckSelectionWindow(UObject* callerObject, FDeckSelectionResponseEvent closeDelegate)
+{
+	//../Game/Blueprints/Widgets/MainMenu/DeckSelectionWidget.uasset
+	FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/DeckSelectionWidget.DeckSelectionWidget_C"));
+	if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UDeckSelectionWindow>())
+	{
+		UDeckSelectionWindow* deckWindow = CreateWidget<UDeckSelectionWindow>(UGameplayStatics::GetPlayerController(callerObject, 0), widgetClass);
+
+		deckWindow->OnWindowClosed = closeDelegate;
+		deckWindow->AddToViewport(1000);
+		deckWindow->OnDisplayWindow.Broadcast();
+	}
+}
 
 #pragma region Display System Message
 void USystemFunctionLibrary::DisplayError(UObject* callerObject, FString Message, float Duration)

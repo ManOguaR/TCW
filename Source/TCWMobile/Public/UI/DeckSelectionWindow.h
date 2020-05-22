@@ -6,7 +6,10 @@
 #include "Blueprint/UserWidget.h"
 #include "DeckSelectionWindow.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE(FDeckSelectionEvent);
+class UHexUIButton;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeckSelectionEvent);
+DECLARE_DYNAMIC_DELEGATE(FDeckSelectionResponseEvent);
 
 /**
  * 
@@ -21,14 +24,30 @@ public:
 
 protected:
 	void NativeDestruct() override;
-	//virtual void OnCloseButtonClickedInternal() override;
 
-//private:
-//	FScriptDelegate OnAcceptButtonClicked;
-//	FScriptDelegate OnCancelButtonClicked;
+	UFUNCTION()
+		void DisplayWindow();
+	UFUNCTION()
+		void OnCloseButtonClickedInternal();
+
+private:
+	FScriptDelegate OnCloseWindowClicked;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Events")
-		FDeckSelectionEvent OnWindowClosed;
+		FDeckSelectionResponseEvent OnWindowClosed;
+
+	UPROPERTY(BlueprintCallable, Category = "Events")
+		FDeckSelectionEvent OnDisplayWindow;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UHexUIButton* CloseWindowButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidgetAnim))
+		UWidgetAnimation* DisplaySelf;
+
+private:
+	void OnCloseButtonClicked_Delayed();
+	void OnCloseButtonClicked_Callback();
 
 };

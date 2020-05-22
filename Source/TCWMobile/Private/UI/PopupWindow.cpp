@@ -1,7 +1,9 @@
 // Copyrigth (c) 2020 Softwar 19.23 NGS. All rigths reserved. 
 
 #include "PopupWindow.h"
+#include "HexUIButton.h"
 #include "MiscFunctionLibrary.h"
+
 #include "Kismet/KismetSystemLibrary.h"
 
 UPopupWindow::UPopupWindow(const FObjectInitializer& ObjectInitializer) : UUserWidget(ObjectInitializer)

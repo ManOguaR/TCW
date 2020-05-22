@@ -23,7 +23,7 @@ enum class EGameState : uint8
 	GameState_LoadingScreen		UMETA(DisplayName = "Loading Screen"),
 	GameState_Playing			UMETA(DisplayName = "Playing"),
 	GameState_Store				UMETA(DisplayName = "Store (Coming Soon)"),
-	GameState_DeckBuilding		UMETA(DisplayName = "DeckBuilding (Coming Soon)")
+	GameState_DeckBuilding		UMETA(DisplayName = "DeckBuilding")
 };
 
 UENUM(BlueprintType)

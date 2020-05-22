@@ -5,9 +5,10 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/NamedSlot.h"
-#include "HexUIButton.h"
 
 #include "PopupWindow.generated.h"
+
+class UHexUIButton;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPopupWindowEvent, UWidget*, contentWidget);
 
