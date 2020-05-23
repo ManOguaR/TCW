@@ -2,6 +2,7 @@
 
 #include "PlayFabManager.h"
 #include "../TCWMobile.h"
+#include "Account/SocialStructs.h"
 #include "SystemFunctionLibrary.h"
 #include "MiscFunctionLibrary.h"
 
@@ -301,9 +302,9 @@ void UPlayFabManager::SetPlayerStats()
 		PlayFab::ClientModels::FStatisticUpdate(),// { StatisticName = "", Value = "" }
 	};
 	clientAPI->UpdatePlayerStatistics(request,
-		PlayFab::UPlayFabClientAPI::FUpdatePlayerStatisticsDelegate::CreateUObject(this,&UPlayFabManager::OnUpdatePlayerStatsSuccess),
-			PlayFab::FPlayFabErrorDelegate::CreateUObject(this, &UPlayFabManager::OnPlayerStatsError)
-		);
+		PlayFab::UPlayFabClientAPI::FUpdatePlayerStatisticsDelegate::CreateUObject(this, &UPlayFabManager::OnUpdatePlayerStatsSuccess),
+		PlayFab::FPlayFabErrorDelegate::CreateUObject(this, &UPlayFabManager::OnPlayerStatsError)
+	);
 }
 
 void UPlayFabManager::OnGetPlayerStatsSuccess(const PlayFab::ClientModels::FGetPlayerStatisticsResult& Result)
@@ -366,15 +367,15 @@ void UPlayFabManager::OnGetPlayerFriendsListSuccess(const PlayFab::ClientModels:
 {
 	for (PlayFab::ClientModels::FFriendInfo each : Result.Friends)
 	{
-		each.FacebookInfo;
-		each.FriendPlayFabId;
-		each.GameCenterInfo;
-		each.Profile;
-		each.PSNInfo;
-		each.SteamInfo;
-		each.TitleDisplayName;
-		each.Username;
-		each.XboxInfo;
+		FPlayerFriend friendObj = FPlayerFriend(each.FriendPlayFabId);
+		//each.FacebookInfo;
+		//each.GameCenterInfo;
+		//each.Profile;
+		//each.PSNInfo;
+		//each.SteamInfo;
+		//each.Username;
+		friendObj.UserName = each.TitleDisplayName;
+		//each.XboxInfo;
 	}
 }
 

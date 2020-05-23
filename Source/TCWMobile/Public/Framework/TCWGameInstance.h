@@ -35,9 +35,11 @@ public:
 		FTCWGameInstanceEvent OnStartupSplashCompleted;
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Menu Events")
+		FTCWGameInstanceEvent OnLoadMainMenu;
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Menu Events")
 		FTCWGameInstanceEvent OnShowMainMenu;
 	UPROPERTY(BlueprintAssignable, Category = "Menu Events")
-		FTCWGameInstanceEvent OnMainMenuSplashCompleted;
+		FTCWGameInstanceEvent OnShowMainMenuCompleted;
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Loading Events")
 		FTCWGameInstanceEvent OnShowLoadingScreen;
@@ -79,6 +81,8 @@ public:
 private:
 	UFUNCTION()
 		void Startup();
+	UFUNCTION()
+		void LoadMainMenu();
 	UFUNCTION()
 		void ShowMainMenu();
 	UFUNCTION()

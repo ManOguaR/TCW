@@ -11,6 +11,7 @@
 UTCWGameInstance::UTCWGameInstance(const FObjectInitializer& ObjectInitializer) : UGameInstance(ObjectInitializer)
 {
 	OnStartup.AddDynamic(this, &UTCWGameInstance::Startup);
+	OnLoadMainMenu.AddDynamic(this, &UTCWGameInstance::LoadMainMenu);
 	OnShowMainMenu.AddDynamic(this, &UTCWGameInstance::ShowMainMenu);
 	OnShowLoadingScreen.AddDynamic(this, &UTCWGameInstance::ShowLoadingScreen);
 	OnHostGameEvent.AddDynamic(this, &UTCWGameInstance::HostGame);
@@ -67,37 +68,38 @@ void UTCWGameInstance::Startup()
 		OnStartupSplashCompleted.Broadcast();
 }
 
-void UTCWGameInstance::ShowMainMenu()
+void UTCWGameInstance::LoadMainMenu()
 {
-	if (CurrentGameState == EGameState::GameState_Playing)
-		//../Game/Maps/MainMenu
-		UGameplayStatics::OpenLevel(this, "MainMenu");
-
 	if (MoveToGameState(EGameState::GameState_MainMenu))
-	{
-		if (UMiscFunctionLibrary::CanExecuteCosmeticEvents(this))
-		{
-			if (!MainMenuWidgetRef->IsValidLowLevel())
-			{
-				//../Game/Blueprints/Widgets/MainMenu/MainMenuWidget.uasset
-				FStringClassReference MyWidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/MainMenuWidget.MainMenuWidget_C"));
-				if (UClass* widgetClass = MyWidgetClassRef.TryLoadClass<UUserWidget>())
-				{
-					MainMenuWidgetRef = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
-				}
-			}
-
-			MainMenuWidgetRef->AddToViewport(5);
-		}
-	}
+		UGameplayStatics::OpenLevel(this, "MainMenu");
 
 	//DESTROY PENDING SESSIONS IF ANY
 	if (SessionManager->HasActiveSession())
 		SessionManager->DestroyPlayerSession(UGameplayStatics::GetPlayerController(this, 0));
+}
+
+void UTCWGameInstance::ShowMainMenu()
+{
+	MoveToGameState(EGameState::GameState_MainMenu);
+
+	if (UMiscFunctionLibrary::CanExecuteCosmeticEvents(this))
+	{
+		if (!MainMenuWidgetRef->IsValidLowLevel())
+		{
+			//../Game/Blueprints/Widgets/MainMenu/MainMenuWidget.uasset
+			FStringClassReference MyWidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/MainMenuWidget.MainMenuWidget_C"));
+			if (UClass* widgetClass = MyWidgetClassRef.TryLoadClass<UUserWidget>())
+			{
+				MainMenuWidgetRef = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
+			}
+		}
+
+		MainMenuWidgetRef->AddToViewport(5);
+	}
 
 	//SIGNAL STEP COMPLETED
-	if (OnMainMenuSplashCompleted.IsBound())
-		OnMainMenuSplashCompleted.Broadcast();
+	if (OnShowMainMenuCompleted.IsBound())
+		OnShowMainMenuCompleted.Broadcast();
 }
 
 void UTCWGameInstance::ShowLoadingScreen()
