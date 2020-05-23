@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/NamedSlot.h"
+#include "Components/Border.h"
 
 #include "PopupWindow.generated.h"
 
@@ -44,7 +44,7 @@ public:
 		UWidgetAnimation* DisplaySelf;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		UNamedSlot* ContentSlot;
+		UBorder* ContentBorder;
 
 private:
 	void OnCloseButtonClicked_Delayed();

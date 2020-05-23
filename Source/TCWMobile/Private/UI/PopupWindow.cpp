@@ -15,7 +15,7 @@ UPopupWindow::UPopupWindow(const FObjectInitializer& ObjectInitializer) : UUserW
 
 void UPopupWindow::NativeDestruct()
 {
-	ContentSlot->ClearChildren();
+	ContentBorder->ClearChildren();
 	CloseWindowButton->OnClicked.Remove(OnCloseWindowClicked);
 }
 
@@ -26,7 +26,7 @@ void UPopupWindow::DisplayPopupWindow(UWidget* contentWidget)
 	if (contentWidget->IsValidLowLevel())
 	{
 		//contentWidget->Register();
-		ContentSlot->AddChild(contentWidget);
+		ContentBorder->AddChild(contentWidget);
 		//this->UpdateRenderTransform();
 	}
 	PlayAnimation(DisplaySelf);

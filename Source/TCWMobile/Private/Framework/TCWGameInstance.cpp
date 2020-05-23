@@ -14,7 +14,8 @@ UTCWGameInstance::UTCWGameInstance(const FObjectInitializer& ObjectInitializer) 
 	OnShowMainMenu.AddDynamic(this, &UTCWGameInstance::ShowMainMenu);
 	OnShowLoadingScreen.AddDynamic(this, &UTCWGameInstance::ShowLoadingScreen);
 	OnHostGameEvent.AddDynamic(this, &UTCWGameInstance::HostGame);
-	OnShowCollectionManager.AddDynamic(this, &UTCWGameInstance::ShowCollectionManager);
+	OnLoadCollectionManager.AddDynamic(this, &UTCWGameInstance::LoadCollectionManager);
+	OnCollectionManagerLoaded.AddDynamic(this, &UTCWGameInstance::CollectionManagerLoaded);
 }
 
 EPlatform UTCWGameInstance::GetCurrentPlatform(bool& isMobile)
@@ -122,10 +123,19 @@ void UTCWGameInstance::ShowLoadingScreen()
 		OnLoadingScreenSplashCompleted.Broadcast();
 }
 
-void UTCWGameInstance::ShowCollectionManager()
+void UTCWGameInstance::LoadCollectionManager()
 {
-	MoveToGameState(EGameState::GameState_DeckBuilding);
+	if (MoveToGameState(EGameState::GameState_DeckBuilding))
+		//../Game/Maps/DeckBuilding
+		UGameplayStatics::OpenLevel(this, "CollectionManager");
 
+	//DESTROY PENDING SESSIONS IF ANY
+	if (SessionManager->HasActiveSession())
+		SessionManager->DestroyPlayerSession(UGameplayStatics::GetPlayerController(this, 0));
+}
+
+void UTCWGameInstance::CollectionManagerLoaded()
+{
 	if (UMiscFunctionLibrary::CanExecuteCosmeticEvents(this))
 	{
 		if (!DeckBuilderWidgetRef->IsValidLowLevel())
@@ -133,16 +143,12 @@ void UTCWGameInstance::ShowCollectionManager()
 			FStringClassReference MyWidgetClassRef(TEXT("/Game/Blueprints/Widgets/CollectionManager/CollectionManagerWidget.CollectionManagerWidget_C"));
 			if (UClass* widgetClass = MyWidgetClassRef.TryLoadClass<UUserWidget>())
 			{
-				LoadingScreenWidgetRef = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
+				DeckBuilderWidgetRef = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
 			}
 		}
 
-		LoadingScreenWidgetRef->AddToViewport(5);
+		DeckBuilderWidgetRef->AddToViewport(5);
 	}
-
-	//SIGNAL STEP COMPLETED
-	if (OnShowCollectionManagerCompleted.IsBound())
-		OnShowCollectionManagerCompleted.Broadcast();
 }
 
 void UTCWGameInstance::HostGame()
@@ -199,7 +205,7 @@ bool UTCWGameInstance::MoveToGameState(EGameState inState)
 				break;
 			}
 		}
-		// SETUP NEW STATE
+		// SETUP NEW 
 		CurrentGameState = inState;
 
 		//State has changed

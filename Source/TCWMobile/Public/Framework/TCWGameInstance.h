@@ -45,9 +45,9 @@ public:
 		FTCWGameInstanceEvent OnLoadingScreenSplashCompleted;
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Collection Manager Events")
-		FTCWGameInstanceEvent OnShowCollectionManager;
-	UPROPERTY(BlueprintAssignable, Category = "Collection Manager Events")
-		FTCWGameInstanceEvent OnShowCollectionManagerCompleted;
+		FTCWGameInstanceEvent OnLoadCollectionManager;
+	UPROPERTY(BlueprintCallable, Category = "Collection Manager Events")
+		FTCWGameInstanceEvent OnCollectionManagerLoaded;
 
 	UPROPERTY(BlueprintAssignable, Category = "Game Events")
 		FTCWGameInstanceEvent OnHostGameEvent;
@@ -84,7 +84,9 @@ private:
 	UFUNCTION()
 		void ShowLoadingScreen();
 	UFUNCTION()
-		void ShowCollectionManager();
+		void LoadCollectionManager();
+	UFUNCTION()
+		void CollectionManagerLoaded();
 	UFUNCTION()
 		void HostGame();
 
@@ -105,7 +107,8 @@ private:
 	UUserWidget* DeckBuilderWidgetRef;
 	UUserWidget* StartupWidgetRef;
 
-	bool MoveToGameState(EGameState inState);
+	UFUNCTION()
+		bool MoveToGameState(EGameState inState);
 
 public:
 	void Init() final;

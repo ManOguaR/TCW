@@ -16,10 +16,11 @@ struct FPlayerFriend
 	
 public:
     FPlayerFriend() : 
-        FPlayerFriend(TEXT("Empty")) { };
+        FPlayerFriend(TEXT("Empty"), -1) { };
 
-	FPlayerFriend(FString playFabId) :
-		PlayFabId(playFabId) { };
+	FPlayerFriend(FString playFabId, int32 index) :
+        UserIndex(index),PlayFabId(playFabId)
+        { };
 
     UPROPERTY(VisibleAnywhere, Category = "System")
         uint32 UserIndex;

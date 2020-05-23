@@ -15,8 +15,8 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLoginDialogEvent);
 
 /**
- * 
- */
+*
+*/
 UCLASS()
 class TCWMOBILE_API ULoginDialog : public UPopupWindow
 {
