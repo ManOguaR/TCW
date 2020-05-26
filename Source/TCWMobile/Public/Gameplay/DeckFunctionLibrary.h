@@ -28,7 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		static FName GetCardFromDeck(TArray<FName> deck, int32 index, bool lastIndex);
 	UFUNCTION(BlueprintCallable)
-		static int32 FindCardInArray(FName cardName, TArray<FName> cardArray, TArray<int32> indexesArray);
+		static int32 FindCardInArray(FName cardName, TArray<FName> cardArray, TArray<int32>& indexesArray);
 	UFUNCTION(BlueprintCallable)
 		static TArray<FName> GetAllCardsInActiveSet(ECardSet cardset);
 	UFUNCTION(BlueprintCallable)

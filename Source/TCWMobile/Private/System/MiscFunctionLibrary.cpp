@@ -6,6 +6,11 @@
 #include "Engine.h"
 #include "Kismet/KismetMathLibrary.h"
 
+UMiscFunctionLibrary::UMiscFunctionLibrary(const FObjectInitializer& ObjectInitializer) : UBlueprintFunctionLibrary(ObjectInitializer)
+{
+
+}
+
 UWorld* UMiscFunctionLibrary::GetWorldReference()
 {
 	UWorld* PIE = nullptr;
@@ -62,4 +67,15 @@ FWidgetTransform UMiscFunctionLibrary::InterpToGoalLocation2D(FWidgetTransform c
 float UMiscFunctionLibrary::ModifyDPIScaling(UObject* callerObject, float value, bool invertDPIScaling)
 {
 	return (invertDPIScaling ? (value * ((1.0f - UWidgetLayoutLibrary::GetViewportScale(callerObject)) + 1.0f)) : (value / ((1.0f - UWidgetLayoutLibrary::GetViewportScale(callerObject)) + 1.0f)));
+}
+
+FVector2D UMiscFunctionLibrary::GetMousePositionInRange(UObject* callerObject, FVector2D sizeOffset, float globalEdgeOffset, float XEdgeOffset, float YEdgeOffset)
+{
+	float locationX, locationY;
+	UGameplayStatics::GetPlayerController(callerObject, 0)->GetMousePosition(locationX, locationY);
+	FVector2D viewPortSize = UWidgetLayoutLibrary::GetViewportSize(callerObject);
+	float literal = UKismetSystemLibrary::MakeLiteralFloat(globalEdgeOffset);
+
+
+	return FVector2D(FMath::Clamp(locationX, literal, ((viewPortSize.X - literal) - (sizeOffset.X + XEdgeOffset))), (FMath::Clamp(locationY, (literal + sizeOffset.Y), (viewPortSize.Y - literal) - (sizeOffset.Y - YEdgeOffset)) - YEdgeOffset));
 }

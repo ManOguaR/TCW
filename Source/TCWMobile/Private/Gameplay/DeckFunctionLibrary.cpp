@@ -72,7 +72,7 @@ FName UDeckFunctionLibrary::GetCardFromDeck(TArray<FName> deck, int32 index, boo
 	return FName();
 }
 
-int32 UDeckFunctionLibrary::FindCardInArray(FName cardName, TArray<FName> cardArray, TArray<int32> indexesArray)
+int32 UDeckFunctionLibrary::FindCardInArray(FName cardName, TArray<FName> cardArray, TArray<int32>& indexesArray)
 {
 	//TODO: UDeckFunctionLibrary::FindCardInArray
 	return int32();

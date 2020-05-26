@@ -191,8 +191,11 @@ public:
 	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
 		ECardType Type;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
-		ECardRarity Rarity;
+    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+        ECardRarity Rarity;
+
+    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+        ECardColor Color;
 
 	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
 		bool Special;

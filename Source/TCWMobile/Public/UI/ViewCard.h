@@ -16,6 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FViewCardEvent);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FViewCardInitEvent, FName, name, ECardSet, cardRace, UUserWidget*, callingWidgetParent, ABoardUnit*, unitParent, bool, isPreview);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FViewCardFacedownEvent, bool, enableFacedown);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FViewCardHaloEvent, ESlateVisibility, cardVisibility, FLinearColor, inColorAndOpacity);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FViewCardDataEvent, FName, cardName, ECardSet, cardSet);
 
 /**
  *
@@ -37,6 +38,8 @@ public:
 		FViewCardFacedownEvent OnSetFacedown;
 	UPROPERTY(BlueprintCallable, Category = "Card Events")
 		FViewCardHaloEvent OnSetCardHalo;
+	UPROPERTY(BlueprintCallable, Category = "Card Events")
+		FViewCardDataEvent OnSetCardData;
 
 protected:
 	FVector2D CardSize;
@@ -61,8 +64,8 @@ private:
 		void SetFacedown(bool enableFacedown);
 	UFUNCTION()
 		void SetCardHalo(ESlateVisibility cardVisibility, FLinearColor inColorAndOpacity);
-
-	void SetCardData(FName cardName, ECardSet cardSet);
+	UFUNCTION()
+		void SetCardData(FName cardName, ECardSet cardSet);
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))

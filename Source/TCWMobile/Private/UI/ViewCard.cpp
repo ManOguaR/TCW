@@ -10,6 +10,7 @@ UViewCard::UViewCard(const FObjectInitializer& ObjectInitializer) : UUserWidget(
 	OnInitiateCard.AddDynamic(this, &UViewCard::InitiateCard);
 	OnSetFacedown.AddDynamic(this, &UViewCard::SetFacedown);
 	OnSetCardHalo.AddDynamic(this, &UViewCard::SetCardHalo);
+	OnSetCardData.AddDynamic(this, &UViewCard::SetCardData);
 }
 
 void UViewCard::NativeOnFocusLost(const FFocusEvent& InFocusEvent)

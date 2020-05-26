@@ -19,9 +19,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		static void RemoveSaveGameSlot(FString saveGame);
 	UFUNCTION(BlueprintCallable)
-		static bool CreateLoadCardGameSave(FString slotName, TSubclassOf<USaveGame> saveGameClass, USaveGame* saveGame);
+		static USaveGame* CreateLoadCardGameSave(FString slotName, TSubclassOf<USaveGame> saveGameClass, bool& success);
 	UFUNCTION(BlueprintCallable)
-		static bool SaveCustomDeck(FText& inText, TArray<FName> customDeck, bool editable);
+		static bool SaveCustomDeck(FText inText, TArray<FName> customDeck, bool editable);
 	UFUNCTION(BlueprintCallable)
 		static TArray<FName> LoadCustomDeck(FString deckName, bool& deckEditable, bool& deckValid);
 	UFUNCTION(BlueprintCallable)

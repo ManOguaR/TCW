@@ -86,6 +86,17 @@ enum class ECardType : uint8
 };
 
 UENUM(BlueprintType)
+enum class ECardColor : uint8
+{
+	CardColor_Neutral		UMETA(DisplayName = "Neutral"),
+	CardColor_Blue			UMETA(DisplayName = "Blue"),
+	CardColor_Green			UMETA(DisplayName = "Green"),
+	CardColor_Purple		UMETA(DisplayName = "Purple"),
+	CardColor_Red			UMETA(DisplayName = "Red"),
+	CardColor_Yellow		UMETA(DisplayName = "Yellow")
+};
+
+UENUM(BlueprintType)
 enum class ECardWidgetMovementState : uint8
 {
 	CardMovementState_Pending		UMETA(DisplayName = "Pending"),

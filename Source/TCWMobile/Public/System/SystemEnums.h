@@ -52,26 +52,33 @@ enum class EPlatform : uint8
 	Platform_Linux		UMETA(DisplayName = "Linux")
 };
 
-//UENUM(BlueprintType)
-//enum class EAlphabeticalSorting : uint8
-//{
-//	Sorting_AtoZ		UMETA(DisplayName = "A to Z"),
-//	Sorting_ZtoA		UMETA(DisplayName = "Z to A")
-//};
+UENUM(BlueprintType)
+enum class EAlphabeticalSorting : uint8
+{
+	Sorting_AtoZ		UMETA(DisplayName = "A to Z"),
+	Sorting_ZtoA		UMETA(DisplayName = "Z to A")
+};
 
-//UENUM(BlueprintType)
-//enum class ECardRowOptions : uint8
-//{
-//	RowOption_None			UMETA(DisplayName = "None"),
-//	RowOption_Create		UMETA(DisplayName = "Create +"),
-//	RowOption_Save			UMETA(DisplayName = "Save"),
-//	RowOption_Edit			UMETA(DisplayName = "Edit"),
-//	RowOption_Load			UMETA(DisplayName = "Load"),
-//	RowOption_Clear			UMETA(DisplayName = "Clear"),
-//	RowOption_Cancel		UMETA(DisplayName = "Cancel"),
-//	RowOption_Delete		UMETA(DisplayName = "Delete"),
-//	RowOption_Select		UMETA(DisplayName = "Select")
-//};
+UENUM(BlueprintType)
+enum class ECardRowOptions : uint8
+{
+	RowOption_None			UMETA(DisplayName = "None"),
+	RowOption_Create		UMETA(DisplayName = "Create +"),
+	RowOption_Save			UMETA(DisplayName = "Save"),
+	RowOption_Edit			UMETA(DisplayName = "Edit"),
+	RowOption_Load			UMETA(DisplayName = "Load"),
+	RowOption_Clear			UMETA(DisplayName = "Clear"),
+	RowOption_Cancel		UMETA(DisplayName = "Cancel"),
+	RowOption_Delete		UMETA(DisplayName = "Delete"),
+	RowOption_Select		UMETA(DisplayName = "Select")
+};
+
+UENUM(BlueprintType)
+enum class ECostSorting : uint8
+{
+	Sorting_LowToHigh		UMETA(DisplayName = "Lowest to Highest"),
+	Sorting_HighToLow		UMETA(DisplayName = "Highest to Lowest")
+};
 
 //UENUM(BlueprintType)
 //enum class EDirection : uint8
@@ -100,12 +107,6 @@ enum class EPlatform : uint8
 //	Error_OneInvalid				UMETA(DisplayName = "One is invalid")
 //};
 
-//UENUM(BlueprintType)
-//enum class EManaCostSorting : uint8
-//{
-//	Sorting_LowToHigh		UMETA(DisplayName = "Lowest to Highest"),
-//	Sorting_HighToLow		UMETA(DisplayName = "Highest to Lowest")
-//};
 
 //UENUM(BlueprintType)
 //enum class EPriority : uint8
@@ -116,9 +117,9 @@ enum class EPlatform : uint8
 //	Priority_High		UMETA(DisplayName = "High")
 //};
 
-//UENUM(BlueprintType)
-//enum class ESortingTypeFilter : uint8
-//{
-//	Filter_Name			UMETA(DisplayName = "Name"),
-//	Filter_ManaCost		UMETA(DisplayName = "ManaCost")
-//};
+UENUM(BlueprintType)
+enum class ESortingTypeFilter : uint8
+{
+	Filter_Name			UMETA(DisplayName = "Name"),
+	Filter_ManaCost		UMETA(DisplayName = "ManaCost")
+};
