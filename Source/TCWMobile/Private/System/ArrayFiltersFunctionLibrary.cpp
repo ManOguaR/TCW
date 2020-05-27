@@ -72,3 +72,30 @@ TArray<FName> UArrayFiltersFunctionLibrary::SortCardArrayByCost(TArray<FName> fi
 
 	return IncludedCardArray;
 }
+
+TArray<int32> UArrayFiltersFunctionLibrary::GetManaInDeck(TArray<FName> Array, float& average)
+{
+	if (Array.Num() == 0)
+	{
+		average = 0.0f;
+		return { 0, 0, 0, 0, 0, 0, 0, 0 };
+	}
+
+	int32 totalCosts = 0;
+	TArray<int32> values = TArray<int32>();
+	values.Reset(8);
+
+	for (FName each : Array)
+	{
+		FCardData card = UDeckFunctionLibrary::GetCardData(each, ECardSet::CardSet_Empty);
+
+		int32 valueIndex = card.PlacementSettings.Cost < 7 ? card.PlacementSettings.Cost : 7;
+
+		values[valueIndex] = values[valueIndex] + 1;
+		totalCosts = totalCosts + card.PlacementSettings.Cost;
+	}
+
+	average = (float)totalCosts / (float)Array.Num();
+
+	return values;
+}

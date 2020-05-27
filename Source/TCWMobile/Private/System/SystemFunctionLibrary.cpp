@@ -97,7 +97,7 @@ void USystemFunctionLibrary::DisplaySystemMessage(UObject* callerObject, FString
 		{
 			UDisplayMessage* popupMessage = CreateWidget<UDisplayMessage>(UGameplayStatics::GetPlayerController(callerObject, 0), widgetClass);
 			popupMessage->AddToViewport(1000);
-			popupMessage->OnDisplayMessage.Broadcast(Message, SpecifiedColor, Duration);
+			popupMessage->DisplayMessage(Message, SpecifiedColor, Duration);
 		}
 	}
 	if (ToLog)

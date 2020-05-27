@@ -20,19 +20,18 @@ class TCWMOBILE_API UDisplayMessage : public UUserWidget
 public:
 	UDisplayMessage(const FObjectInitializer& ObjectInitializer);
 
-private:
-	UFUNCTION()
-	void DisplayMessage(FString Message, FLinearColor SpecifiedColor, float Duration);
-
 public:
-	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
-	FDisplayMessageEvent OnDisplayMessage;
+	UFUNCTION()
+		void DisplayMessage(FString Message, FLinearColor SpecifiedColor, float Duration);
+
+	//UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
+	//	FDisplayMessageEvent OnDisplayMessage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	UTextBlock* MessageText;
+		UTextBlock* MessageText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidgetAnim))
-	UWidgetAnimation* DisplaySelf;
+		UWidgetAnimation* DisplaySelf;
 
 private:
 	void DisplayMessage_Delayed();

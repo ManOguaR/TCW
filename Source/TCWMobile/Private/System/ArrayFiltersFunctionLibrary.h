@@ -30,4 +30,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Card Filters")
 		static TArray<FName> SortCardArrayByCost(TArray<FName> filterArray, ECostSorting costSort);
+
+	UFUNCTION(BlueprintCallable, Category = "Card Filters")
+		static TArray<int32> GetManaInDeck(TArray<FName> Array, float& average);
 };

@@ -302,10 +302,10 @@ TArray<FName> ATCWPlayerController::LoadClientDeck(FString& deckName)
 	if (isDeckValid)
 		return resultDeck;
 
-	//DataTable'/Game/Data/Gameplay/PrebuildDeck_DataTable.PrebuildDeck_DataTable'
+	//DataTable'/Game/Data/Gameplay/PrebuildDeckDataTable.PrebuildDeckDataTable'
 	TArray<FName> rowNames;
 	UDataTable* prebuiltDecks;
-	static ConstructorHelpers::FObjectFinder<UDataTable> dataTableObject(TEXT("DataTable'/Game/Data/Gameplay/PrebuildDeck_DataTable.PrebuildDeck_DataTable'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> dataTableObject(TEXT("DataTable'/Game/Data/Gameplay/PrebuildDeckDataTable.PrebuildDeckDataTable'"));
 	if (dataTableObject.Succeeded())
 	{
 		prebuiltDecks = dataTableObject.Object;
