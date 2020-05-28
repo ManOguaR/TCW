@@ -49,7 +49,7 @@ public:
         int Damage;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game Data")
-        int ManaCost;
+        int Cost;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
         bool CanAttackPlayer;
@@ -185,43 +185,43 @@ struct FCardData : public FTableRowBase
 	GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		FText Name;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		ECardType Type;
 
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
         ECardRarity Rarity;
 
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
         ECardColor Color;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		bool Special;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		FCardVisuals_Struct Visual;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		FCardAttack_Struct Attack;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		FCardHealth_Struct Health;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		TArray<FCardAbility_Struct> Abilities;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		FCardDescription_Struct Description;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		FCardPlacement_Struct PlacementSettings;
 
-	UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 		FCardSettings_Struct DeckSettings;
 
-	//UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Card Data")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Card Data")
 	//	FCardSystemData_Struct CardSystemData;
 };
 
@@ -243,13 +243,13 @@ struct FPrebuildDeck : public FTableRowBase
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Prebuild Deck Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Prebuild Deck Data")
         FText DeckName;
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Prebuild Deck Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Prebuild Deck Data")
         bool bEditable;
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Prebuild Deck Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Prebuild Deck Data")
         FString DeckDescription;
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Prebuild Deck Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Prebuild Deck Data")
         TArray<FCardsInDeck> CardsInDeck;
 };
 
@@ -259,10 +259,10 @@ struct FPlayerDeck
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Saved Deck Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Saved Deck Data")
         FText DeckName;
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Saved Deck Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Saved Deck Data")
         bool bEditable;
-    UPROPERTY(EditAnywhere, Transient, BlueprintReadWrite, Category = "Saved Deck Data")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Saved Deck Data")
         TArray<FCardsInDeck> CardsInDeck;
 };
