@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "CardStructs.h"
+#include "DeckInterface.h"
 
 #include "DeckFunctionLibrary.generated.h"
 
@@ -20,15 +21,15 @@ class TCWMOBILE_API UDeckFunctionLibrary : public UBlueprintFunctionLibrary
 
 public:
 	UFUNCTION(BlueprintCallable)
-		static TArray<FName> GetChosenDeckArray(int32 index, UDataTable* target);
+		static TArray<FName> GetChosenDeckArray(int32 index, TArray<UDataTable*> targetArray);
 	UFUNCTION(BlueprintCallable)
 		static FCardData GetCardData(FName cardName, ECardSet cardset);
 	UFUNCTION(BlueprintCallable)
-		static int32 GetRandomCardFromDeck(AController* controller, FName& cardName, ECardSet& cardset);
+		static FName GetRandomCardFromDeck(AController* controller, int32& cardName, ECardSet& cardset);
 	UFUNCTION(BlueprintCallable)
 		static FName GetCardFromDeck(TArray<FName> deck, int32 index, bool lastIndex);
 	UFUNCTION(BlueprintCallable)
-		static int32 FindCardInArray(FName cardName, TArray<FName> cardArray, TArray<int32>& indexesArray);
+		static TArray<int32> FindCardInArray(FName cardName, TArray<FName> cardArray, int32& found);
 	UFUNCTION(BlueprintCallable)
 		static TArray<FName> GetAllCardsInActiveSet(ECardSet cardset);
 	UFUNCTION(BlueprintCallable)

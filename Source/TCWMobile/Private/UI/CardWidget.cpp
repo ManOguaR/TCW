@@ -48,7 +48,7 @@ void UCardWidget::ViewCardFocusLost()
 
 void UCardWidget::HighlightCard(bool enable)
 {
-	ViewCard->OnSetCardHalo.Broadcast(ESlateVisibility::Visible, enable ? FLinearColor(0.128829f, 1.0f, 0.0f, 0.5f) : FLinearColor(0.0f, 0.0f, 0.0f, 0.5f));
+	ViewCard->SetCardHalo(ESlateVisibility::Visible, enable ? FLinearColor(0.128829f, 1.0f, 0.0f, 0.5f) : FLinearColor(0.0f, 0.0f, 0.0f, 0.5f));
 }
 
 void UCardWidget::OpenGate(FWidgetTransform goalTransform, UWidget* moveComponent, float interpSpeed, ECardWidgetMovementState requestedState)
@@ -260,12 +260,12 @@ FReply UCardWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const FPoint
 
 void UCardWidget::SetFaceDown(bool enableFacedown)
 {
-	ViewCard->OnSetFacedown.Broadcast(enableFacedown);
+	ViewCard->SetFacedown(enableFacedown);
 }
 
 void UCardWidget::SetCardData()
 {
-	ViewCard->OnInitiateCard.Broadcast(CardName, CardSetEnum, this, nullptr, false);
+	ViewCard->InitiateCard(CardName, CardSetEnum, this, nullptr, false);
 }
 
 void UCardWidget::EnableMobileCardPreview(bool enablePreview)

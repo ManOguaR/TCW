@@ -7,10 +7,6 @@
 
 UViewCard::UViewCard(const FObjectInitializer& ObjectInitializer) : UUserWidget(ObjectInitializer)
 {
-	OnInitiateCard.AddDynamic(this, &UViewCard::InitiateCard);
-	OnSetFacedown.AddDynamic(this, &UViewCard::SetFacedown);
-	OnSetCardHalo.AddDynamic(this, &UViewCard::SetCardHalo);
-	OnSetCardData.AddDynamic(this, &UViewCard::SetCardData);
 }
 
 void UViewCard::NativeOnFocusLost(const FFocusEvent& InFocusEvent)
@@ -67,9 +63,9 @@ void UViewCard::SetCardData(FName cardName, ECardSet cardSet)
 	HealthTextBlock->SetText(FText::FromString(FString::FromInt(data.Health.Health)));
 	CostTextBlock->SetText(FText::FromString(FString::FromInt(data.PlacementSettings.Cost)));
 
-	CardBrush = FSlateDynamicImageBrush(data.Visual.ImageTexture, FVector2D(32.0f, 32.0f), data.Visual.ImageTexture->GetFName());
-	CardFrameBrush = FSlateDynamicImageBrush(data.Visual.FrameTexture, FVector2D(32.0f, 32.0f), data.Visual.FrameTexture->GetFName());
-	CardBackBrush = FSlateDynamicImageBrush(data.Visual.BackTexture, data.DeckSettings.ScreenSize, data.Visual.BackTexture->GetFName());
+	CardBrush = FSlateImageBrush(data.Visual.ImageTexture, FVector2D(32.0f, 32.0f));
+	CardFrameBrush = FSlateImageBrush(data.Visual.FrameTexture, FVector2D(32.0f, 32.0f));
+	CardBackBrush = FSlateImageBrush(data.Visual.BackTexture, FVector2D(32.0f, 32.0f));
 
 	CardSize = data.DeckSettings.ScreenSize;
 }

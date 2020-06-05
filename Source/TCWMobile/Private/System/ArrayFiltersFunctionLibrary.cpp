@@ -82,8 +82,7 @@ TArray<int32> UArrayFiltersFunctionLibrary::GetManaInDeck(TArray<FName> Array, f
 	}
 
 	int32 totalCosts = 0;
-	TArray<int32> values = TArray<int32>();
-	values.Reset(8);
+	TArray<int32> values = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	for (FName each : Array)
 	{

@@ -39,7 +39,7 @@ ATCWGameMode::ATCWGameMode(const FObjectInitializer& ObjectInitializer) : AGameM
 
 	OnCheckGamePreconditions.AddDynamic(this, &ATCWGameMode::CheckGamePreconditions);
 	OnForceSpawnAIOpponent.AddDynamic(this, &ATCWGameMode::ForceSpawnAIOpponent);
-	OnGameStartCountdown.BindUFunction(this, FName("GameStartCountdownEvent"));
+	OnGameStartCountdown.BindDynamic(this, &ATCWGameMode::GameStartCountdown);
 	OnEndGame.AddDynamic(this, &ATCWGameMode::EndGame);
 }
 

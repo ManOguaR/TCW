@@ -12,11 +12,11 @@
 
 #include "ViewCard.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FViewCardEvent);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FViewCardInitEvent, FName, name, ECardSet, cardRace, UUserWidget*, callingWidgetParent, ABoardUnit*, unitParent, bool, isPreview);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FViewCardFacedownEvent, bool, enableFacedown);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FViewCardHaloEvent, ESlateVisibility, cardVisibility, FLinearColor, inColorAndOpacity);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FViewCardDataEvent, FName, cardName, ECardSet, cardSet);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FViewCardEvent);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FViewCardInitEvent, FName, name, ECardSet, cardRace, UUserWidget*, callingWidgetParent, ABoardUnit*, unitParent, bool, isPreview);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FViewCardFacedownEvent, bool, enableFacedown);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FViewCardHaloEvent, ESlateVisibility, cardVisibility, FLinearColor, inColorAndOpacity);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FViewCardDataEvent, FName, cardName, ECardSet, cardSet);
 
 /**
  *
@@ -31,15 +31,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "System")
 		bool bIsFaceUp;
-
-	UPROPERTY(BlueprintCallable, Category = "Card Events")
-		FViewCardInitEvent OnInitiateCard;
-	UPROPERTY(BlueprintCallable, Category = "Card Events")
-		FViewCardFacedownEvent OnSetFacedown;
-	UPROPERTY(BlueprintCallable, Category = "Card Events")
-		FViewCardHaloEvent OnSetCardHalo;
-	UPROPERTY(BlueprintCallable, Category = "Card Events")
-		FViewCardDataEvent OnSetCardData;
 
 protected:
 	FVector2D CardSize;
@@ -57,14 +48,14 @@ protected:
 
 	void NativeOnFocusLost(const FFocusEvent& InFocusEvent) override;
 
-private:
-	UFUNCTION()
+public:
+	UFUNCTION(BlueprintCallable, Category = "Card Events")
 		void InitiateCard(FName name, ECardSet cardRace, UUserWidget* callingWidgetParent, ABoardUnit* unitParent, bool isPreview);
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Card Events")
 		void SetFacedown(bool enableFacedown);
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Card Events")
 		void SetCardHalo(ESlateVisibility cardVisibility, FLinearColor inColorAndOpacity);
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Card Events")
 		void SetCardData(FName cardName, ECardSet cardSet);
 
 protected:

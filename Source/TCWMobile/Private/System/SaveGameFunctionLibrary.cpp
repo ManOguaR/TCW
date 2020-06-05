@@ -8,7 +8,19 @@
 
 void USaveGameFunctionLibrary::RemoveSaveGameSlot(FString saveGame)
 {
-	//TODO: USaveGameFunctionLibrary::RemoveSaveGameSlot
+	const FString slotName = "CardGameSave";
+
+	if (UGameplayStatics::DoesSaveGameExist(saveGame, 0))
+	{
+		if (UTCWSaveGame* loaded = Cast<UTCWSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName, 0)))
+		{
+			loaded->DeckList.Remove(saveGame);
+			if (UGameplayStatics::SaveGameToSlot(loaded, slotName, 0))
+			{
+				UGameplayStatics::DeleteGameInSlot(saveGame, 0);
+			}
+		}
+	}
 }
 
 USaveGame* USaveGameFunctionLibrary::CreateLoadCardGameSave(FString slotName, TSubclassOf<USaveGame> saveGameClass, bool& success)
@@ -45,10 +57,10 @@ bool USaveGameFunctionLibrary::SaveCustomDeck(FText inText, TArray<FName> custom
 			UGameplayStatics::SaveGameToSlot(loaded, slotName, 0);
 
 			bool isSuccess;
-			CreateLoadCardGameSave(slotName, UCustomDeckSave::StaticClass(), isSuccess);
+			CreateLoadCardGameSave(inText.ToString(), UCustomDeckSave::StaticClass(), isSuccess);
 		}
 
-		if (UCustomDeckSave* deckLoaded = Cast<UCustomDeckSave>(UGameplayStatics::LoadGameFromSlot(slotName, 0)))
+		if (UCustomDeckSave* deckLoaded = Cast<UCustomDeckSave>(UGameplayStatics::LoadGameFromSlot(inText.ToString(), 0)))
 		{
 			deckLoaded->CustomDeck = customDeck;
 			deckLoaded->bEditable = editable;
@@ -56,31 +68,55 @@ bool USaveGameFunctionLibrary::SaveCustomDeck(FText inText, TArray<FName> custom
 			return UGameplayStatics::SaveGameToSlot(deckLoaded, inText.ToString(), 0);
 		}
 	}
-	
+
 	return false;
 }
 
 TArray<FName> USaveGameFunctionLibrary::LoadCustomDeck(FString deckName, bool& deckEditable, bool& deckValid)
 {
-	//TODO: USaveGameFunctionLibrary::LoadCustomDeck
+	deckEditable = false;
+	deckValid = false;
+	if (UGameplayStatics::DoesSaveGameExist(deckName, 0))
+	{
+		if (UCustomDeckSave* deckLoaded = Cast<UCustomDeckSave>(UGameplayStatics::LoadGameFromSlot(deckName, 0)))
+		{
+			deckValid = true;
+			deckEditable = deckLoaded->bEditable;
+
+			return deckLoaded->CustomDeck;
+		}
+	}
+
 	return TArray<FName>();
 }
 
 FString USaveGameFunctionLibrary::GetRandomDeck(bool& deckValid)
 {
-	//TODO: USaveGameFunctionLibrary::GetRandomDeck
+	const FString slotName = "CardGameSave";
+	deckValid = false;
+
+	if (UGameplayStatics::DoesSaveGameExist(slotName, 0))
+	{
+		if (UTCWSaveGame* loaded = Cast<UTCWSaveGame>(UGameplayStatics::LoadGameFromSlot(slotName, 0)))
+		{
+			return loaded->DeckList[FMath::RandRange(0, loaded->DeckList.Num() - 1)];
+		}
+	}
+
 	return FString();
 }
 
 bool USaveGameFunctionLibrary::GetDeckValid(FString slotName)
 {
-	//TODO: USaveGameFunctionLibrary::GetDeckValid
-	return false;
+	return UGameplayStatics::DoesSaveGameExist(slotName, 0);
 }
 
 bool USaveGameFunctionLibrary::GetDeckEditable(FString slotName)
 {
-	//TODO: USaveGameFunctionLibrary::GetDeckEditable
+	if (UCustomDeckSave* deckLoaded = Cast<UCustomDeckSave>(UGameplayStatics::LoadGameFromSlot(slotName, 0)))
+	{
+		return deckLoaded->bEditable;
+	}
+	
 	return false;
 }
-

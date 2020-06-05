@@ -27,7 +27,7 @@ void UGameLoader::LoadBegin()
 	ReportAdvance(0.0f, true);
 
 	FTimerHandle unusedHandle;
-	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoadBegin_Delayed, 5.0f);
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoadBegin_Delayed, 1.0f);
 }
 void UGameLoader::LoadBegin_Delayed()
 {
@@ -64,7 +64,7 @@ void UGameLoader::LoginSuccessCallback()
 	ClearCallbacks();
 	UKismetSystemLibrary::Delay(this, 5.0f, FLatentActionInfo());
 	FTimerHandle unusedHandle;
-	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoginSuccessCallback_Delayed, 5.0f);
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoginSuccessCallback_Delayed, 1.0f);
 
 }
 void UGameLoader::LoginSuccessCallback_Delayed()
@@ -87,7 +87,7 @@ void UGameLoader::LoginSuccessCallback_Delayed()
 void UGameLoader::LoginFailureCallback()
 {
 	ClearCallbacks();
-	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalLoginUser", "FATAL: FAILED TO LOGIN USER").ToString(), 5.0f);
+	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalLoginUser", "FATAL: FAILED TO LOGIN USER").ToString(), 3.0f);
 
 	FTimerHandle unusedHandle;
 	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::LoginFailureCallback_Delayed, 5.0f);
@@ -102,7 +102,7 @@ void UGameLoader::GetPlayerStatsSuccessCallback()
 	ClearCallbacks();
 
 	FTimerHandle unusedHandle;
-	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerStatsSuccessCallback_Delayed, 5.0f);
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerStatsSuccessCallback_Delayed, 1.0f);
 }
 void UGameLoader::GetPlayerStatsSuccessCallback_Delayed()
 {
@@ -124,7 +124,7 @@ void UGameLoader::GetPlayerStatsSuccessCallback_Delayed()
 void UGameLoader::GetPlayerStatsFailureCallback()
 {
 	ClearCallbacks();
-	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetStats", "FATAL: FAILED TO GET PLAYER STATS").ToString(), 5.0f);
+	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetStats", "FATAL: FAILED TO GET PLAYER STATS").ToString(), 3.0f);
 
 	FTimerHandle unusedHandle;
 	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerStatsFailureCallback_Delayed, 5.0f);
@@ -139,7 +139,7 @@ void UGameLoader::GetPlayerProfileSuccessCallback()
 	ClearCallbacks();
 
 	FTimerHandle unusedHandle;
-	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerProfileSuccessCallback_Delayed, 5.0f);
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerProfileSuccessCallback_Delayed, 1.0f);
 }
 void UGameLoader::GetPlayerProfileSuccessCallback_Delayed()
 {
@@ -151,10 +151,10 @@ void UGameLoader::GetPlayerProfileSuccessCallback_Delayed()
 void UGameLoader::GetPlayerProfileFailureCallback()
 {
 	ClearCallbacks();
-	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetProfile", "FATAL: FAILED TO GET PLAYER PROFILE").ToString(), 5.0f);
+	USystemFunctionLibrary::DisplayError(this, LOCTEXT("GameLoader_FatalGetProfile", "FATAL: FAILED TO GET PLAYER PROFILE").ToString(), 3.0f);
 
 	FTimerHandle unusedHandle;
-	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerProfileFailureCallback_Delayed, 5.0f);
+	GetWorld()->GetTimerManager().SetTimer(unusedHandle, this, &UGameLoader::GetPlayerProfileFailureCallback_Delayed, 1.0f);
 
 }
 void UGameLoader::GetPlayerProfileFailureCallback_Delayed()

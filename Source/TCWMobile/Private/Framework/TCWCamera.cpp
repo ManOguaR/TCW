@@ -6,6 +6,7 @@
 ATCWCamera::ATCWCamera(const FObjectInitializer& ObjectInitializer) : ACameraActor(ObjectInitializer)
 {
 	//Pre-19
+	NetUpdateFrequency = 1.0f;
 }
 
 void ATCWCamera::BeginPlay()

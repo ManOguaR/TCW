@@ -304,12 +304,13 @@ TArray<FName> ATCWPlayerController::LoadClientDeck(FString& deckName)
 
 	//DataTable'/Game/Data/Gameplay/PrebuildDeckDataTable.PrebuildDeckDataTable'
 	TArray<FName> rowNames;
-	UDataTable* prebuiltDecks;
-	static ConstructorHelpers::FObjectFinder<UDataTable> dataTableObject(TEXT("DataTable'/Game/Data/Gameplay/PrebuildDeckDataTable.PrebuildDeckDataTable'"));
-	if (dataTableObject.Succeeded())
+	if (UDataTable* dataTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/Data/Gameplay/PrebuildDeckDataTable.PrebuildDeckDataTable")))
 	{
-		prebuiltDecks = dataTableObject.Object;
-		UDataTableFunctionLibrary::GetDataTableRowNames(prebuiltDecks, rowNames);
+		UDataTableFunctionLibrary::GetDataTableRowNames(dataTable, rowNames);
+	}
+	else
+	{
+		UE_LOG(TCWLogErrors, Fatal, TEXT("Failed to get DataTable"));
 	}
 
 	resultDeck = USaveGameFunctionLibrary::LoadCustomDeck(rowNames[FMath::RandRange(0, rowNames.Num() - 1)].ToString(), isDeckEditable, isDeckValid);
