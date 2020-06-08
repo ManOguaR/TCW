@@ -20,4 +20,11 @@ public:
 	void PostInitializeComponents() override;
 
 	void BeginPlay() override;
+
+	/** The Main Draw loop for the hud.  Gets called before any messaging.  Should be subclassed */
+	void DrawHUD() override;
+
+private:
+	UMaterial* GetCurrentCursorMaterial();
+	float CursorSize = 32.0f;
 };

@@ -35,6 +35,10 @@ public:
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Project Version"), Category = "System Info")
 		static FString GetProjectVersion();
 
+	/* Change Localization at Runtime. */
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Change Localization"), Category = "Locale")
+		static void ChangeLocalization(FString target);
+
 	UFUNCTION(BlueprintCallable)
 		static void ShowEndGameDialog(UObject* callerObject, FDialogWindowResponseEvent responseDelegate);
 

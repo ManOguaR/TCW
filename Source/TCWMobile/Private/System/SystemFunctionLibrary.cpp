@@ -41,6 +41,11 @@ FString USystemFunctionLibrary::GetProjectVersion()
 	return projectVersion;
 }
 
+void USystemFunctionLibrary::ChangeLocalization(FString target)
+{
+	FInternationalization::Get().SetCurrentCulture(target);
+}
+
 void USystemFunctionLibrary::ShowEndGameDialog(UObject* callerObject, FDialogWindowResponseEvent responseDelegate)
 {
 	//../Game/Blueprints/Widgets/Extras/DisplayMessageBP.uasset

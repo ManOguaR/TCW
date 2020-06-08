@@ -50,6 +50,9 @@ ATCWPlayerController::ATCWPlayerController(const FObjectInitializer& ObjectIniti
 	OnClearCardsInHand.AddDynamic(this, &ATCWPlayerController::ClearCardsInHand);
 
 	OnDeveloper_AddCardToHand.AddDynamic(this, &ATCWPlayerController::Developer_AddCardToHand);
+
+
+	//bShowMouseCursor = true;
 }
 
 void ATCWPlayerController::SetupGameUI()
