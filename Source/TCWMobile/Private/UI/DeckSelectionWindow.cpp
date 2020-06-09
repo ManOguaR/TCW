@@ -2,7 +2,12 @@
 
 
 #include "DeckSelectionWindow.h"
+#include "Account\TCWSaveGame.h"
 #include "HexUIButton.h"
+#include "SaveGameFunctionLibrary.h"
+
+#include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 
 UDeckSelectionWindow::UDeckSelectionWindow(const FObjectInitializer& ObjectInitializer) : UUserWidget(ObjectInitializer)
 {
@@ -18,6 +23,9 @@ void UDeckSelectionWindow::NativeDestruct()
 void UDeckSelectionWindow::DisplayWindow()
 {
 	CloseWindowButton->OnClicked.AddUnique(OnCloseWindowClicked);
+
+	PopulateDeckList();
+
 	PlayAnimation(DisplaySelf);
 }
 
@@ -38,4 +46,27 @@ void UDeckSelectionWindow::OnCloseButtonClicked_Callback()
 	RemoveFromParent();
 	OnWindowClosed.ExecuteIfBound();
 	this->Destruct();
+}
+
+void UDeckSelectionWindow::PopulateDeckList()
+{
+	bool isSuccess;
+	USaveGame* saveGame = USaveGameFunctionLibrary::CreateLoadCardGameSave("CardGameSave", UTCWSaveGame::StaticClass(), isSuccess);
+
+	if (isSuccess)
+	{
+		if (UTCWSaveGame* castSave = Cast<UTCWSaveGame>(saveGame))
+		{
+			if (castSave->DeckList.Num() > 0)
+			{
+				for (FString deckName : castSave->DeckList)
+				{
+					if (UGameplayStatics::DoesSaveGameExist(deckName, 0))
+					{
+
+					}
+				}
+			}
+		}
+	}
 }

@@ -55,6 +55,8 @@ void UViewCard::SetCardData(FName cardName, ECardSet cardSet)
 {
 	FCardData data = UDeckFunctionLibrary::GetCardData(cardName, cardSet);
 
+	FString dummy = cardName.ToString();
+
 	NameTextBlock->SetText(data.Name);
 	CardTypeTextBlock->SetText(GETENUMTEXT("ECardType", data.Type));// FText::FromString(GETENUMSTRING("ECardType", data.Type)));
 
@@ -66,6 +68,9 @@ void UViewCard::SetCardData(FName cardName, ECardSet cardSet)
 	CardBrush = FSlateImageBrush(data.Visual.ImageTexture, FVector2D(32.0f, 32.0f));
 	CardFrameBrush = FSlateImageBrush(data.Visual.FrameTexture, FVector2D(32.0f, 32.0f));
 	CardBackBrush = FSlateImageBrush(data.Visual.BackTexture, FVector2D(32.0f, 32.0f));
+
+	CardFrame->SetBrush(CardFrameBrush);
+	CardImage->SetBrush(CardBrush);
 
 	CardSize = data.DeckSettings.ScreenSize;
 }

@@ -50,4 +50,5 @@ private:
 	void OnCloseButtonClicked_Delayed();
 	void OnCloseButtonClicked_Callback();
 
+	void PopulateDeckList();
 };
