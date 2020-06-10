@@ -3,11 +3,13 @@
 
 #include "DeckSelectionWindow.h"
 #include "Account\TCWSaveGame.h"
+#include "DeckSelectionRow.h"
 #include "HexUIButton.h"
 #include "SaveGameFunctionLibrary.h"
 
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/UniformGridPanel.h"
 
 UDeckSelectionWindow::UDeckSelectionWindow(const FObjectInitializer& ObjectInitializer) : UUserWidget(ObjectInitializer)
 {
@@ -23,6 +25,9 @@ void UDeckSelectionWindow::NativeDestruct()
 void UDeckSelectionWindow::DisplayWindow()
 {
 	CloseWindowButton->OnClicked.AddUnique(OnCloseWindowClicked);
+	EditDeck_Button->OnClicked.AddDynamic(this, &UDeckSelectionWindow::EditDeckClicked);
+	SelectDeck_Button->OnClicked.AddDynamic(this, &UDeckSelectionWindow::PlayClicked);
+	NewDeck_Button->OnClicked.AddDynamic(this, &UDeckSelectionWindow::NewDeckClicked);
 
 	PopulateDeckList();
 
@@ -53,6 +58,7 @@ void UDeckSelectionWindow::PopulateDeckList()
 	bool isSuccess;
 	USaveGame* saveGame = USaveGameFunctionLibrary::CreateLoadCardGameSave("CardGameSave", UTCWSaveGame::StaticClass(), isSuccess);
 
+	int32 row = 0, column = 0;
 	if (isSuccess)
 	{
 		if (UTCWSaveGame* castSave = Cast<UTCWSaveGame>(saveGame))
@@ -63,10 +69,53 @@ void UDeckSelectionWindow::PopulateDeckList()
 				{
 					if (UGameplayStatics::DoesSaveGameExist(deckName, 0))
 					{
+						if (column == 0 && row == 0)
+							SelectedDeck = deckName;
 
+						column = column + 1;
+						if (column > 2)
+						{
+							column = 0;
+							row = row + 1;
+						}
+
+						//WidgetBlueprint'/Game/Blueprints/Widgets/MainMenu/DeckSelectionRowWidget.DeckSelectionRowWidget'
+						FStringClassReference WidgetClassRef(TEXT("/Game/Blueprints/Widgets/MainMenu/DeckSelectionRowWidget.DeckSelectionRowWidget_C"));
+						if (UClass* widgetClass = WidgetClassRef.TryLoadClass<UDeckSelectionRow>())
+						{
+							UDeckSelectionRow* deckRow = CreateWidget<UDeckSelectionRow>(UGameplayStatics::GetPlayerController(this, 0), widgetClass);
+
+							deckRow->SetupRow(this, FText::FromString(deckName), nullptr);
+							deckRow->OnClicked.AddDynamic(this, &UDeckSelectionWindow::SelectDeck);
+
+							DeckSelection_GridPanel->AddChildToUniformGrid(deckRow, row, column);
+						}
 					}
 				}
 			}
 		}
 	}
+}
+
+void UDeckSelectionWindow::SelectDeck(FString cardSetName, UDeckSelectionRow* callerWidget)
+{
+	SelectedDeck = cardSetName;
+
+	//TODO: COSMETIC SELECTED
+	//callerWidget->ToggleSelection();
+}
+
+void UDeckSelectionWindow::NewDeckClicked()
+{
+
+}
+
+void UDeckSelectionWindow::EditDeckClicked()
+{
+
+}
+
+void UDeckSelectionWindow::PlayClicked()
+{
+
 }

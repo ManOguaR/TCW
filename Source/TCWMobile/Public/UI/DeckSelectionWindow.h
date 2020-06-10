@@ -6,7 +6,10 @@
 #include "Blueprint/UserWidget.h"
 #include "DeckSelectionWindow.generated.h"
 
+class UButton;
+class UDeckSelectionRow;
 class UHexUIButton;
+class UUniformGridPanel;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeckSelectionEvent);
 DECLARE_DYNAMIC_DELEGATE(FDeckSelectionResponseEvent);
@@ -42,13 +45,34 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UHexUIButton* CloseWindowButton;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidgetAnim))
 		UWidgetAnimation* DisplaySelf;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UUniformGridPanel* DeckSelection_GridPanel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* NewDeck_Button;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* EditDeck_Button;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* SelectDeck_Button;
+	
 private:
 	void OnCloseButtonClicked_Delayed();
 	void OnCloseButtonClicked_Callback();
 
 	void PopulateDeckList();
+
+	FString SelectedDeck;
+
+	UFUNCTION()
+		void SelectDeck(FString cardSetName, UDeckSelectionRow* callerWidget);
+	UFUNCTION()
+		void NewDeckClicked();
+	UFUNCTION()
+		void EditDeckClicked();
+	UFUNCTION()
+		void PlayClicked();
+
 };

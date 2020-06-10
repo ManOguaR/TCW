@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+
 #include "DeckSelectionRow.generated.h"
 
 class UBorder;
@@ -12,6 +13,7 @@ class UImage;
 class UTextBlock;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDeckSelectionRowEvent, FString, cardSetName, UDeckSelectionRow*, callerWidget);
+
 /**
  *
  */
@@ -21,6 +23,12 @@ class TCWMOBILE_API UDeckSelectionRow : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	UDeckSelectionRow(const FObjectInitializer& ObjectInitializer);
+
+	virtual void NativePreConstruct() override;
+	virtual void NativeConstruct() override;
+
+public:
 	UPROPERTY(BlueprintAssignable, Category = "Button|Event")
 		FDeckSelectionRowEvent OnClicked;
 
@@ -28,15 +36,18 @@ public:
 		UButton* Deck_Button;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		UTextBlock* HexUIIcon;
+		UTextBlock* DeckNameText;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UBorder* RowImage_Border;
 
-	//UFUNCTION(BlueprintCallable)
-	//	void SetupRow(UWidget* widgetParent, FText rowName, UImage* rowImage, FDeckSelectionRowEvent delegate);
+	UFUNCTION(BlueprintCallable)
+		void SetupRow(UWidget* widgetParent, FText rowName, UImage* rowImage);
 
 private:
 	FString CardSetName;
 	UWidget* WidgetParent;
+
+	UFUNCTION()
+		void OnDeckButtonClicked();
 };
