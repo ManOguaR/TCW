@@ -34,19 +34,24 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UButton* Deck_Button;
-
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UTextBlock* DeckNameText;
-
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UBorder* RowImage_Border;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UImage* ShadowImage;
 
 	UFUNCTION(BlueprintCallable)
 		void SetupRow(UWidget* widgetParent, FText rowName, UImage* rowImage);
 
+	UFUNCTION(BlueprintCallable)
+		void ToggleSelection(bool forceSelected = false);
+
 private:
 	FString CardSetName;
 	UWidget* WidgetParent;
+
+	bool bIsSelected;
 
 	UFUNCTION()
 		void OnDeckButtonClicked();

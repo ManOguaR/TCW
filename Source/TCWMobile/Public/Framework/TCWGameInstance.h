@@ -17,6 +17,7 @@
 #include "TCWGameInstance.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTCWGameInstanceEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCollectionManagerEvent, FString, selectedDeck);
 
 /**
  *
@@ -47,12 +48,12 @@ public:
 		FTCWGameInstanceEvent OnLoadingScreenSplashCompleted;
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Collection Manager Events")
-		FTCWGameInstanceEvent OnLoadCollectionManager;
+		FCollectionManagerEvent OnLoadCollectionManager;
 	UPROPERTY(BlueprintCallable, Category = "Collection Manager Events")
 		FTCWGameInstanceEvent OnCollectionManagerLoaded;
 
 	UPROPERTY(BlueprintAssignable, Category = "Game Events")
-		FTCWGameInstanceEvent OnHostGameEvent;
+		FCollectionManagerEvent OnHostGame;
 
 	UPROPERTY(BlueprintReadWrite, Category = "TCW Game System")
 		EGameState CurrentGameState;
@@ -88,11 +89,11 @@ private:
 	UFUNCTION()
 		void ShowLoadingScreen();
 	UFUNCTION()
-		void LoadCollectionManager();
+		void LoadCollectionManager(FString selectedDeck);
 	UFUNCTION()
 		void CollectionManagerLoaded();
 	UFUNCTION()
-		void HostGame();
+		void HostGame(FString selectedDeck);
 
 	void HostGame_Continue();
 
@@ -106,11 +107,17 @@ private:
 	UPROPERTY()
 		UGameLoader* GameLoader;
 
-	UUserWidget* MainMenuWidgetRef;
-	UUserWidget* LoadingScreenWidgetRef;
-	UUserWidget* DeckBuilderWidgetRef;
-	UUserWidget* StartupWidgetRef;
+public:
+	UPROPERTY(BlueprintReadOnly)
+		UUserWidget* MainMenuWidgetRef;
+	UPROPERTY(BlueprintReadOnly)
+		UUserWidget* LoadingScreenWidgetRef;
+	UPROPERTY(BlueprintReadOnly)
+		UUserWidget* DeckBuilderWidgetRef;
+	UPROPERTY(BlueprintReadOnly)
+		UUserWidget* StartupWidgetRef;
 
+private:
 	UFUNCTION()
 		bool MoveToGameState(EGameState inState);
 

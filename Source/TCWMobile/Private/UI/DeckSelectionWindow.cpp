@@ -6,8 +6,10 @@
 #include "DeckSelectionRow.h"
 #include "HexUIButton.h"
 #include "SaveGameFunctionLibrary.h"
+#include "SystemFunctionLibrary.h"
 
 #include "Engine/World.h"
+#include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/UniformGridPanel.h"
 
@@ -89,6 +91,11 @@ void UDeckSelectionWindow::PopulateDeckList()
 							deckRow->OnClicked.AddDynamic(this, &UDeckSelectionWindow::SelectDeck);
 
 							DeckSelection_GridPanel->AddChildToUniformGrid(deckRow, row, column);
+
+							if (SelectedDeck == deckName)
+							{
+								deckRow->ToggleSelection(true);
+							}
 						}
 					}
 				}
@@ -99,23 +106,31 @@ void UDeckSelectionWindow::PopulateDeckList()
 
 void UDeckSelectionWindow::SelectDeck(FString cardSetName, UDeckSelectionRow* callerWidget)
 {
-	SelectedDeck = cardSetName;
+	callerWidget->ToggleSelection(SelectedDeck == cardSetName);
 
-	//TODO: COSMETIC SELECTED
-	//callerWidget->ToggleSelection();
+	SelectedDeck = cardSetName;
 }
 
 void UDeckSelectionWindow::NewDeckClicked()
 {
-
+	RemoveFromParent();
+	OnWindowClosed.ExecuteIfBound();
+	USystemFunctionLibrary::GetTCWGameInstance(this)->OnLoadCollectionManager.Broadcast("NEW");
+	this->Destruct();
 }
 
 void UDeckSelectionWindow::EditDeckClicked()
 {
-
+	RemoveFromParent();
+	OnWindowClosed.ExecuteIfBound();
+	USystemFunctionLibrary::GetTCWGameInstance(this)->OnLoadCollectionManager.Broadcast(SelectedDeck);
+	this->Destruct();
 }
 
 void UDeckSelectionWindow::PlayClicked()
 {
-
+	RemoveFromParent();
+	OnWindowClosed.ExecuteIfBound();
+	USystemFunctionLibrary::GetTCWGameInstance(this)->OnHostGame.Broadcast(SelectedDeck);
+	this->Destruct();
 }

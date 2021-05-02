@@ -35,6 +35,14 @@ void UDeckSelectionRow::SetupRow(UWidget* widgetParent, FText rowName, UImage* r
 	}
 }
 
+void UDeckSelectionRow::ToggleSelection(bool forceSelected)
+{
+	bIsSelected = forceSelected ? true : !bIsSelected;
+
+	ShadowImage->SetVisibility(bIsSelected ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	ShadowImage->SetColorAndOpacity(bIsSelected ? FLinearColor(0.0f, 1.0f, 0.0f, 0.8f) : FLinearColor(0.5f, 0.65f, 1.0f, 0.3f));
+}
+
 void UDeckSelectionRow::OnDeckButtonClicked()
 {
 	if (OnClicked.IsBound())

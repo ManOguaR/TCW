@@ -14,7 +14,7 @@ UTCWGameInstance::UTCWGameInstance(const FObjectInitializer& ObjectInitializer) 
 	OnLoadMainMenu.AddDynamic(this, &UTCWGameInstance::LoadMainMenu);
 	OnShowMainMenu.AddDynamic(this, &UTCWGameInstance::ShowMainMenu);
 	OnShowLoadingScreen.AddDynamic(this, &UTCWGameInstance::ShowLoadingScreen);
-	OnHostGameEvent.AddDynamic(this, &UTCWGameInstance::HostGame);
+	OnHostGame.AddDynamic(this, &UTCWGameInstance::HostGame);
 	OnLoadCollectionManager.AddDynamic(this, &UTCWGameInstance::LoadCollectionManager);
 	OnCollectionManagerLoaded.AddDynamic(this, &UTCWGameInstance::CollectionManagerLoaded);
 }
@@ -125,11 +125,11 @@ void UTCWGameInstance::ShowLoadingScreen()
 		OnLoadingScreenSplashCompleted.Broadcast();
 }
 
-void UTCWGameInstance::LoadCollectionManager()
+void UTCWGameInstance::LoadCollectionManager(FString selectedDeck)
 {
 	if (MoveToGameState(EGameState::GameState_DeckBuilding))
 		//../Game/Maps/DeckBuilding
-		UGameplayStatics::OpenLevel(this, "CollectionManager");
+		UGameplayStatics::OpenLevel(this, "CollectionManager", true, selectedDeck);
 
 	//DESTROY PENDING SESSIONS IF ANY
 	if (SessionManager->HasActiveSession())
@@ -153,7 +153,7 @@ void UTCWGameInstance::CollectionManagerLoaded()
 	}
 }
 
-void UTCWGameInstance::HostGame()
+void UTCWGameInstance::HostGame(FString selectedDeck)
 {
 	if (OnShowLoadingScreen.IsBound())
 		OnShowLoadingScreen.Broadcast();
